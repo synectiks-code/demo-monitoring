@@ -116,7 +116,7 @@ func (kn *KafkaNotifier) Notify(evalContext *alerting.EvalContext) error {
 		kn.log.Error("Failed get rule link", "error", err)
 		return err
 	}
-	bodyJSON.Set("client_url", ruleURL)
+	bodyJSON.Set("client_url", ruleURL+"&removeOptions=1")
 
 	if kn.NeedsImage() && evalContext.ImagePublicURL != "" {
 		contexts := make([]interface{}, 1)
