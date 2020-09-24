@@ -1,7 +1,9 @@
 package notifiers
 
 import (
+	"net"
 	"strconv"
+	"strings"
 	"time"
 
 	"fmt"
@@ -97,6 +99,7 @@ func (kn *KafkaNotifier) Notify(evalContext *alerting.EvalContext) error {
 	bodyJSON := simplejson.New()
 	//get alert state in the kafka output issue #11401
 	//bodyJSON.Set("alert_state", state)
+	bodyJSON.Set("name", evalContext.Rule.Name)
 	bodyJSON.Set("alert_state", "New")
 	bodyJSON.Set("description", evalContext.Rule.Name+" - "+evalContext.Rule.Message)
 	bodyJSON.Set("client", "Grafana")
@@ -116,6 +119,10 @@ func (kn *KafkaNotifier) Notify(evalContext *alerting.EvalContext) error {
 		kn.log.Error("Failed get rule link", "error", err)
 		return err
 	}
+	ipAddress := GetLocalIP()
+	//kn.log.Info("Server ip : ",ipAddress)
+	ruleURL = strings.Replace(ruleURL, "localhost", ipAddress, -1)
+	fmt.Println("client URL: ", ruleURL)
 	bodyJSON.Set("client_url", ruleURL+"&removeOptions=1")
 
 	if kn.NeedsImage() && evalContext.ImagePublicURL != "" {
@@ -151,4 +158,20 @@ func (kn *KafkaNotifier) Notify(evalContext *alerting.EvalContext) error {
 	}
 
 	return nil
+}
+
+func GetLocalIP() string {
+	addrs, err := net.InterfaceAddrs()
+	if err != nil {
+		return ""
+	}
+	for _, address := range addrs {
+		// check the address type and if it is not a loopback the display it
+		if ipnet, ok := address.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+			if ipnet.IP.To4() != nil {
+				return ipnet.IP.String()
+			}
+		}
+	}
+	return ""
 }
