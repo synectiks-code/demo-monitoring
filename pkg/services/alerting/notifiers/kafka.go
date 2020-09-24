@@ -108,12 +108,12 @@ func (kn *KafkaNotifier) Notify(evalContext *alerting.EvalContext) error {
 	tags := evalContext.Rule.AlertRuleTags
 	if tags != nil {
 		for _, tag := range tags {
-			kn.log.Info("tag : ", tag)
+			//kn.log.Info("tag : ", tag)
 			bodyJSON.Set(tag.Key, tag.Value)
 		}
 	}
 	a, _ := evalContext.GetDashboardUID()
-	bodyJSON.Set("guid", a.Uid+fmt.Sprint(time.Now()))
+	bodyJSON.Set("guid", a.Uid+fmt.Sprint(unixMilli(time.Now())))
 	ruleURL, err := evalContext.GetRuleURL()
 	if err != nil {
 		kn.log.Error("Failed get rule link", "error", err)
@@ -174,4 +174,8 @@ func GetLocalIP() string {
 		}
 	}
 	return ""
+}
+
+func unixMilli(t time.Time) int64 {
+	return t.Round(time.Millisecond).UnixNano() / (int64(time.Millisecond) / int64(time.Nanosecond))
 }
