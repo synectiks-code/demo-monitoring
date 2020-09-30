@@ -1,7 +1,10 @@
 package notifiers
 
 import (
+	"net"
 	"strconv"
+	"strings"
+	"time"
 
 	"fmt"
 
@@ -95,18 +98,32 @@ func (kn *KafkaNotifier) Notify(evalContext *alerting.EvalContext) error {
 
 	bodyJSON := simplejson.New()
 	//get alert state in the kafka output issue #11401
-	bodyJSON.Set("alert_state", state)
+	//bodyJSON.Set("alert_state", state)
+	bodyJSON.Set("name", evalContext.Rule.Name)
+	bodyJSON.Set("alert_state", "New")
 	bodyJSON.Set("description", evalContext.Rule.Name+" - "+evalContext.Rule.Message)
 	bodyJSON.Set("client", "Grafana")
 	bodyJSON.Set("details", customData)
 	bodyJSON.Set("incident_key", "alertId-"+strconv.FormatInt(evalContext.Rule.ID, 10))
-
+	tags := evalContext.Rule.AlertRuleTags
+	if tags != nil {
+		for _, tag := range tags {
+			//kn.log.Info("tag : ", tag)
+			bodyJSON.Set(tag.Key, tag.Value)
+		}
+	}
+	a, _ := evalContext.GetDashboardUID()
+	bodyJSON.Set("guid", a.Uid+fmt.Sprint(unixMilli(time.Now())))
 	ruleURL, err := evalContext.GetRuleURL()
 	if err != nil {
 		kn.log.Error("Failed get rule link", "error", err)
 		return err
 	}
-	bodyJSON.Set("client_url", ruleURL)
+	ipAddress := GetLocalIP()
+	//kn.log.Info("Server ip : ",ipAddress)
+	ruleURL = strings.Replace(ruleURL, "localhost", ipAddress, -1)
+	fmt.Println("client URL: ", ruleURL)
+	bodyJSON.Set("client_url", ruleURL+"&removeOptions=1")
 
 	if kn.NeedsImage() && evalContext.ImagePublicURL != "" {
 		contexts := make([]interface{}, 1)
@@ -141,4 +158,24 @@ func (kn *KafkaNotifier) Notify(evalContext *alerting.EvalContext) error {
 	}
 
 	return nil
+}
+
+func GetLocalIP() string {
+	addrs, err := net.InterfaceAddrs()
+	if err != nil {
+		return ""
+	}
+	for _, address := range addrs {
+		// check the address type and if it is not a loopback the display it
+		if ipnet, ok := address.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+			if ipnet.IP.To4() != nil {
+				return ipnet.IP.String()
+			}
+		}
+	}
+	return ""
+}
+
+func unixMilli(t time.Time) int64 {
+	return t.Round(time.Millisecond).UnixNano() / (int64(time.Millisecond) / int64(time.Nanosecond))
 }
