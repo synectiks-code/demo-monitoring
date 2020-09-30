@@ -71,6 +71,15 @@ export class PanelEditorUnconnected extends PureComponent<Props> {
       this.showOptions = false;
       const { updatePanelEditorUIState } = this.props;
       updatePanelEditorUIState({ isPanelOptionsVisible: false });
+      //Remove scrollbars
+      let mainView: any = document.getElementsByClassName('main-view');
+      if (mainView && mainView.length > 0) {
+        mainView[0].style.overflow = 'hidden';
+      }
+      let sideMenu: any = document.getElementsByClassName('sidemenu');
+      if (sideMenu && sideMenu.length > 0) {
+        sideMenu[0].style.display = 'none';
+      }
     }
   }
 
