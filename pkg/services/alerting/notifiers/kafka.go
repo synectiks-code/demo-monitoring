@@ -124,6 +124,10 @@ func (kn *KafkaNotifier) Notify(evalContext *alerting.EvalContext) error {
 	ruleURL = strings.Replace(ruleURL, "localhost", ipAddress, -1)
 	fmt.Println("client URL: ", ruleURL)
 	bodyJSON.Set("client_url", ruleURL+"&removeOptions=1")
+	timeNow := time.Now()
+	bodyJSON.Set("created_on", timeNow)
+	bodyJSON.Set("updated_on", timeNow)
+	bodyJSON.Set("firedtime", fmt.Sprint(time.Now()))
 
 	if kn.NeedsImage() && evalContext.ImagePublicURL != "" {
 		contexts := make([]interface{}, 1)
