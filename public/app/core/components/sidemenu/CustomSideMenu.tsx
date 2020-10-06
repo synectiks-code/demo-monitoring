@@ -187,10 +187,10 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
         },
         {
-          link: '/gsl-builder',
+          link: 'plugins/xformation-compliancemanager-ui-plugin/page/gslbuilder',
           text: 'GSL Builder',
           cssClass: 'compliance-builder',
-          activeSLink: '',
+          activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/gslbuilder',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
         },
         {
