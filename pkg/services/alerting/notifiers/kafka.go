@@ -197,7 +197,7 @@ func sendAlertActivityToKafka(alertGuid string, timeNow time.Time, kn *KafkaNoti
 	bodyJSON.Set("action-time", timeNow)
 	bodyJSON.Set("ticket", "")
 	bodyJSON.Set("ticket_description", "")
-	bodyJSON.Set("user", "")
+	bodyJSON.Set("user", "Automated")
 
 	valueJSON := simplejson.New()
 	valueJSON.Set("value", bodyJSON)
