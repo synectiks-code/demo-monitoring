@@ -113,7 +113,8 @@ func (kn *KafkaNotifier) Notify(evalContext *alerting.EvalContext) error {
 		}
 	}
 	a, _ := evalContext.GetDashboardUID()
-	bodyJSON.Set("guid", a.Uid+fmt.Sprint(unixMilli(time.Now())))
+	alertGuid := a.Uid + fmt.Sprint(unixMilli(time.Now()))
+	bodyJSON.Set("guid", alertGuid)
 	ruleURL, err := evalContext.GetRuleURL()
 	if err != nil {
 		kn.log.Error("Failed get rule link", "error", err)
@@ -160,7 +161,7 @@ func (kn *KafkaNotifier) Notify(evalContext *alerting.EvalContext) error {
 		kn.log.Error("Failed to send notification to Kafka", "error", err, "body", string(body))
 		return err
 	}
-
+	sendAlertActivityToKafka(alertGuid, timeNow, kn, evalContext)
 	return nil
 }
 
@@ -182,4 +183,45 @@ func GetLocalIP() string {
 
 func unixMilli(t time.Time) int64 {
 	return t.Round(time.Millisecond).UnixNano() / (int64(time.Millisecond) / int64(time.Nanosecond))
+}
+
+func sendAlertActivityToKafka(alertGuid string, timeNow time.Time, kn *KafkaNotifier, evalContext *alerting.EvalContext) error {
+	recordJSON := simplejson.New()
+	records := make([]interface{}, 1)
+	bodyJSON := simplejson.New()
+
+	bodyJSON.Set("guid", alertGuid)
+	bodyJSON.Set("name", evalContext.Rule.Name)
+	bodyJSON.Set("action", "New alert fired")
+	bodyJSON.Set("action_description", "New alert fired from grfana")
+	bodyJSON.Set("action_time", timeNow)
+	bodyJSON.Set("ticket", "")
+	bodyJSON.Set("ticket_description", "")
+	bodyJSON.Set("user", "Automated")
+
+	valueJSON := simplejson.New()
+	valueJSON.Set("value", bodyJSON)
+	records[0] = valueJSON
+	recordJSON.Set("records", records)
+	body, _ := recordJSON.MarshalJSON()
+
+	topicURL := kn.Endpoint + "/topics/alert_activity_final"
+
+	cmd := &models.SendWebhookSync{
+		Url:        topicURL,
+		Body:       string(body),
+		HttpMethod: "POST",
+		HttpHeader: map[string]string{
+			"Content-Type": "application/vnd.kafka.json.v2+json",
+			"Accept":       "application/vnd.kafka.v2+json",
+		},
+	}
+
+	if err := bus.DispatchCtx(evalContext.Ctx, cmd); err != nil {
+		kn.log.Error("Failed to send alert activity notification to Kafka", "error", err, "body", string(body))
+		return err
+	}
+
+	return nil
+
 }
