@@ -205,7 +205,7 @@ func sendAlertActivityToKafka(alertGuid string, timeNow time.Time, kn *KafkaNoti
 	recordJSON.Set("records", records)
 	body, _ := recordJSON.MarshalJSON()
 
-	topicURL := kn.Endpoint + "/topics/alert_activity_final"
+	topicURL := kn.Endpoint + "/topics/alert_activity"
 
 	cmd := &models.SendWebhookSync{
 		Url:        topicURL,
