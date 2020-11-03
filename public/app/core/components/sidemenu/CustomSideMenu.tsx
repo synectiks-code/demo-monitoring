@@ -113,6 +113,14 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
           isImplemented: true,
         },
+        {
+          link: '/plugins/xformation-alertmanager-ui-plugin/page/rules',
+          text: 'All Alert Rules',
+          cssClass: 'new-alert-rule',
+          activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/rules',
+          activeLink: 'plugins/xformation-alertmanager-ui-plugin',
+          isImplemented: true,
+        },
       ],
     },
     {
