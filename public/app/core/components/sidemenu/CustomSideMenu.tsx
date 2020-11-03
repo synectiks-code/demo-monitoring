@@ -1,11 +1,17 @@
 import React, { PureComponent } from 'react';
+import { CustomMenuModal } from './CustomMenuModal';
+import { getLocationSrv } from '@grafana/runtime';
+
 export class CustomSideMenu extends PureComponent<any, any> {
+  modalRef: any;
   constructor(props: any) {
     super(props);
     this.state = {
       activeMenuLink: '',
       activeSubMenuLink: '',
+      clickedMenuItem: {},
     };
+    this.modalRef = React.createRef();
   }
 
   handleLocationChange = () => {
@@ -76,6 +82,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       text: 'Overview',
       cssClass: 'overview',
       activeLink: '/',
+      isImplemented: true,
     },
     {
       link: '/activity-log',
@@ -88,6 +95,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       text: 'Alerts',
       cssClass: 'alerts',
       activeLink: 'plugins/xformation-alertmanager-ui-plugin',
+      isImplemented: true,
       subMenu: [
         {
           link: '/plugins/xformation-alertmanager-ui-plugin/page/monitoralerts',
@@ -95,6 +103,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           cssClass: 'dashboard',
           activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/monitoralerts',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
+          isImplemented: true,
         },
         {
           link: '/plugins/xformation-alertmanager-ui-plugin/page/alertrulebuilder',
@@ -102,6 +111,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           cssClass: 'new-alert-rule',
           activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/alertrulebuilder',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
+          isImplemented: true,
         },
       ],
     },
@@ -110,6 +120,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       text: 'Metrics',
       cssClass: 'metrics',
       activeLink: 'plugins/xformation-perfmanager-ui-plugin',
+      isImplemented: true,
       subMenu: [
         {
           link: 'plugins/xformation-perfmanager-ui-plugin/page/catalog',
@@ -117,6 +128,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           cssClass: 'metrics-catalog',
           activeSLink: 'plugins/xformation-perfmanager-ui-plugin/page/catalog',
           activeLink: 'plugins/xformation-perfmanager-ui-plugin',
+          isImplemented: true,
         },
         {
           link: 'plugins/xformation-perfmanager-ui-plugin/page/library',
@@ -124,6 +136,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           cssClass: 'metrics-library',
           activeSLink: 'plugins/xformation-perfmanager-ui-plugin/page/library',
           activeLink: 'plugins/xformation-perfmanager-ui-plugin',
+          isImplemented: true,
         },
         {
           link: 'plugins/xformation-perfmanager-ui-plugin/page/collectionview',
@@ -131,6 +144,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           cssClass: 'metrics-collection',
           activeSLink: 'plugins/xformation-perfmanager-ui-plugin/page/collectionview',
           activeLink: 'plugins/xformation-perfmanager-ui-plugin',
+          isImplemented: true,
         },
         {
           link: 'plugins/xformation-alertmanager-ui-plugin/page/managealertrule',
@@ -138,6 +152,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           cssClass: 'metrics-rule',
           activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/managealertrule',
           activeLink: 'plugins/xformation-perfmanager-ui-plugin',
+          isImplemented: true,
         },
         {
           link: 'plugins/xformation-perfmanager-ui-plugin/page/preferences',
@@ -145,14 +160,16 @@ export class CustomSideMenu extends PureComponent<any, any> {
           cssClass: 'metrics-preferences',
           activeSLink: 'plugins/xformation-perfmanager-ui-plugin/page/preferences',
           activeLink: 'plugins/xformation-perfmanager-ui-plugin',
+          isImplemented: true,
         },
       ],
     },
     {
-      link: '/logs',
+      link: 'plugins/xformation-logmanager-ui-plugin/page/dashboard',
       text: 'Logs',
       cssClass: 'logs',
-      activeLink: '/logs',
+      activeLink: 'plugins/xformation-logmanager-ui-plugin',
+      isImplemented: true,
     },
     {
       link: '/service-health',
@@ -171,6 +188,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       text: 'Compliance',
       cssClass: 'compliance',
       activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
+      isImplemented: true,
       subMenu: [
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/dashboard',
@@ -178,6 +196,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           cssClass: 'compliance-dashboard',
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/dashboard',
           activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
+          isImplemented: true,
         },
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancerulesets',
@@ -185,6 +204,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           cssClass: 'compliance-rulesets',
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancerulesets',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
+          isImplemented: true,
         },
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/gslbuilder',
@@ -192,6 +212,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           cssClass: 'compliance-builder',
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/gslbuilder',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
+          isImplemented: true,
         },
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceremediation',
@@ -199,6 +220,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           cssClass: 'compliance-remediation',
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceremediation',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
+          isImplemented: true,
         },
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceassessmenthistory',
@@ -206,6 +228,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           cssClass: 'compliance-assessment',
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceassessmenthistory',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
+          isImplemented: true,
         },
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceexclusions',
@@ -213,6 +236,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           cssClass: 'compliance-exclusions',
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceexclusions',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
+          isImplemented: true,
         },
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancepolicy',
@@ -220,6 +244,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           cssClass: 'compliance-exclusions',
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancepolicy',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
+          isImplemented: true,
         },
       ],
     },
@@ -228,6 +253,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       text: 'Tickets',
       cssClass: 'tickets',
       activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
+      isImplemented: true,
       subMenu: [
         {
           link: 'plugins/xformation-servicedesk-ui-plugin/page/dashboard',
@@ -235,6 +261,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           cssClass: 'tickets-dashboard',
           activeSLink: 'plugins/xformation-servicedesk-ui-plugin/page/dashboard',
           activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
+          isImplemented: true,
         },
         {
           link: 'plugins/xformation-servicedesk-ui-plugin/page/allcontacts',
@@ -242,6 +269,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           cssClass: 'tickets-contacts',
           activeSLink: 'plugins/xformation-servicedesk-ui-plugin/page/allcontacts',
           activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
+          isImplemented: true,
         },
         {
           link: 'plugins/xformation-servicedesk-ui-plugin/page/allcompanies',
@@ -249,6 +277,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           cssClass: 'tickets-companies',
           activeSLink: 'plugins/xformation-servicedesk-ui-plugin/page/allcompanies',
           activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
+          isImplemented: true,
         },
         {
           link: 'plugins/xformation-servicedesk-ui-plugin/page/tickets',
@@ -256,6 +285,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           cssClass: 'tickets-reports',
           activeSLink: 'plugins/xformation-servicedesk-ui-plugin/page/tickets',
           activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
+          isImplemented: true,
         },
         {
           link: 'plugins/xformation-servicedesk-ui-plugin/page/opentickets',
@@ -263,6 +293,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           cssClass: 'tickets-preferences',
           activeSLink: 'plugins/xformation-servicedesk-ui-plugin/page/opentickets',
           activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
+          isImplemented: true,
         },
       ],
     },
@@ -319,16 +350,50 @@ export class CustomSideMenu extends PureComponent<any, any> {
   };
 
   onClickLink = (e: any, menuItem: any) => {
-    this.setState({
-      activeMenuLink: menuItem.activeLink,
-      activeSubMenuLink: menuItem.activeLink,
-    });
+    if (menuItem.isImplemented) {
+      this.setState({
+        activeMenuLink: menuItem.activeLink,
+        activeSubMenuLink: menuItem.activeLink,
+      });
+      getLocationSrv().update({ path: menuItem.link });
+    } else {
+      e.preventDefault();
+      e.stopPropagation();
+      e.nativeEvent.stopImmediatePropagation();
+      this.setState({
+        clickedMenuItem: menuItem,
+      });
+      this.modalRef.current.toggleModal();
+    }
   };
 
   onClickSubLink = (e: any, sMenuItem: any) => {
+    if (sMenuItem.isImplemented) {
+      this.setState({
+        activeMenuLink: sMenuItem.activeLink,
+        activeSubMenuLink: sMenuItem.activeSLink,
+      });
+      getLocationSrv().update({ path: sMenuItem.link });
+    } else {
+      e.preventDefault();
+      e.stopPropagation();
+      e.nativeEvent.stopImmediatePropagation();
+      this.setState({
+        clickedMenuItem: sMenuItem,
+      });
+      this.modalRef.current.toggleModal();
+    }
+  };
+
+  onClickContinue = () => {
+    const { clickedMenuItem } = this.state;
     this.setState({
-      activeMenuLink: sMenuItem.activeLink,
-      activeSubMenuLink: sMenuItem.activeSLink,
+      activeMenuLink: clickedMenuItem.activeLink,
+      activeSubMenuLink: clickedMenuItem.activeSLink ? clickedMenuItem.activeSLink : clickedMenuItem.activeLink,
+    });
+    getLocationSrv().update({ path: clickedMenuItem.link });
+    this.setState({
+      clickedMenuItem: {},
     });
   };
 
@@ -357,7 +422,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       retItem.push(
         <li className="item">
           <a
-            href={menuItem.link}
+            href={'#'}
             className={`menu-item ${activeMenuLink === menuItem.activeLink ? 'active' : ''}`}
             onClick={(e: any) => this.onClickLink(e, menuItem)}
           >
@@ -396,7 +461,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       retItem.push(
         <li className="item">
           <a
-            href={menuItem.link}
+            href={'#'}
             className={`menu-item ${activeMenuLink === menuItem.activeLink ? 'active' : ''}`}
             onClick={(e: any) => this.onClickLink(e, menuItem)}
           >
@@ -448,6 +513,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           <div className="menu-item-header"></div>
           <ul>{this.createCloseMenu(this.settings)}</ul>
         </div>
+        <CustomMenuModal ref={this.modalRef} onClickContinue={this.onClickContinue} />
       </div>,
     ];
   }
