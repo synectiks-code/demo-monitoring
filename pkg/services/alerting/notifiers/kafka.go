@@ -126,9 +126,9 @@ func (kn *KafkaNotifier) Notify(evalContext *alerting.EvalContext) error {
 	fmt.Println("client URL: ", ruleURL)
 	bodyJSON.Set("client_url", ruleURL+"&removeOptions=1")
 	timeNow := time.Now()
-	bodyJSON.Set("created_on", timeNow)
-	bodyJSON.Set("updated_on", timeNow)
-	bodyJSON.Set("firedtime", fmt.Sprint(time.Now()))
+	bodyJSON.Set("created_on", unixMilli(timeNow))
+	bodyJSON.Set("updated_on", unixMilli(timeNow))
+	bodyJSON.Set("firedtime", fmt.Sprint(timeNow))
 
 	if kn.NeedsImage() && evalContext.ImagePublicURL != "" {
 		contexts := make([]interface{}, 1)
@@ -205,7 +205,7 @@ func sendAlertActivityToKafka(alertGuid string, timeNow time.Time, kn *KafkaNoti
 	recordJSON.Set("records", records)
 	body, _ := recordJSON.MarshalJSON()
 
-	topicURL := kn.Endpoint + "/topics/alert_activity_final"
+	topicURL := kn.Endpoint + "/topics/alert_activity"
 
 	cmd := &models.SendWebhookSync{
 		Url:        topicURL,
