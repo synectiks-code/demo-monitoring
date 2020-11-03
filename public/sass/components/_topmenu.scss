@@ -89,14 +89,54 @@
     justify-content: space-around;
     margin: 0px 20px;
 
-    .icon {
-      cursor: pointer;
+    .icon {      
       font-size: 20px !important;
       color: $top-nav-icons-color;
       margin-left: 15px;
-
+      position: relative;
+      line-height: 52px;
+      display: inline-block;
+      i{
+        cursor: pointer;
+      }
       &:hover {
         color: $top-nav-icons-hover-color;
+        ul{
+          display: block;
+        }
+      }
+      ul{
+        display: none;
+        padding: 15px 15px;
+        margin: 0;
+        width: 120px;
+        background-color: #fff;
+        position: absolute;
+        right: -15px;
+        top: 52px;
+        z-index: 1;
+        border: 1px solid #f8f9fa;
+        border-top: none;
+        box-shadow: 0px 1px 3px #00000029;
+        li{
+          display: block;
+          font-size: 14px;
+          line-height: 24px;
+          font-weight: 500;
+          padding: 0 0 5px 0;
+          border-bottom: none;
+          &:last-child{
+            padding-bottom: 0;
+          }
+          &.logout{
+            a{
+              color: #ff0000;
+            }
+          }
+          a{
+            color: #3b4859;
+          }
+        }
       }
     }
   }

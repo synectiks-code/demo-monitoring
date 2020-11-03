@@ -57,11 +57,11 @@ export class CustomNavigationBar extends PureComponent<any, any> {
           )}
         </div>
         <div className="icon-container">
-          <a href="/dashboards" className="icon">
-            <i className="fa fa-terminal"></i>
+          <a href="/dashboards" className="icon" title="Dashboards">
+            <i className="fa fa-th-large"></i>
           </a>
-          <a href="/dashboardlist" className="icon">
-            <i className="fa fa-folder"></i>
+          <a href="/dashboardlist" className="icon" title="Dashboard List">
+            <i className="fa fa-list"></i>
           </a>
           <a className="icon" href="/plugins">
             <i className="fa fa-cog"></i>
@@ -69,8 +69,18 @@ export class CustomNavigationBar extends PureComponent<any, any> {
           <div className="icon">
             <i className="fa fa-bell"></i>
           </div>
-          <div className="icon" onClick={this.onClickLogout}>
+          <div className="icon">
             <i className="fa fa-user-circle"></i>
+            <ul>
+              <li>
+                <a href="#">Profile</a>
+              </li>
+              <li className="logout">
+                <a href="#" onClick={this.onClickLogout}>
+                  Logout
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
