@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { CustomMenuModal } from './CustomMenuModal';
 import { getLocationSrv } from '@grafana/runtime';
+import Rbac from './Rbac';
 
 export class CustomSideMenu extends PureComponent<any, any> {
   modalRef: any;
@@ -96,6 +97,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       cssClass: 'alerts',
       activeLink: 'plugins/xformation-alertmanager-ui-plugin',
       isImplemented: true,
+      childName: 'alert-manager-dashboard',
       subMenu: [
         {
           link: '/plugins/xformation-alertmanager-ui-plugin/page/monitoralerts',
@@ -104,6 +106,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/monitoralerts',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
           isImplemented: true,
+          childName: 'alert-manager-dashboard',
         },
         {
           link: '/plugins/xformation-alertmanager-ui-plugin/page/alertrulebuilder',
@@ -112,6 +115,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/alertrulebuilder',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
           isImplemented: true,
+          childName: 'new-alert-rule',
         },
         {
           link: '/plugins/xformation-alertmanager-ui-plugin/page/rules',
@@ -415,14 +419,16 @@ export class CustomSideMenu extends PureComponent<any, any> {
         for (let j = 0; j < menuItem.subMenu.length; j++) {
           subMenuItems.push(
             <li>
-              <a
-                className={`menu-item ${activeSubMenuLink === menuItem.subMenu[j].activeSLink ? 'active' : ''}`}
-                href={menuItem.subMenu[j].link}
-                onClick={(e: any) => this.onClickSubLink(e, menuItem.subMenu[j])}
-              >
-                <div className={`menu-item-image ${menuItem.subMenu[j].cssClass}`}></div>
-                <div className="menu-item-text">{menuItem.subMenu[j].text}</div>
-              </a>
+              <Rbac childName={menuItem.subMenu[j].childName || ''}>
+                <a
+                  className={`menu-item ${activeSubMenuLink === menuItem.subMenu[j].activeSLink ? 'active' : ''}`}
+                  href={menuItem.subMenu[j].link}
+                  onClick={(e: any) => this.onClickSubLink(e, menuItem.subMenu[j])}
+                >
+                  <div className={`menu-item-image ${menuItem.subMenu[j].cssClass}`}></div>
+                  <div className="menu-item-text">{menuItem.subMenu[j].text}</div>
+                </a>
+              </Rbac>
             </li>
           );
         }
@@ -454,14 +460,16 @@ export class CustomSideMenu extends PureComponent<any, any> {
         for (let j = 0; j < menuItem.subMenu.length; j++) {
           subMenuItems.push(
             <li>
-              <a
-                className={`menu-item ${activeSubMenuLink === menuItem.subMenu[j].activeSLink ? 'active' : ''}`}
-                href={menuItem.subMenu[j].link}
-                onClick={(e: any) => this.onClickSubLink(e, menuItem.subMenu[j])}
-              >
-                <div className={`menu-item-image ${menuItem.subMenu[j].cssClass}`}></div>
-                <div className="menu-item-text">{menuItem.subMenu[j].text}</div>
-              </a>
+              <Rbac childName={menuItem.subMenu[j].childName || ''}>
+                <a
+                  className={`menu-item ${activeSubMenuLink === menuItem.subMenu[j].activeSLink ? 'active' : ''}`}
+                  href={menuItem.subMenu[j].link}
+                  onClick={(e: any) => this.onClickSubLink(e, menuItem.subMenu[j])}
+                >
+                  <div className={`menu-item-image ${menuItem.subMenu[j].cssClass}`}></div>
+                  <div className="menu-item-text">{menuItem.subMenu[j].text}</div>
+                </a>
+              </Rbac>
             </li>
           );
         }
