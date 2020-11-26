@@ -435,14 +435,16 @@ export class CustomSideMenu extends PureComponent<any, any> {
       }
       retItem.push(
         <li className="item">
-          <a
-            href={'#'}
-            className={`menu-item ${activeMenuLink === menuItem.activeLink ? 'active' : ''}`}
-            onClick={(e: any) => this.onClickLink(e, menuItem)}
-          >
-            <div className={`menu-item-image ${menuItem.cssClass}`}></div>
-            <div className="menu-item-text">{menuItem.text}</div>
-          </a>
+          <Rbac childName={menuItem.childName || ''}>
+            <a
+              href={'#'}
+              className={`menu-item ${activeMenuLink === menuItem.activeLink ? 'active' : ''}`}
+              onClick={(e: any) => this.onClickLink(e, menuItem)}
+            >
+              <div className={`menu-item-image ${menuItem.cssClass}`}></div>
+              <div className="menu-item-text">{menuItem.text}</div>
+            </a>
+          </Rbac>
           {subMenuItems.length > 0 && <ul className="sub-menu">{subMenuItems}</ul>}
         </li>
       );
@@ -476,14 +478,16 @@ export class CustomSideMenu extends PureComponent<any, any> {
       }
       retItem.push(
         <li className="item">
-          <a
-            href={'#'}
-            className={`menu-item ${activeMenuLink === menuItem.activeLink ? 'active' : ''}`}
-            onClick={(e: any) => this.onClickLink(e, menuItem)}
-          >
-            <div className={`menu-item-image ${menuItem.cssClass}`}></div>
-            <div className="menu-item-text">{menuItem.text}</div>
-          </a>
+          <Rbac childName={menuItem.childName || ''}>
+            <a
+              href={'#'}
+              className={`menu-item ${activeMenuLink === menuItem.activeLink ? 'active' : ''}`}
+              onClick={(e: any) => this.onClickLink(e, menuItem)}
+            >
+              <div className={`menu-item-image ${menuItem.cssClass}`}></div>
+              <div className="menu-item-text">{menuItem.text}</div>
+            </a>
+          </Rbac>
           {subMenuItems.length > 0 && <ul className="sub-menu">{subMenuItems}</ul>}
         </li>
       );
