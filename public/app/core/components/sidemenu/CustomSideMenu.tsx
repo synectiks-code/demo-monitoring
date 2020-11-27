@@ -84,12 +84,14 @@ export class CustomSideMenu extends PureComponent<any, any> {
       cssClass: 'overview',
       activeLink: '/',
       isImplemented: true,
+      childName: 'overview',
     },
     {
       link: '/activity-log',
       text: 'Activity Log',
       cssClass: 'activity-log',
       activeLink: '/activity-log',
+      childName: 'activity-log',
     },
     {
       link: '/plugins/xformation-alertmanager-ui-plugin/page/monitoralerts',
@@ -97,7 +99,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       cssClass: 'alerts',
       activeLink: 'plugins/xformation-alertmanager-ui-plugin',
       isImplemented: true,
-      childName: 'alert-manager-dashboard',
+      childName: 'alerts',
       subMenu: [
         {
           link: '/plugins/xformation-alertmanager-ui-plugin/page/monitoralerts',
@@ -124,6 +126,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/rules',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
           isImplemented: true,
+          childName: 'all-alert-rule',
         },
       ],
     },
@@ -133,6 +136,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       cssClass: 'metrics',
       activeLink: 'plugins/xformation-perfmanager-ui-plugin',
       isImplemented: true,
+      childName: 'metrics',
       subMenu: [
         {
           link: 'plugins/xformation-perfmanager-ui-plugin/page/catalog',
@@ -141,6 +145,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeSLink: 'plugins/xformation-perfmanager-ui-plugin/page/catalog',
           activeLink: 'plugins/xformation-perfmanager-ui-plugin',
           isImplemented: true,
+          childName: 'metrics-catalog',
         },
         {
           link: 'plugins/xformation-perfmanager-ui-plugin/page/library',
@@ -149,6 +154,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeSLink: 'plugins/xformation-perfmanager-ui-plugin/page/library',
           activeLink: 'plugins/xformation-perfmanager-ui-plugin',
           isImplemented: true,
+          childName: 'metrics-library',
         },
         {
           link: 'plugins/xformation-perfmanager-ui-plugin/page/collectionview',
@@ -157,6 +163,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeSLink: 'plugins/xformation-perfmanager-ui-plugin/page/collectionview',
           activeLink: 'plugins/xformation-perfmanager-ui-plugin',
           isImplemented: true,
+          childName: 'metrics-collection',
         },
         {
           link: 'plugins/xformation-alertmanager-ui-plugin/page/managealertrule',
@@ -165,6 +172,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/managealertrule',
           activeLink: 'plugins/xformation-perfmanager-ui-plugin',
           isImplemented: true,
+          childName: 'metrics-rule',
         },
         {
           link: 'plugins/xformation-perfmanager-ui-plugin/page/preferences',
@@ -173,6 +181,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeSLink: 'plugins/xformation-perfmanager-ui-plugin/page/preferences',
           activeLink: 'plugins/xformation-perfmanager-ui-plugin',
           isImplemented: true,
+          childName: 'metrics-preferences',
         },
       ],
     },
@@ -182,18 +191,21 @@ export class CustomSideMenu extends PureComponent<any, any> {
       cssClass: 'logs',
       activeLink: 'plugins/xformation-logmanager-ui-plugin',
       isImplemented: true,
+      childName: 'grafana-logs',
     },
     {
       link: '/service-health',
       text: 'Service Health',
       cssClass: 'service-health',
       activeLink: '/service-health',
+      childName: 'service-health',
     },
     {
       link: '/workbooks',
       text: 'Workbooks',
       cssClass: 'workbooks',
       activeLink: '/workbooks',
+      childName: 'workbooks',
     },
     {
       link: 'plugins/xformation-compliancemanager-ui-plugin/page/dashboard',
@@ -201,6 +213,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       cssClass: 'compliance',
       activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
       isImplemented: true,
+      childName: 'compliance',
       subMenu: [
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/dashboard',
@@ -209,6 +222,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/dashboard',
           activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
           isImplemented: true,
+          childName: 'compliance-dashboard',
         },
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancerulesets',
@@ -217,6 +231,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancerulesets',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
           isImplemented: true,
+          childName: 'compliance-rulesets',
         },
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/gslbuilder',
@@ -225,6 +240,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/gslbuilder',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
           isImplemented: true,
+          childName: 'compliance-builder',
         },
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceremediation',
@@ -233,6 +249,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceremediation',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
           isImplemented: true,
+          childName: 'compliance-remediation',
         },
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceassessmenthistory',
@@ -241,6 +258,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceassessmenthistory',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
           isImplemented: true,
+          childName: 'compliance-assessment-history',
         },
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceexclusions',
@@ -249,6 +267,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceexclusions',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
           isImplemented: true,
+          childName: 'compliance-exclusions',
         },
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancepolicy',
@@ -257,6 +276,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancepolicy',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
           isImplemented: true,
+          childName: 'compliance-policies',
         },
       ],
     },
@@ -266,6 +286,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       cssClass: 'tickets',
       activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
       isImplemented: true,
+      childName: 'tickets',
       subMenu: [
         {
           link: 'plugins/xformation-servicedesk-ui-plugin/page/dashboard',
@@ -274,6 +295,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeSLink: 'plugins/xformation-servicedesk-ui-plugin/page/dashboard',
           activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
           isImplemented: true,
+          childName: 'tickets-dashboard',
         },
         {
           link: 'plugins/xformation-servicedesk-ui-plugin/page/allcontacts',
@@ -282,6 +304,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeSLink: 'plugins/xformation-servicedesk-ui-plugin/page/allcontacts',
           activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
           isImplemented: true,
+          childName: 'tickets-contacts',
         },
         {
           link: 'plugins/xformation-servicedesk-ui-plugin/page/allcompanies',
@@ -290,6 +313,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeSLink: 'plugins/xformation-servicedesk-ui-plugin/page/allcompanies',
           activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
           isImplemented: true,
+          childName: 'tickets-companies',
         },
         {
           link: 'plugins/xformation-servicedesk-ui-plugin/page/tickets',
@@ -298,6 +322,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeSLink: 'plugins/xformation-servicedesk-ui-plugin/page/tickets',
           activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
           isImplemented: true,
+          childName: 'tickets-reports',
         },
         {
           link: 'plugins/xformation-servicedesk-ui-plugin/page/opentickets',
@@ -306,6 +331,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           activeSLink: 'plugins/xformation-servicedesk-ui-plugin/page/opentickets',
           activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
           isImplemented: true,
+          childName: 'tickets-preferences',
         },
       ],
     },
@@ -316,24 +342,28 @@ export class CustomSideMenu extends PureComponent<any, any> {
       text: 'Applications',
       cssClass: 'applications',
       activeLink: '/applications',
+      childName: 'applications',
     },
     {
       link: '/virtual-machines',
       text: 'Virtual Machines',
       cssClass: 'virtual-machines',
       activeLink: '/virtual-machines',
+      childName: 'virtual-machines',
     },
     {
       link: '/networks',
       text: 'Networks (preview)',
       cssClass: 'networks',
       activeLink: '/networks',
+      childName: 'networks',
     },
     {
       link: '/jobs',
       text: 'Jobs',
       cssClass: 'jobs',
       activeLink: '/jobs',
+      childName: 'jobs',
     },
   ];
   settings: any = [
@@ -342,6 +372,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       text: 'Diagnostic Settings',
       cssClass: 'diagnostic-settings',
       activeLink: '/diagnostic-settings',
+      childName: 'diagnostic-settings',
     },
     {
       link: '/plugins/xformation-rbac-ui-plugin/page/home',
@@ -349,6 +380,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       cssClass: 'diagnostic-settings',
       activeSLink: '/plugins/xformation-rbac-ui-plugin/page/home',
       activeLink: '/plugins/xformation-rbac-ui-plugin',
+      childName: 'rbac-settings',
     },
   ];
 
@@ -415,27 +447,29 @@ export class CustomSideMenu extends PureComponent<any, any> {
     for (let i = 0; i < menuItems.length; i++) {
       const menuItem = menuItems[i];
       const subMenuItems = [];
+      // {console.log(`"menu Item"`, menuItem)}
+      // {console.log(`"menu subMenu List "`, menuItem.subMenu)}
       if (menuItem.subMenu && menuItem.subMenu.length > 0) {
         for (let j = 0; j < menuItem.subMenu.length; j++) {
           subMenuItems.push(
             <li>
-              <Rbac childName={menuItem.subMenu[j].childName || ''}>
-                <a
-                  className={`menu-item ${activeSubMenuLink === menuItem.subMenu[j].activeSLink ? 'active' : ''}`}
-                  href={menuItem.subMenu[j].link}
-                  onClick={(e: any) => this.onClickSubLink(e, menuItem.subMenu[j])}
-                >
-                  <div className={`menu-item-image ${menuItem.subMenu[j].cssClass}`}></div>
-                  <div className="menu-item-text">{menuItem.subMenu[j].text}</div>
-                </a>
-              </Rbac>
+              {/* <Rbac parentName='grafana-ui' childName={menuItem.subMenu[j].childName}> */}
+              <a
+                className={`menu-item ${activeSubMenuLink === menuItem.subMenu[j].activeSLink ? 'active' : ''}`}
+                href={menuItem.subMenu[j].link}
+                onClick={(e: any) => this.onClickSubLink(e, menuItem.subMenu[j])}
+              >
+                <div className={`menu-item-image ${menuItem.subMenu[j].cssClass}`}></div>
+                <div className="menu-item-text">{menuItem.subMenu[j].text}</div>
+              </a>
+              {/* </Rbac> */}
             </li>
           );
         }
       }
       retItem.push(
-        <li className="item">
-          <Rbac childName={menuItem.childName || ''}>
+        <Rbac parentName="grafana-ui" childName={menuItem.childName || ''}>
+          <li className="item">
             <a
               href={'#'}
               className={`menu-item ${activeMenuLink === menuItem.activeLink ? 'active' : ''}`}
@@ -444,9 +478,9 @@ export class CustomSideMenu extends PureComponent<any, any> {
               <div className={`menu-item-image ${menuItem.cssClass}`}></div>
               <div className="menu-item-text">{menuItem.text}</div>
             </a>
-          </Rbac>
-          {subMenuItems.length > 0 && <ul className="sub-menu">{subMenuItems}</ul>}
-        </li>
+            {subMenuItems.length > 0 && <ul className="sub-menu">{subMenuItems}</ul>}
+          </li>
+        </Rbac>
       );
     }
     return retItem;
@@ -461,8 +495,8 @@ export class CustomSideMenu extends PureComponent<any, any> {
       if (menuItem.subMenu && menuItem.subMenu.length > 0) {
         for (let j = 0; j < menuItem.subMenu.length; j++) {
           subMenuItems.push(
-            <li>
-              <Rbac childName={menuItem.subMenu[j].childName || ''}>
+            <Rbac parentName="grafana-ui" childName={menuItem.subMenu[j].childName || ''}>
+              <li>
                 <a
                   className={`menu-item ${activeSubMenuLink === menuItem.subMenu[j].activeSLink ? 'active' : ''}`}
                   href={menuItem.subMenu[j].link}
@@ -471,8 +505,8 @@ export class CustomSideMenu extends PureComponent<any, any> {
                   <div className={`menu-item-image ${menuItem.subMenu[j].cssClass}`}></div>
                   <div className="menu-item-text">{menuItem.subMenu[j].text}</div>
                 </a>
-              </Rbac>
-            </li>
+              </li>
+            </Rbac>
           );
         }
       }
