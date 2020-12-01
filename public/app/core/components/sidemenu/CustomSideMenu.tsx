@@ -447,22 +447,20 @@ export class CustomSideMenu extends PureComponent<any, any> {
     for (let i = 0; i < menuItems.length; i++) {
       const menuItem = menuItems[i];
       const subMenuItems = [];
-      // {console.log(`"menu Item"`, menuItem)}
-      // {console.log(`"menu subMenu List "`, menuItem.subMenu)}
       if (menuItem.subMenu && menuItem.subMenu.length > 0) {
         for (let j = 0; j < menuItem.subMenu.length; j++) {
           subMenuItems.push(
             <li>
-              {/* <Rbac parentName='grafana-ui' childName={menuItem.subMenu[j].childName}> */}
-              <a
-                className={`menu-item ${activeSubMenuLink === menuItem.subMenu[j].activeSLink ? 'active' : ''}`}
-                href={menuItem.subMenu[j].link}
-                onClick={(e: any) => this.onClickSubLink(e, menuItem.subMenu[j])}
-              >
-                <div className={`menu-item-image ${menuItem.subMenu[j].cssClass}`}></div>
-                <div className="menu-item-text">{menuItem.subMenu[j].text}</div>
-              </a>
-              {/* </Rbac> */}
+              <Rbac parentName="grafana-ui" childName={menuItem.subMenu[j].childName}>
+                <a
+                  className={`menu-item ${activeSubMenuLink === menuItem.subMenu[j].activeSLink ? 'active' : ''}`}
+                  href={menuItem.subMenu[j].link}
+                  onClick={(e: any) => this.onClickSubLink(e, menuItem.subMenu[j])}
+                >
+                  <div className={`menu-item-image ${menuItem.subMenu[j].cssClass}`}></div>
+                  <div className="menu-item-text">{menuItem.subMenu[j].text}</div>
+                </a>
+              </Rbac>
             </li>
           );
         }
@@ -511,8 +509,8 @@ export class CustomSideMenu extends PureComponent<any, any> {
         }
       }
       retItem.push(
-        <li className="item">
-          <Rbac childName={menuItem.childName || ''}>
+        <Rbac parentName="grafana-ui" childName={menuItem.childName || ''}>
+          <li className="item">
             <a
               href={'#'}
               className={`menu-item ${activeMenuLink === menuItem.activeLink ? 'active' : ''}`}
@@ -521,9 +519,10 @@ export class CustomSideMenu extends PureComponent<any, any> {
               <div className={`menu-item-image ${menuItem.cssClass}`}></div>
               <div className="menu-item-text">{menuItem.text}</div>
             </a>
-          </Rbac>
-          {subMenuItems.length > 0 && <ul className="sub-menu">{subMenuItems}</ul>}
-        </li>
+
+            {subMenuItems.length > 0 && <ul className="sub-menu">{subMenuItems}</ul>}
+          </li>
+        </Rbac>
       );
     }
     return retItem;
