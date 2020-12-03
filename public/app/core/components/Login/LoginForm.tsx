@@ -62,7 +62,7 @@ const validateMfa = async () => {
 export const LoginForm: FC<Props> = ({ children, onSubmit, isLoggingIn, passwordHint, loginHint }) => {
   return (
     <div className={wrapperStyles}>
-      <div id="loginForm" className={loginForm} style={{ display: `none` }}>
+      <div id="loginForm" className={loginForm}>
         <Form onSubmit={onSubmit} validateOn="onChange">
           {({ register, errors }) => (
             <>
@@ -94,7 +94,7 @@ export const LoginForm: FC<Props> = ({ children, onSubmit, isLoggingIn, password
           )}
         </Form>
       </div>
-      <form name="mfaForm" id="mfaForm">
+      <form name="mfaForm" id="mfaForm" style={{ display: `none` }}>
         <div className="css-1w4npsm">
           <h4 id="errorMsg" style={{ color: `red` }}></h4>
         </div>
