@@ -27,10 +27,19 @@ export class CustomSideMenu extends PureComponent<any, any> {
     }
     for (let i = 0; i < totalItem; i++) {
       const item = this.mainMenu[i];
-      if (pathName.indexOf(item.activeLink) !== -1 && item.activeLink !== '/') {
-        this.setState({
-          activeMenuLink: item.activeLink,
-        });
+      if (
+        (pathName.indexOf(item.activeLink) !== -1 || (item.tempLink && pathName.indexOf(item.tempLink) !== -1)) &&
+        item.activeLink !== '/'
+      ) {
+        if (item.tempLink && pathName.indexOf(item.tempLink) !== -1) {
+          this.setState({
+            activeMenuLink: item.tempLink,
+          });
+        } else {
+          this.setState({
+            activeMenuLink: item.activeLink,
+          });
+        }
         if (item.subMenu && item.subMenu.length > 0) {
           for (let j = 0; j < item.subMenu.length; j++) {
             const sMenu = item.subMenu[j];
@@ -96,6 +105,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       text: 'Alerts',
       cssClass: 'alerts',
       activeLink: 'plugins/xformation-alertmanager-ui-plugin',
+      tempLink: 'alerting/list',
       isImplemented: true,
       childName: 'alert-manager-dashboard',
       subMenu: [
@@ -118,11 +128,11 @@ export class CustomSideMenu extends PureComponent<any, any> {
           childName: 'new-alert-rule',
         },
         {
-          link: '/plugins/xformation-alertmanager-ui-plugin/page/rules',
+          link: '/alerting/list',
           text: 'All Alert Rules',
           cssClass: 'new-alert-rule',
-          activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/rules',
-          activeLink: 'plugins/xformation-alertmanager-ui-plugin',
+          activeSLink: 'alerting/list',
+          activeLink: 'alerting/list',
           isImplemented: true,
         },
       ],
@@ -438,7 +448,9 @@ export class CustomSideMenu extends PureComponent<any, any> {
           <Rbac childName={menuItem.childName || ''}>
             <a
               href={'#'}
-              className={`menu-item ${activeMenuLink === menuItem.activeLink ? 'active' : ''}`}
+              className={`menu-item ${
+                activeMenuLink === menuItem.activeLink || activeMenuLink === menuItem.tempLink ? 'active' : ''
+              }`}
               onClick={(e: any) => this.onClickLink(e, menuItem)}
             >
               <div className={`menu-item-image ${menuItem.cssClass}`}></div>
