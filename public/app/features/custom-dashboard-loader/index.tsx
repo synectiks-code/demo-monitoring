@@ -304,7 +304,7 @@ export class CustomDashboardLoader extends PureComponent<any, State> {
 
     return (
       <React.Fragment>
-        <div className="scroll-canvas--dashboard monitor-main-body">
+        <div className="scroll-canvas--dashboard">
           <DashNav
             dashboard={dashboard}
             isFullscreen={!!viewPanel}
