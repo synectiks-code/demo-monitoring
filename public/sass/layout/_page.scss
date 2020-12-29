@@ -1,6 +1,6 @@
 .grafana-app {
-  display: flex;
-  align-items: stretch;
+  //display: flex;
+  //align-items: stretch;
   // Changes related to new look
   position: absolute;
   width: 100%;
@@ -13,6 +13,7 @@
   position: relative;
   flex-grow: 1;
   background: $page-bg;
+  min-height: 932px;
 }
 
 .page-explore,
@@ -69,20 +70,20 @@
     height: calc(100% - 56px);
   }
 
-  > div {
+  >div {
     flex-grow: 1;
   }
 
-  > .footer {
+  >.footer {
     flex-shrink: 0;
   }
 
   // Render in correct position even ng-view div is not rendered yet
-  > .footer:first-child {
+  >.footer:first-child {
     flex-grow: 1;
     display: flex;
 
-    > * {
+    >* {
       width: 100%;
       align-self: flex-end;
     }
@@ -105,8 +106,8 @@
   display: flex;
   align-items: flex-start;
 
-  > a,
-  > button {
+  >a,
+  >button {
     margin-left: $spacer;
   }
 }
@@ -167,13 +168,70 @@
 }
 
 /********************************** New look css **********************************/
-
-.wide-side-menu {
+//Main menu open
+.menu_state_1 {
   .monitor-main-body {
     margin-left: 240px;
     width: calc(100% - 240px);
   }
 }
+
+//Main menu open
+//submenu open
+.menu_state_5 {
+  .monitor-main-body {
+    margin-left: 480px;
+    width: calc(100% - 480px);
+  }
+}
+
+//Main menu open
+//submenu close
+.menu_state_9 {
+  .monitor-main-body {
+    margin-left: 300px;
+    width: calc(100% - 300px);
+  }
+}
+
+//Menu close
+//submenu open
+.menu_state_6 {
+  .monitor-main-body {
+    margin-left: 300px;
+    width: calc(100% - 300px);
+  }
+}
+
+//Menu close
+//submenu close
+.menu_state_10 {
+  .monitor-main-body {
+    margin-left: 120px;
+    width: calc(100% - 120px);
+  }
+}
+
+// .wide-side-menu {
+//   .monitor-main-body {
+//     margin-left: 240px;
+//     width: calc(100% - 240px);
+//   }
+// }
+
+// .wide-close-sub-menu {
+//   .monitor-main-body {
+//     margin-left: 120px;
+//     width: calc(100% - 120px);
+//   }
+// }
+
+// .wide-open-sub-menu {
+//   .monitor-main-body {
+//     margin-left: 280px;
+//     width: calc(100% - 280px);
+//   }
+// }
 
 .monitor-main-body {
   margin-left: 60px;

@@ -1,5 +1,11 @@
 $mobile-menu-breakpoint: md;
 
+.menu_state_1 {
+  .sidemenu {
+    width: 240px;
+  }  
+}
+
 .sidemenu {
   position: fixed;
   display: flex;
