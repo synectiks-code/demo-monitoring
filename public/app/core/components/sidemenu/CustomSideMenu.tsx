@@ -22,6 +22,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       showSubMenu: false,
       menuState: menuStates.MENU_OPEN,
       subMenuState: 0,
+      isSubMenuPinned: false,
     };
     this.modalRef = React.createRef();
   }
@@ -44,6 +45,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
     let subMenuState = 0;
     let showSubMenu = false;
     let activeMenuItem = null;
+    let isSubMenuPinned = false;
     if (pathName === '/') {
       this.setState({
         activeMenuLink: '/',
@@ -53,6 +55,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
         subMenuState,
         showSubMenu,
         activeMenuItem,
+        isSubMenuPinned,
       };
     }
     for (let i = 0; i < totalItem; i++) {
@@ -80,6 +83,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
               subMenuState = menuStates.SUBMENU_OPEN;
               menuState = menuStates.MENU_CLOSE;
               showSubMenu = true;
+              isSubMenuPinned = true;
               break;
             }
           }
@@ -94,6 +98,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       subMenuState,
       showSubMenu,
       activeMenuItem,
+      isSubMenuPinned,
     };
   };
 
@@ -130,6 +135,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       subMenuState: menuData.subMenuState,
       showSubMenu: menuData.showSubMenu,
       activeMenuItem: menuData.activeMenuItem,
+      isSubMenuPinned: menuData.isSubMenuPinned,
     });
   }
 
@@ -462,16 +468,22 @@ export class CustomSideMenu extends PureComponent<any, any> {
   };
 
   onClickToggleSubMenu = (e: any) => {
-    let { menuState, subMenuState } = this.state;
+    let { menuState, subMenuState, isSubMenuPinned } = this.state;
     const lastState = menuState | subMenuState;
     if (subMenuState === menuStates.SUBMENU_OPEN) {
-      subMenuState = menuStates.SUBMENU_CLOSE;
+      if (isSubMenuPinned) {
+        subMenuState = menuStates.SUBMENU_CLOSE;
+        isSubMenuPinned = false;
+      } else {
+        isSubMenuPinned = true;
+      }
     } else {
       subMenuState = menuStates.SUBMENU_OPEN;
     }
     this.updateState(menuState | subMenuState, lastState);
     this.setState({
       subMenuState,
+      isSubMenuPinned,
     });
   };
 
@@ -487,6 +499,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
 
   onClickLink = (e: any, menuItem: any) => {
     if (menuItem.isImplemented) {
+      let isSubMenuPinned = false;
       const showSubMenu = menuItem && menuItem.subMenu && menuItem.subMenu.length > 0;
       this.setState({
         activeMenuLink: menuItem.activeLink,
@@ -496,10 +509,14 @@ export class CustomSideMenu extends PureComponent<any, any> {
       });
       if (showSubMenu) {
         this.setMenuStates(menuStates.MENU_CLOSE, menuStates.SUBMENU_OPEN);
+        isSubMenuPinned = true;
       } else {
         this.setMenuStates(menuStates.MENU_OPEN, 0);
       }
       getLocationSrv().update({ path: menuItem.link });
+      this.setState({
+        isSubMenuPinned,
+      });
     } else {
       e.preventDefault();
       e.stopPropagation();
@@ -641,8 +658,20 @@ export class CustomSideMenu extends PureComponent<any, any> {
     return retData;
   };
 
+  onMouseEnterClosedSubMenu = () => {
+    const { menuState } = this.state;
+    this.setMenuStates(menuState, menuStates.SUBMENU_OPEN);
+  };
+
+  onMouseLeaveOpenedSubMenu = () => {
+    const { menuState, isSubMenuPinned } = this.state;
+    if (!isSubMenuPinned) {
+      this.setMenuStates(menuState, menuStates.SUBMENU_CLOSE);
+    }
+  };
+
   render() {
-    const { showSubMenu } = this.state;
+    const { showSubMenu, isSubMenuPinned } = this.state;
     return [
       <div className="sidemenu__logo_small_breakpoint">
         <i className="fa fa-bars" />
@@ -681,15 +710,18 @@ export class CustomSideMenu extends PureComponent<any, any> {
           <ul>{this.createCloseMenu(this.settings)}</ul>
         </div>
         <div className={`sub-menu ${showSubMenu ? 'active-sub-menu' : ''}`}>
-          <div className="open-menu">
-            <div className="side-menu-toggle" onClick={this.onClickToggleSubMenu}>
-              <i className="fa fa-arrow-left"></i>
+          <div className="open-menu" onMouseLeave={this.onMouseLeaveOpenedSubMenu}>
+            <div className="side-menu-toggle text-right" onClick={this.onClickToggleSubMenu}>
+              <i
+                className="fa fa-thumb-tack"
+                style={{ transform: isSubMenuPinned ? 'rotate(0deg)' : 'rotate(-90deg)' }}
+              ></i>
             </div>
             <ul>{this.createOpenSubMenu()}</ul>
           </div>
-          <div className="close-menu">
+          <div className="close-menu" onMouseEnter={this.onMouseEnterClosedSubMenu}>
             <div className="side-menu-toggle" onClick={this.onClickToggleSubMenu}>
-              <i className="fa fa-arrow-right"></i>
+              <i className="fa fa-thumb-tack" style={{ transform: 'rotate(-90deg)' }}></i>
             </div>
             <ul>{this.createCloseSubMenu()}</ul>
           </div>

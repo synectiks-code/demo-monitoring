@@ -55,7 +55,8 @@ textarea {
     }
 
     .menu-item {
-      padding: 14px 0px 14px 12px;
+      
+      padding: 14px 0px 14px 18px;
       display: block;
       border-bottom: 1px solid $sidemenu-link-background-hover-color;
     }
@@ -72,7 +73,19 @@ textarea {
   }
 
   .menu-item {
-    &.active,
+    &.active{
+      position: relative;
+      background-color: $sidemenu-link-background-hover-color;
+      &::before{
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 3px;
+        height: 100%;
+        content: "";
+        background-color: $sidemenu-header-text-color;
+      }
+    }
     &:hover {
       background-color: $sidemenu-link-background-hover-color;
     }
@@ -265,7 +278,7 @@ textarea {
           display: block;
           color: #3b4859;
           font-size: 13px;
-          padding: 15px 0px 14px 12px;
+          padding: 15px 0px 14px 18px;
           border-bottom: 1px solid $sidemenu-link-background-hover-color;
           i {
             color: #3b7cff;
@@ -302,7 +315,7 @@ textarea {
           display: block;
           color: #3b4859;
           font-size: 13px;
-          padding: 15px 0px 14px 12px;
+          padding: 15px 0px 14px 18px;
           border-bottom: 1px solid $sidemenu-link-background-hover-color;
           i {
             color: #3b7cff;
@@ -371,13 +384,13 @@ textarea {
     
         .side-menu-toggle {
           display: inline-block;
-          color: $sidemenu-toggle-color;
+          //color: $sidemenu-toggle-color;
           cursor: pointer;
         }
       }
       .menu-item {
         display: block;
-        padding: 14px 0px 14px 12px;
+        padding: 14px 0px 14px 18px;
         border-bottom: 1px solid $sidemenu-link-background-hover-color;
       }
       
@@ -412,7 +425,7 @@ textarea {
           left: -100%;
           visibility: hidden;
           .menu-item {
-            padding: 15px 0px 14px 12px;
+            padding: 15px 0px 14px 18px;
           }
         }
         .close-menu{
@@ -421,7 +434,7 @@ textarea {
           left: -100%;
           visibility: hidden;
           .menu-item {
-            padding: 15px 0px 14px 12px;
+            padding: 15px 0px 14px 18px;
           }
         }
       }
@@ -454,7 +467,7 @@ textarea {
           visibility: visible;
           .menu-item {
             display: block;
-            padding: 15px 0px 14px 12px;
+            padding: 15px 0px 14px 18px;
           }
           .side-menu-toggle{
             height: 48px;
@@ -493,9 +506,9 @@ textarea {
           .side-menu-toggle{
             height: 48px;
             width: 100%;
-            text-align: left;
             line-height: 50px;
             padding-left: 15px;
+            padding-right: 15px;
             cursor: pointer;
           }
         }
