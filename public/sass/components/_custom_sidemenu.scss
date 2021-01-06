@@ -31,6 +31,7 @@ textarea {
   .open-menu {
     width: 0px;
     opacity: 0;
+
     .menu-item,
     .menu-item-header {
       display: none;
@@ -55,7 +56,6 @@ textarea {
     }
 
     .menu-item {
-      
       padding: 14px 0px 14px 18px;
       display: block;
       border-bottom: 1px solid $sidemenu-link-background-hover-color;
@@ -73,19 +73,21 @@ textarea {
   }
 
   .menu-item {
-    &.active{
+    &.active {
       position: relative;
       background-color: $sidemenu-link-background-hover-color;
-      &::before{
+
+      &::before {
         position: absolute;
         left: 0;
         top: 0;
         width: 3px;
         height: 100%;
-        content: "";
+        content: '';
         background-color: $sidemenu-header-text-color;
       }
     }
+
     &:hover {
       background-color: $sidemenu-link-background-hover-color;
     }
@@ -181,7 +183,7 @@ textarea {
       background-image: url('../img/monitor-icons/menu-new-alert-rule.svg');
     }
 
-    .compliance{
+    .compliance {
       background-image: url('../img/monitor-icons/dashboard.svg');
     }
 
@@ -213,7 +215,7 @@ textarea {
       background-image: url('../img/monitor-icons/dashboard.svg');
     }
 
-    .tickets{
+    .tickets {
       background-image: url('../img/monitor-icons/ticket.svg');
       height: 15px;
       margin-top: 2px;
@@ -248,13 +250,10 @@ textarea {
       height: 15px;
       margin-top: 2px;
     }
-
-
-
   }
 
   .sub-menu {
-    .open-menu{
+    .open-menu {
       opacity: 0;
       position: absolute;
       left: -100%;
@@ -270,28 +269,32 @@ textarea {
       -webkit-transition: width 0.3s, opacity 0.3s;
       -o-transition: width 0.3s, opacity 0.3s;
       transition: width 0.3s, opacity 0.3s;
+
       li {
         display: block;
         padding: 0;
-  
+
         a {
           display: block;
           color: #3b4859;
           font-size: 13px;
           padding: 15px 0px 14px 18px;
           border-bottom: 1px solid $sidemenu-link-background-hover-color;
+
           i {
             color: #3b7cff;
             display: inline-block;
             padding-right: 5px;
           }
+
           .menu-item-text {
             display: inline-block !important;
           }
         }
       }
     }
-    .close-menu{
+
+    .close-menu {
       opacity: 0;
       position: absolute;
       left: -100%;
@@ -307,29 +310,33 @@ textarea {
       -webkit-transition: width 0.3s, opacity 0.3s;
       -o-transition: width 0.3s, opacity 0.3s;
       transition: width 0.3s, opacity 0.3s;
+
       li {
         display: block;
         padding: 0;
-  
+
         a {
           display: block;
           color: #3b4859;
           font-size: 13px;
           padding: 15px 0px 14px 18px;
           border-bottom: 1px solid $sidemenu-link-background-hover-color;
+
           i {
             color: #3b7cff;
             display: inline-block;
             padding-right: 5px;
           }
+
           .menu-item-text {
             display: none !important;
           }
         }
       }
     }
-    &.active-sub-menu{
-      .close-menu{
+
+    &.active-sub-menu {
+      .close-menu {
         opacity: 1;
         width: 60px;
         left: 100%;
@@ -347,14 +354,16 @@ textarea {
       width: 100%;
       opacity: 1;
       visibility: visible;
+
       .sidemenu-search-container {
         padding-top: 11px;
         height: 48px;
         width: 240px;
+
         .gf-form--has-input-icon {
           margin-left: 10px;
           margin-right: 0px;
-    
+
           .sidemenu-search-box {
             width: 173px;
             height: 30px;
@@ -362,38 +371,39 @@ textarea {
             margin-right: 20px;
             border-color: #8392a7;
           }
-    
+
           ::-webkit-input-placeholder {
             /* Edge */
             color: $sidemenu-search-placeholder-color;
           }
-    
+
           :-ms-input-placeholder {
             /* Internet Explorer 10-11 */
             color: $sidemenu-search-placeholder-color;
           }
-    
+
           ::placeholder {
             color: $sidemenu-search-placeholder-color;
           }
-    
+
           i {
             color: $sidemenu-search-icon-color;
           }
         }
-    
+
         .side-menu-toggle {
           display: inline-block;
           //color: $sidemenu-toggle-color;
           cursor: pointer;
         }
       }
+
       .menu-item {
         display: block;
         padding: 14px 0px 14px 18px;
         border-bottom: 1px solid $sidemenu-link-background-hover-color;
       }
-      
+
       .menu-item-header {
         background-color: $sidemenu-header-background-color;
         padding: 14px 0px 14px 20px;
@@ -402,37 +412,44 @@ textarea {
         display: block;
       }
     }
+
     .close-menu {
       width: 0px;
       opacity: 0;
       visibility: hidden;
+
       .menu-item,
       .menu-item-header {
         display: none;
       }
     }
+
     .sub-menu {
-      .open-menu{
+      .open-menu {
         width: 0;
         opacity: 0;
         left: -100%;
         visibility: hidden;
       }
-      &.active-sub-menu{
-        .open-menu{
+
+      &.active-sub-menu {
+        .open-menu {
           opacity: 0;
           width: 0;
           left: -100%;
           visibility: hidden;
+
           .menu-item {
             padding: 15px 0px 14px 18px;
           }
         }
-        .close-menu{
+
+        .close-menu {
           opacity: 0;
           width: 0;
           left: -100%;
           visibility: hidden;
+
           .menu-item {
             padding: 15px 0px 14px 18px;
           }
@@ -443,33 +460,38 @@ textarea {
 }
 
 .menu_state_9,
-.menu_state_10{
+.menu_state_10 {
   .sidemenu {
     width: 240px;
+
     .sub-menu {
-      .open-menu{
+      .open-menu {
         width: 0;
         opacity: 0;
         left: -100%;
         visibility: hidden;
       }
-      &.active-sub-menu{
-        .open-menu{
+
+      &.active-sub-menu {
+        .open-menu {
           opacity: 0;
           width: 0;
           left: -100%;
           visibility: hidden;
         }
-        .close-menu{
+
+        .close-menu {
           opacity: 1;
           width: 60px;
           left: 100%;
           visibility: visible;
+
           .menu-item {
             display: block;
             padding: 15px 0px 14px 18px;
           }
-          .side-menu-toggle{
+
+          .side-menu-toggle {
             height: 48px;
             width: 100%;
             text-align: center;
@@ -482,28 +504,30 @@ textarea {
   }
 }
 
-.menu_state_5{
+.menu_state_5 {
   .sidemenu {
     width: 240px;
   }
 }
-.menu_state_10{
+
+.menu_state_10 {
   .sidemenu {
     width: 60px;
   }
 }
 
 .menu_state_6,
-.menu_state_5{
+.menu_state_5 {
   .sidemenu {
     .sub-menu {
-      &.active-sub-menu{
-        .open-menu{
+      &.active-sub-menu {
+        .open-menu {
           opacity: 1;
           width: 240px;
           left: 100%;
           visibility: visible;
-          .side-menu-toggle{
+
+          .side-menu-toggle {
             height: 48px;
             width: 100%;
             line-height: 50px;
@@ -512,7 +536,8 @@ textarea {
             cursor: pointer;
           }
         }
-        .close-menu{
+
+        .close-menu {
           opacity: 0;
           width: 0;
           left: -100%;

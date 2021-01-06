@@ -3,7 +3,7 @@ $mobile-menu-breakpoint: md;
 .menu_state_1 {
   .sidemenu {
     width: 240px;
-  }  
+  }
 }
 
 .sidemenu {
@@ -113,6 +113,7 @@ $mobile-menu-breakpoint: md;
     opacity: 0;
     //transform: translate3d(-5%,0,0);
   }
+
   100% {
     opacity: 1;
     //transform: translate3d(0,0,0);
@@ -178,6 +179,7 @@ li.sidemenu-org-switcher {
   padding-left: $space-lg;
   display: flex;
   align-items: center;
+
   > i.fa.fa-random {
     margin-right: $space-xs;
     top: 1px;
@@ -229,6 +231,7 @@ li.sidemenu-org-switcher {
     .sidemenu__bottom {
       display: block;
     }
+
     .sidemenu-item {
       border-right: 2px solid transparent;
     }

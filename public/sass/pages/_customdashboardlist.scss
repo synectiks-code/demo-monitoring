@@ -25,10 +25,12 @@
         font-size: 15px;
       }
     }
+
     .active {
       background-color: #3697ef;
       color: white;
     }
+
     .collapse-button {
       width: 50px;
       z-index: 111;
@@ -39,6 +41,7 @@
 
   .collapse {
     width: 0px;
+
     .dashboard-nav-item {
       opacity: 0;
     }
@@ -51,9 +54,11 @@
 
 .nav-tabs {
   padding-left: 0px !important;
+
   > li {
     margin-bottom: -1px;
     float: left;
+
     > a {
       line-height: 1.5;
       border: 0px solid transparent;
@@ -64,14 +69,17 @@
     }
   }
 }
+
 .monitor-main-body {
   .nav-tabs {
     border-bottom: 1px solid #767980;
     padding-left: 10px;
     margin: 0 0 10px 0;
   }
+
   .nav-link {
     color: $gray-1;
+
     &.active {
       border-bottom: 2px solid $dashboard-nav-link-active-border-color;
       color: $dashboard-nav-link-active-text-color;
@@ -80,19 +88,22 @@
       border-top: 0;
       padding: 10px;
       margin: 0 10px;
+
       &:hover {
         border-bottom: 2px solid $dashboard-nav-link-active-border-color;
       }
     }
   }
 }
-.theme-dark{
+
+.theme-dark {
   .monitor-main-body {
     .nav-link {
       color: $gray-6;
     }
   }
 }
+
 .dashboard-settings__content {
   padding: 0;
 }
@@ -103,6 +114,7 @@
       width: 42px;
       background-color: transparent;
     }
+
     .collapse-button {
       margin-top: 0;
       padding: 8px 15px;

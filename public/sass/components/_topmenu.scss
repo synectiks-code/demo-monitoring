@@ -44,7 +44,7 @@
       top: 51px;
       z-index: 1040;
       background-color: #000;
-      opacity: .75;
+      opacity: 0.75;
     }
 
     .search-menu {
@@ -55,23 +55,28 @@
       position: relative;
       top: 3px;
       border-radius: 3px;
-      ul{
+
+      ul {
         padding: 15px 0;
-        li{
+
+        li {
           display: block;
           padding: 10px 15px;
           font-size: 16px;
           line-height: 24px;
           font-weight: 500;
-          &:hover{
+
+          &:hover {
             background-color: #fafafa;
           }
-          i{
+
+          i {
             vertical-align: top;
             line-height: 24px;
             color: #3b4859;
           }
-          a{
+
+          a {
             color: #3b4859;
             display: inline-block;
             padding-left: 15px;
@@ -89,23 +94,27 @@
     justify-content: space-around;
     margin: 0px 20px;
 
-    .icon {      
+    .icon {
       font-size: 20px !important;
       color: $top-nav-icons-color;
       margin-left: 15px;
       position: relative;
       line-height: 52px;
       display: inline-block;
-      i{
+
+      i {
         cursor: pointer;
       }
+
       &:hover {
         color: $top-nav-icons-hover-color;
-        ul{
+
+        ul {
           display: block;
         }
       }
-      ul{
+
+      ul {
         display: none;
         padding: 15px 15px;
         margin: 0;
@@ -118,22 +127,26 @@
         border: 1px solid #f8f9fa;
         border-top: none;
         box-shadow: 0px 1px 3px #00000029;
-        li{
+
+        li {
           display: block;
           font-size: 14px;
           line-height: 24px;
           font-weight: 500;
           padding: 0 0 5px 0;
           border-bottom: none;
-          &:last-child{
+
+          &:last-child {
             padding-bottom: 0;
           }
-          &.logout{
-            a{
+
+          &.logout {
+            a {
               color: #ff0000;
             }
           }
-          a{
+
+          a {
             color: #3b4859;
           }
         }

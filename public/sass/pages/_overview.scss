@@ -6,68 +6,82 @@ body,
 .overview-container {
   padding: 10px 20px;
   background-color: $overview-container-background-color;
-  .applications-container{
+
+  .applications-container {
     background-color: $overview-applications-container-background-color;
-    .header{
+
+    .header {
       background-color: $overview-applications-header-background-color;
       padding: 15px 15px 15px 30px;
-      .heading{
+
+      .heading {
         display: block;
-        color: #3B4859;
+        color: #3b4859;
         font-size: 24px;
         line-height: 28px;
         font-weight: 500;
         padding-bottom: 3px;
       }
-      .description{
+
+      .description {
         display: block;
-        color: #8998AC;
+        color: #8998ac;
         font-size: 13px;
         line-height: 18px;
         font-weight: 300;
       }
-      .new-discovery-btn{
+
+      .new-discovery-btn {
         text-align: right;
         padding-top: 15px;
-        .alert-blue-button{
+
+        .alert-blue-button {
           margin-right: 0;
         }
       }
-      
     }
-    .applications-inner-container{
+
+    .applications-inner-container {
       padding: 0px;
-      .react-multi-carousel-list{
+
+      .react-multi-carousel-list {
         margin: 15px 10px 0px;
         padding-bottom: 45px;
       }
-      .carousel-item-padding-40-px{
+
+      .carousel-item-padding-40-px {
         padding-left: 40px;
         padding-right: 40px;
       }
-      .react-multiple-carousel__arrow{
+
+      .react-multiple-carousel__arrow {
         padding: 0;
-        background: rgba(0,0,0,0);
-        &:hover{
-          background: rgba(0,0,0,0);
-          &::before{
+        background: rgba(0, 0, 0, 0);
+
+        &:hover {
+          background: rgba(0, 0, 0, 0);
+
+          &::before {
             font-size: 36px;
-            color: rgba(112,112,112,1);
+            color: rgba(112, 112, 112, 1);
           }
         }
-        &::before{
+
+        &::before {
           font-size: 36px;
-          color: rgba(112,112,112,.5);
+          color: rgba(112, 112, 112, 0.5);
         }
       }
-      .react-multiple-carousel__arrow--right{
+
+      .react-multiple-carousel__arrow--right {
         right: -10px;
       }
-      .react-multiple-carousel__arrow--left{
+
+      .react-multiple-carousel__arrow--left {
         left: -10px;
       }
 
-      .overview-item-container {    
+      .overview-item-container {
         .item-image {
           width: 100%;
           background: white;
@@ -76,13 +90,15 @@ body,
           border-radius: 5px;
           box-shadow: 0px 0px 6px -4px #3b4859;
           padding: 20px;
-        }    
+        }
+
         .item-header {
           font-size: 15px;
           font-weight: bold;
           margin: 15px 0px;
           color: $overview-container-text-color;
-        }    
+        }
+
         .item-description {
           font-size: 12px;
           color: $overview-container-description-color;
@@ -91,6 +107,7 @@ body,
 
       .charts-container {
         padding: 15px 50px 45px;
+
         .chart-block .chart-inner {
           background: #f0f3f7;
           box-shadow: 0px 1px 5px #00000029;
@@ -99,15 +116,15 @@ body,
           margin-bottom: 30px;
           border-radius: 5px;
           overflow: hidden;
-      
+
           &.current {
             background: #e31335;
-      
+
             &.average {
               background: #15c64c;
             }
           }
-      
+
           .label {
             text-align: center;
             display: block;
@@ -118,24 +135,25 @@ body,
             font-size: 14px;
             line-height: 20px;
             font-weight: 600;
-      
+
             i {
               float: right;
               padding-right: 10px;
               font-size: 18px;
             }
           }
-          .current-time-chart{
+
+          .current-time-chart {
             padding: 15px;
           }
-      
+
           &.current {
             .label {
               color: #ffffff;
               background: #e31335;
               border-bottom: 1px solid #f1899a;
             }
-      
+
             &.average .label {
               background: #15c64c;
               border-bottom: 1px solid #95e5ae;
@@ -148,30 +166,31 @@ body,
         display: block;
         width: 100%;
         padding-top: 5px;
-      
+
         .table {
           width: 100%;
-      
+
           tbody {
             width: 100%;
-      
+
             tr {
               width: 100%;
             }
           }
-      
-          th, td {
+
+          th,
+          td {
             color: #3b4859;
             font-size: 11px;
             line-height: 15px;
             padding: 8px 20px 8px 20px;
           }
-      
+
           .chart-header {
             border-bottom: 1px solid #e4ebf4;
             text-transform: uppercase;
           }
-      
+
           .high {
             background: #ff0000;
             border-radius: 4px;
@@ -182,7 +201,7 @@ body,
             line-height: 16px;
             text-align: center;
           }
-      
+
           .low {
             background: #3b7cff;
             border-radius: 4px;
@@ -193,7 +212,7 @@ body,
             line-height: 16px;
             text-align: center;
           }
-      
+
           .medium {
             background: #ff8f00;
             border-radius: 4px;
@@ -206,13 +225,13 @@ body,
           }
         }
       }
-      
+
       .current-bottom {
         margin-top: 10px;
         margin-bottom: 20px;
         padding-left: 20px;
         padding-right: 20px;
-      
+
         select {
           background-color: #e31335;
           border: 1px solid #ffffff;
@@ -224,6 +243,7 @@ body,
           padding: 2px 10px;
           width: 100%;
         }
+
         .minutes-text {
           font-size: 11px;
           line-height: 18px;
@@ -242,6 +262,7 @@ body,
         display: block;
         padding: 35px 0 0 15px;
         text-align: center;
+
         sub {
           font-size: 18px;
           font-weight: 100;
@@ -250,7 +271,7 @@ body,
         }
       }
 
-      .current-today-text{
+      .current-today-text {
         display: block;
         font-size: 18px;
         font-weight: 100;
@@ -260,12 +281,11 @@ body,
         text-transform: uppercase;
       }
 
-      .current-responce-time-chart{
+      .current-responce-time-chart {
         display: block;
         padding-top: 20px;
         height: 145px;
       }
-
     }
   }
 
@@ -322,10 +342,11 @@ body,
       padding-top: 5px;
     }
   }
-  .overview-container{
-    .applications-container{
-      .header{
-        .new-discovery-btn{
+
+  .overview-container {
+    .applications-container {
+      .header {
+        .new-discovery-btn {
           text-align: left;
         }
       }
