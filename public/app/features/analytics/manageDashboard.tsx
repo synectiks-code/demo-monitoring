@@ -12,25 +12,112 @@ export interface Props {
 }
 
 class ManageDashboard extends React.Component<any, any> {
+  breadCrumbs: any = [
+    {
+      label: 'Home',
+      route: '',
+    },
+    {
+      label: 'Analytics | View',
+      isCurrentPage: true,
+    },
+  ];
   constructor(props: Props) {
     super(props);
-    this.state = {};
+    this.state = {
+      tabs: [
+        {
+          label: 'AWS RDS',
+        },
+        {
+          label: 'AWS VPC',
+        },
+        {
+          label: 'AWS VPN',
+        },
+      ],
+      activeTab: 0,
+    };
   }
 
+  displayTabs = () => {
+    const { tabs, activeTab } = this.state;
+    const retData = [];
+    for (let i = 0; i < tabs.length; i++) {
+      let tab = tabs[i];
+      retData.push(
+        <li key={`tab-${i}`} className={`nav-item `}>
+          <a className={i === activeTab ? 'nav-link active' : 'nav-link'} onClick={e => this.navigateTab(i)}>
+            {tab.label}&nbsp;
+          </a>
+        </li>
+      );
+    }
+    return retData;
+  };
+
+  navigateTab(index: any) {
+    this.setState({
+      activeTab: index,
+    });
+  }
+
+  addTab = () => {
+    const { tabs } = this.state;
+    const length = tabs.length;
+    tabs.push({ label: 'Tab' + (length + 1) });
+    this.setState({
+      tabs,
+      activeTab: length,
+    });
+  };
+
   render() {
+    const breadCrumbs = this.breadCrumbs;
+    const pageTitle = 'ANALYTICS';
     return (
-      <div>
+      <React.Fragment>
         <CustomNavigationBar />
-        <div>
-          <div>
-            <h4>AWS - Created by : System Admin</h4>
+        <div className="scroll-canvas--dashboard monitor-main-body">
+          <div className="breadcrumbs-container">
+            {pageTitle && <div className="page-title">{pageTitle}</div>}
+            <div className="breadcrumbs">
+              {breadCrumbs.map((breadcrumb: any, index: any) => {
+                if (breadcrumb.isCurrentPage) {
+                  return (
+                    <span key={index} className="current-page">
+                      {breadcrumb.label}
+                    </span>
+                  );
+                } else {
+                  return (
+                    <React.Fragment key={index}>
+                      <a className="breadcrumbs-link">{breadcrumb.label}</a>
+                      <span className="separator">
+                        <i className="fa fa-chevron-right"></i>
+                      </span>
+                    </React.Fragment>
+                  );
+                }
+              })}
+            </div>
           </div>
-          <div className="row">
-            <div className="col-lg-3 col-md-3 col-sm-3"></div>
-            <div className="col-lg-9 col-md-9 col-sm-9"></div>
+          <div className="analytics-manage-dashboard-container">
+            <div className="manage-dashboard-heading">
+              <div className="d-block">
+                <ul className="nav nav-tabs">
+                  {this.displayTabs()}
+                  <li className="nav-item">
+                    <a className="nav-link">
+                      <i className="fa fa-plus"></i>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
