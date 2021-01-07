@@ -115,6 +115,30 @@ class ManageDashboard extends React.Component<any, any> {
                 </ul>
               </div>
             </div>
+            <div className="">
+              <div className="left" style={{ width: '200px', display: 'inline-block', verticalAlign: 'top' }}>
+                <label>AWS</label>
+                <ul>
+                  <li>
+                    <span>Amazon VloudWatch Logs</span>
+                    <i className="fa fa-ellipsis-h"></i>
+                  </li>
+                  <li>
+                    <span>Amazon RDS</span>
+                    <i className="fa fa-ellipsis-h"></i>
+                  </li>
+                  <li>
+                    <span>AWS VPN</span>
+                    <i className="fa fa-ellipsis-h"></i>
+                  </li>
+                </ul>
+              </div>
+              <div className="right" style={{ width: '800px', display: 'inline-block', verticalAlign: 'top' }}>
+                <div>
+                  <label>AWS RDS {'>'} CPUUtilisation, CreditsUsage, CreditBalance</label>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </React.Fragment>

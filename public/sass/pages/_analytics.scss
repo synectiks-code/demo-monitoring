@@ -449,3 +449,30 @@
     }
   }
 }
+
+.warning-heading {
+  text-align: center;
+  color: #3b4859;
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 30px;
+
+  i {
+    color: #ff4040;
+    margin-right: 10px;
+  }
+}
+
+.warning-content {
+  text-align: center;
+  margin-bottom: 30px;
+  p {
+    font-size: 15px;
+    color: #414d55;
+    margin-bottom: 10px;
+  }
+  a {
+    font-size: 14px;
+    color: #0099ff;
+  }
+}
