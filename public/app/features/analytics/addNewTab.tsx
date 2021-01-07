@@ -31,7 +31,7 @@ class AddNewTab extends React.Component<any, any> {
       folderArray: [
         {
           title: 'General',
-          openSubFolder: false,
+          openSubFolder: true,
           checkValueStatus: false,
           subData: [
             {
@@ -392,57 +392,38 @@ class AddNewTab extends React.Component<any, any> {
           </div>
           <div className="analytics-manage-dashboard-container manage-dashboard-general">
             <div className="manage-dashboard-heading">
-              <div className="row">
-                <div className="col-lg-6 col-md-12 col-sm-12">
-                  <div className="d-block">
-                    <ul className="nav nav-tabs">
-                      {this.displayTabs()}
-                      <li className="nav-item">
-                        <a className="nav-link">
-                          <i className="fa fa-plus"></i>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="col-lg-6 col-md-12 col-sm-12">
-                  <div className="filter-starred float-right">
-                    <div className="sort-checkbox">
-                      <input type="checkbox" className="checkbox" />
-                      <span>Filter by starred</span>
-                    </div>
-                    <div className="sort-select-menu">
-                      <span>
-                        <img src="/public/img/tag.png" alt="" />
-                      </span>
-                      <select>
-                        <option>Filter by tag</option>
-                        <option>Filter by tag</option>
-                        <option>Filter by tag</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="sort-select-menu">
-                    <span>
-                      <img src="/public/img/sort.png" alt="" />
-                    </span>
-                    <select>
-                      <option>Sort (Default A-Z)</option>
-                      <option>Sort (Default A-Z)</option>
-                      <option>Sort (Default A-Z)</option>
-                    </select>
-                  </div>
-                </div>
+              <div className="d-block">
+                <ul className="nav nav-tabs">
+                  {this.displayTabs()}
+                  <li className="nav-item">
+                    <a className="nav-link">
+                      <i className="fa fa-plus"></i>
+                    </a>
+                  </li>
+                </ul>
               </div>
               <div className="">
-                <div className="left" style={{ width: '200px', display: 'inline-block', verticalAlign: 'top' }}>
-                  dfsdfhk
+                <div className="left">
+                  <h5>New Tab</h5>
+                  <ul>
+                    <li>
+                      <span></span>
+                      <i className="fa fa-ellipsis-h"></i>
+                    </li>
+                    <li>
+                      <span></span>
+                      <i className="fa fa-ellipsis-h"></i>
+                    </li>
+                    <li>
+                      <span></span>
+                      <i className="fa fa-ellipsis-h"></i>
+                    </li>
+                  </ul>
                 </div>
-                <div className="right" style={{ width: '800px', display: 'inline-block', verticalAlign: 'top' }}>
+                <div className="right">
                   <div className="manage-dashboard-search">
                     <div className="row">
-                      <div className="col-lg-4 col-md-12 col-sm-12">
+                      <div className="col-lg-3 col-md-12 col-sm-12">
                         <div className="form-group search-control-group">
                           <form>
                             <input type="text" className="input-group-text" placeholder="Search dashboards by name" />
@@ -451,6 +432,30 @@ class AddNewTab extends React.Component<any, any> {
                             </button>
                           </form>
                         </div>
+                      </div>
+                      <div className="d-inline">
+                        <input type="checkbox" className="checkbox" />
+                        <span>Filter by starred</span>
+                      </div>
+                      <div className="d-inline">
+                        <span>
+                          <img src="/public/img/tag.png" alt="" />
+                        </span>
+                        <select>
+                          <option>Filter by tag</option>
+                          <option>Filter by tag</option>
+                          <option>Filter by tag</option>
+                        </select>
+                      </div>
+                      <div className="d-inline">
+                        <span>
+                          <img src="/public/img/sort.png" alt="" />
+                        </span>
+                        <select>
+                          <option>Sort (Default A-Z)</option>
+                          <option>Sort (Default A-Z)</option>
+                          <option>Sort (Default A-Z)</option>
+                        </select>
                       </div>
                     </div>
                   </div>

@@ -466,13 +466,33 @@
 .warning-content {
   text-align: center;
   margin-bottom: 30px;
+
   p {
     font-size: 15px;
     color: #414d55;
     margin-bottom: 10px;
   }
+
   a {
     font-size: 14px;
     color: #0099ff;
   }
+}
+
+.right {
+  width: 800px;
+  display: inline-block;
+  vertical-align: top;
+  border: solid 1px #8392a7;
+  padding: 10px;
+  height: 600px;
+}
+
+.left {
+  width: 190px;
+  display: inline-block;
+  vertical-align: top;
+  border: solid 1px #8392a7;
+  height: 600px;
+  padding: 5px;
 }
