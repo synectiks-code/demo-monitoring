@@ -401,11 +401,11 @@ export class CustomSideMenu extends PureComponent<any, any> {
   ];
   insights: any = [
     {
-      link: '/applications',
+      link: '/analytics',
       text: 'Applications',
       cssClass: 'applications',
-      activeLink: '/applications',
-      childName: 'applications',
+      activeLink: '/analytics',
+      childName: 'analytics',
     },
     {
       link: '/virtual-machines',

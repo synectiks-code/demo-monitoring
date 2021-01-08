@@ -48,7 +48,7 @@ class ManageDashboard extends React.Component<any, any> {
       retData.push(
         <li key={`tab-${i}`} className={`nav-item `}>
           <a className={i === activeTab ? 'nav-link active' : 'nav-link'} onClick={e => this.navigateTab(i)}>
-            {tab.label}&nbsp;
+            {tab.label}&nbsp; <i className="fa fa-angle-down"></i>
           </a>
         </li>
       );
@@ -102,40 +102,79 @@ class ManageDashboard extends React.Component<any, any> {
               })}
             </div>
           </div>
-          <div className="analytics-manage-dashboard-container">
-            <div className="manage-dashboard-heading">
-              <div className="d-block">
-                <ul className="nav nav-tabs">
-                  {this.displayTabs()}
-                  <li className="nav-item">
-                    <a className="nav-link">
-                      <i className="fa fa-plus"></i>
-                    </a>
-                  </li>
-                </ul>
+          <div className="analytics-container">
+            <div className="analytics-heading-container">
+              <div className="row">
+                <div className="col-lg-6 col-md-6 col-sm-6">
+                  <h4 style={{ lineHeight: '36px' }}>NGINX</h4>
+                </div>
+                <div className="col-lg-6 col-md-6 col-sm-6">
+                  <div className="d-block text-right">
+                    <button className="alert-white-button min-width-auto m-r-0">
+                      <i className="fa fa-arrow-circle-left"></i>
+                      &nbsp;&nbsp;Back
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="">
-              <div className="left" style={{ width: '200px', display: 'inline-block', verticalAlign: 'top' }}>
-                <label>AWS</label>
-                <ul>
-                  <li>
-                    <span>Amazon VloudWatch Logs</span>
-                    <i className="fa fa-ellipsis-h"></i>
-                  </li>
-                  <li>
-                    <span>Amazon RDS</span>
-                    <i className="fa fa-ellipsis-h"></i>
-                  </li>
-                  <li>
-                    <span>AWS VPN</span>
-                    <i className="fa fa-ellipsis-h"></i>
-                  </li>
-                </ul>
-              </div>
-              <div className="right" style={{ width: '800px', display: 'inline-block', verticalAlign: 'top' }}>
-                <div>
-                  <label>AWS RDS {'>'} CPUUtilisation, CreditsUsage, CreditBalance</label>
+            <div className="analytics-tabs-container">
+              <ul className="nav nav-tabs">
+                {this.displayTabs()}
+                <li className="nav-item">
+                  <a className="nav-link add-tab">
+                    <i className="fa fa-plus"></i>
+                  </a>
+                </li>
+              </ul>
+              <div className="analytics-tabs-section-container">
+                <div className="tabs-left-section">
+                  <h5>AWS</h5>
+                  <ul>
+                    <li>
+                      <a href="#">
+                        <i className="fa fa-ellipsis-h"></i>
+                        <span>Amazon VloudWatch Logs</span>
+                      </a>
+                      <ul>
+                        <li>
+                          <a href="#">
+                            <i className="fa fa-caret-right"></i>
+                            Move Right
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#">
+                            <i className="fa fa-caret-left"></i>
+                            Move Left
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#">
+                            <i className="fa fa-trash"></i>
+                            Delete
+                          </a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <i className="fa fa-ellipsis-h"></i>
+                        <span>Amazon RDS</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <i className="fa fa-ellipsis-h"></i>
+                        <span>AWS VPN</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div className="tabs-right-section">
+                  <div className="analytics-aws-heading">
+                    <p>AWS RDS {'>'} CPUUtilisation, CreditsUsage, CreditBalance</p>
+                  </div>
                 </div>
               </div>
             </div>

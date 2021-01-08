@@ -27,6 +27,12 @@ class AddNewTab extends React.Component<any, any> {
         {
           label: 'New Tab',
         },
+        {
+          label: 'New Tab2',
+        },
+        {
+          label: 'New Tab3',
+        },
       ],
       folderArray: [
         {
@@ -231,8 +237,34 @@ class AddNewTab extends React.Component<any, any> {
       retData.push(
         <li key={`tab-${i}`} className={`nav-item `}>
           <a className={i === activeTab ? 'nav-link active' : 'nav-link'} onClick={e => this.navigateTab(i)}>
-            {tab.label}&nbsp;
+            {tab.label}&nbsp; <i className="fa fa-angle-down"></i>
           </a>
+          <ul>
+            <li>
+              <a href="#">
+                <i className="fa fa-edit"></i>
+                Rename Tab
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i className="fa fa-caret-right"></i>
+                Move Right
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i className="fa fa-caret-left"></i>
+                Move Left
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i className="fa fa-trash"></i>
+                Delete
+              </a>
+            </li>
+          </ul>
         </li>
       );
     }
@@ -328,7 +360,7 @@ class AddNewTab extends React.Component<any, any> {
               <span>{subFolder.tableTitle}</span>
             </td>
             <td>
-              <div className="float-right">{subAttributeFolder}</div>
+              <div className="d-block text-right">{subAttributeFolder}</div>
             </td>
           </tr>
         );
@@ -390,40 +422,59 @@ class AddNewTab extends React.Component<any, any> {
               })}
             </div>
           </div>
-          <div className="analytics-manage-dashboard-container manage-dashboard-general">
-            <div className="manage-dashboard-heading">
-              <div className="d-block">
-                <ul className="nav nav-tabs">
-                  {this.displayTabs()}
-                  <li className="nav-item">
-                    <a className="nav-link">
-                      <i className="fa fa-plus"></i>
-                    </a>
-                  </li>
-                </ul>
+          <div className="analytics-container">
+            <div className="analytics-heading-container">
+              <div className="row">
+                <div className="col-lg-6 col-md-6 col-sm-6">
+                  <h4 style={{ lineHeight: '36px' }}>NGINX</h4>
+                </div>
+                <div className="col-lg-6 col-md-6 col-sm-6">
+                  <div className="d-block text-right">
+                    <button className="alert-white-button min-width-auto m-r-0">
+                      <i className="fa fa-arrow-circle-left"></i>
+                      &nbsp;&nbsp;Back
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div className="">
-                <div className="left">
+            </div>
+            <div className="analytics-tabs-container">
+              <ul className="nav nav-tabs">
+                {this.displayTabs()}
+                <li className="nav-item">
+                  <a className="nav-link add-tab">
+                    <i className="fa fa-plus"></i>
+                  </a>
+                </li>
+              </ul>
+              <div className="analytics-tabs-section-container">
+                <div className="tabs-left-section">
                   <h5>New Tab</h5>
                   <ul>
                     <li>
-                      <span></span>
-                      <i className="fa fa-ellipsis-h"></i>
+                      <a href="#">
+                        <i className="fa fa-ellipsis-h"></i>
+                        <span></span>
+                      </a>
                     </li>
                     <li>
-                      <span></span>
-                      <i className="fa fa-ellipsis-h"></i>
+                      <a href="#">
+                        <i className="fa fa-ellipsis-h"></i>
+                        <span></span>
+                      </a>
                     </li>
                     <li>
-                      <span></span>
-                      <i className="fa fa-ellipsis-h"></i>
+                      <a href="#">
+                        <i className="fa fa-ellipsis-h"></i>
+                        <span></span>
+                      </a>
                     </li>
                   </ul>
                 </div>
-                <div className="right">
+                <div className="tabs-right-section">
                   <div className="manage-dashboard-search">
                     <div className="row">
-                      <div className="col-lg-3 col-md-12 col-sm-12">
+                      <div className="col-lg-3 col-md-6 col-sm-12">
                         <div className="form-group search-control-group">
                           <form>
                             <input type="text" className="input-group-text" placeholder="Search dashboards by name" />
@@ -433,33 +484,39 @@ class AddNewTab extends React.Component<any, any> {
                           </form>
                         </div>
                       </div>
-                      <div className="d-inline">
-                        <input type="checkbox" className="checkbox" />
-                        <span>Filter by starred</span>
+                      <div className="col-lg-3 col-md-6 col-sm-12">
+                        <div className="sort-select-menu">
+                          <span>
+                            <img src="/public/img/tag.png" alt="" />
+                          </span>
+                          <select>
+                            <option>Filter by tag</option>
+                            <option>Filter by tag</option>
+                            <option>Filter by tag</option>
+                          </select>
+                        </div>
                       </div>
-                      <div className="d-inline">
-                        <span>
-                          <img src="/public/img/tag.png" alt="" />
-                        </span>
-                        <select>
-                          <option>Filter by tag</option>
-                          <option>Filter by tag</option>
-                          <option>Filter by tag</option>
-                        </select>
+                      <div className="col-lg-3 col-md-6 col-sm-12">
+                        <div className="sort-checkbox">
+                          <input type="checkbox" className="checkbox" />
+                          <span>Filter by starred</span>
+                        </div>
                       </div>
-                      <div className="d-inline">
-                        <span>
-                          <img src="/public/img/sort.png" alt="" />
-                        </span>
-                        <select>
-                          <option>Sort (Default A-Z)</option>
-                          <option>Sort (Default A-Z)</option>
-                          <option>Sort (Default A-Z)</option>
-                        </select>
+                      <div className="col-lg-3 col-md-6 col-sm-12">
+                        <div className="sort-select-menu">
+                          <span>
+                            <img src="/public/img/sort.png" alt="" />
+                          </span>
+                          <select>
+                            <option>Sort (Default A-Z)</option>
+                            <option>Sort (Default A-Z)</option>
+                            <option>Sort (Default A-Z)</option>
+                          </select>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div>{this.openCloseManageDashboardFolder()}</div>
+                  <div className="manage-dashboard-general">{this.openCloseManageDashboardFolder()}</div>
                 </div>
               </div>
             </div>
