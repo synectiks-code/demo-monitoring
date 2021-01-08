@@ -64,7 +64,15 @@ export class Table extends React.Component<any, any> {
                 const jsx = column.renderCallback(row[key], row);
                 tdJSX.push(jsx);
               } else {
-                tdJSX.push(<td>{row[key]}</td>);
+                tdJSX.push(
+                  key === 'name' ? (
+                    <td>
+                      <a href={`/analytics/${i + 1}`}>{row[key]}</a>
+                    </td>
+                  ) : (
+                    <td>{row[key]}</td>
+                  )
+                );
               }
             }
           }

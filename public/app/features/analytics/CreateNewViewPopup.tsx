@@ -51,7 +51,9 @@ export class CreateNewViewPopup extends React.Component<any, any> {
               <button className="alert-gray-button cancel" onClick={this.handleClose}>
                 Cancel
               </button>
-              <button className="alert-blue-button m-r-0 continue">Continue</button>
+              <a href="/analytics/f/new">
+                <button className="alert-blue-button m-r-0 continue">Continue</button>
+              </a>
             </div>
           </div>
         </ModalBody>

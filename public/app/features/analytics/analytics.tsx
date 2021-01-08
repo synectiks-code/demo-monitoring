@@ -5,7 +5,6 @@ import { updateLocation } from 'app/core/actions';
 import { CustomNavigationBar } from 'app/core/components/CustomNav';
 import Table from './tables/table';
 import { CreateNewViewPopup } from './CreateNewViewPopup';
-import { DeleteTabPopup } from './DeleteTabPopup';
 
 // Services & Utils
 export interface Props {
@@ -17,7 +16,6 @@ export interface Props {
 
 class Analytics extends React.Component<any, any> {
   opencreateNewViewRef: any;
-  openDeleteTabRef: any;
   breadCrumbs: any = [
     {
       label: 'Home',
@@ -100,7 +98,7 @@ class Analytics extends React.Component<any, any> {
                   <button className="btn btn-link">
                     <i className="fa fa-edit"></i>
                   </button>
-                  <button className="btn btn-link" onClick={this.deleteTabData}>
+                  <button className="btn btn-link">
                     <i className="fa fa-trash"></i>
                   </button>
                   <button className="btn btn-link">
@@ -115,15 +113,10 @@ class Analytics extends React.Component<any, any> {
       ],
     };
     this.opencreateNewViewRef = React.createRef();
-    this.openDeleteTabRef = React.createRef();
   }
 
   onClickCreateNewView = (e: any) => {
     this.opencreateNewViewRef.current.toggle();
-  };
-
-  deleteTabData = () => {
-    this.openDeleteTabRef.current.toggle();
   };
 
   render() {
@@ -189,7 +182,6 @@ class Analytics extends React.Component<any, any> {
             </div>
           </div>
           <CreateNewViewPopup ref={this.opencreateNewViewRef} />
-          <DeleteTabPopup ref={this.openDeleteTabRef} />
         </div>
       </React.Fragment>
     );

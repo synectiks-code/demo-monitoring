@@ -226,6 +226,7 @@ class AddNewTab extends React.Component<any, any> {
         },
       ],
       activeTab: 0,
+      Enablepreview: false,
     };
   }
 
@@ -290,22 +291,26 @@ class AddNewTab extends React.Component<any, any> {
   onClickChildCheckbox = (parentIndex: any, childIndex: any) => {
     let countCheckedCheckbox = 0;
     const { folderArray } = this.state;
+    let enable = false;
     const parentCheckbox = folderArray[parentIndex];
     parentCheckbox.subData[childIndex].checkValue = !parentCheckbox.subData[childIndex].checkValue;
     for (let j = 0; j < parentCheckbox.subData.length; j++) {
       if (parentCheckbox.subData[j].checkValue === true) {
         countCheckedCheckbox++;
+        enable = true;
       } else {
         countCheckedCheckbox--;
       }
     }
     if (countCheckedCheckbox === parentCheckbox.subData.length) {
       parentCheckbox.checkValueStatus = true;
+      enable = true;
     } else {
       parentCheckbox.checkValueStatus = false;
     }
     this.setState({
       folderArray,
+      Enablepreview: enable,
     });
   };
 
@@ -319,14 +324,19 @@ class AddNewTab extends React.Component<any, any> {
 
   onChangeParentCheckbox = (e: any, index: any) => {
     const { folderArray } = this.state;
+    let enable = false;
     const parentCheckbox = folderArray[index];
     const checked = e.target.checked;
     for (let j = 0; j < parentCheckbox.subData.length; j++) {
       parentCheckbox.subData[j].checkValue = checked;
       parentCheckbox.checkValueStatus = checked;
+      if (parentCheckbox.checkValueStatus === true || parentCheckbox.subData[j].checkValue === true) {
+        enable = checked;
+      }
     }
     this.setState({
       folderArray,
+      Enablepreview: enable,
     });
   };
 
@@ -395,6 +405,7 @@ class AddNewTab extends React.Component<any, any> {
   render() {
     const breadCrumbs = this.breadCrumbs;
     const pageTitle = 'ANALYTICS';
+    const { Enablepreview } = this.state;
     return (
       <React.Fragment>
         <CustomNavigationBar />
@@ -517,6 +528,13 @@ class AddNewTab extends React.Component<any, any> {
                     </div>
                   </div>
                   <div className="manage-dashboard-general">{this.openCloseManageDashboardFolder()}</div>
+                  {Enablepreview === true && (
+                    <div className="text-right">
+                      <a href="/analytics/new/dashboard">
+                        <button className="alert-blue-button">Preview</button>
+                      </a>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
