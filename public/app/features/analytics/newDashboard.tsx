@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { updateLocation } from 'app/core/actions';
 import { CustomNavigationBar } from 'app/core/components/CustomNav';
+import { DeleteTabPopup } from './DeleteTabPopup';
 
 // Services & Utils
 export interface Props {
@@ -11,7 +12,8 @@ export interface Props {
   Id?: string;
 }
 
-class NewDashboard extends React.Component<any, any> {
+class ManageDashboard extends React.Component<any, any> {
+  openDeleteTabRef: any;
   breadCrumbs: any = [
     {
       label: 'Home',
@@ -25,14 +27,33 @@ class NewDashboard extends React.Component<any, any> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      tabs: [
-        {
-          label: 'AWS',
-        },
-      ],
+      tabs: [],
+      sideBarData: [],
       activeTab: 0,
     };
+    this.openDeleteTabRef = React.createRef();
   }
+
+  componentDidMount = () => {
+    const { activeTab } = this.state;
+    let data: any;
+    let arryData: any;
+    data = localStorage.getItem('newdashboarddata');
+    arryData = JSON.parse(data);
+    let sidebar = [];
+    for (let i = 0; i < arryData.length; i++) {
+      if (i === activeTab) {
+        for (let j = 0; j < arryData[i].tabsSidebarContent.length; j++) {
+          let row = arryData[i].tabsSidebarContent[j];
+          sidebar.push(row);
+        }
+      }
+    }
+    this.setState({
+      tabs: arryData,
+      sideBarData: sidebar,
+    });
+  };
 
   displayTabs = () => {
     const { tabs, activeTab } = this.state;
@@ -51,9 +72,19 @@ class NewDashboard extends React.Component<any, any> {
   };
 
   navigateTab(index: any) {
+    const { tabs } = this.state;
     this.setState({
+      sideBarData: [],
       activeTab: index,
     });
+    for (let i = 0; i < tabs.length; i++) {
+      let tab = tabs[i];
+      if (i === index && tab.tabsSidebarContent) {
+        this.setState({
+          sideBarData: tab.tabsSidebarContent,
+        });
+      }
+    }
   }
 
   addTab = () => {
@@ -63,6 +94,66 @@ class NewDashboard extends React.Component<any, any> {
     this.setState({
       tabs,
       activeTab: length,
+    });
+  };
+
+  displayAction = (index: any) => {
+    const { sideBarData } = this.state;
+    console.log(sideBarData);
+    sideBarData[index].checkValue = !sideBarData[index].checkValue;
+    this.setState({
+      sideBarData,
+    });
+  };
+
+  deleteTabData = () => {
+    this.openDeleteTabRef.current.toggle();
+  };
+
+  displayActiveTabSidebar = () => {
+    const { sideBarData } = this.state;
+    let retData = [];
+    for (let i = 0; i < sideBarData.length; i++) {
+      let row = sideBarData[i];
+      retData.push(
+        <li>
+          <a href="#">
+            <i className="fa fa-ellipsis-h" onClick={() => this.displayAction(i)}></i>
+            <span>{row.tableTitle}</span>
+          </a>
+          {row.checkValue === true && (
+            <ul>
+              <li>
+                <a href="#">
+                  <i className="fa fa-caret-right"></i>
+                  Move Up
+                </a>
+              </li>
+              <li onClick={this.moveArrayPosition}>
+                <a href="#">
+                  <i className="fa fa-caret-left"></i>
+                  Move Down
+                </a>
+              </li>
+              <li onClick={this.deleteTabData}>
+                <a href="#">
+                  <i className="fa fa-trash"></i>
+                  Delete
+                </a>
+              </li>
+            </ul>
+          )}
+        </li>
+      );
+    }
+    return retData;
+  };
+
+  moveArrayPosition = () => {
+    const { sideBarData } = this.state;
+    sideBarData.push(sideBarData.shift());
+    this.setState({
+      sideBarData,
     });
   };
 
@@ -104,10 +195,7 @@ class NewDashboard extends React.Component<any, any> {
                 </div>
                 <div className="col-lg-6 col-md-6 col-sm-6">
                   <div className="d-block text-right">
-                    <button className="alert-white-button min-width-auto m-r-0">
-                      <i className="fa fa-arrow-circle-left"></i>
-                      &nbsp;&nbsp;Back
-                    </button>
+                    <button className="alert-blue-button">Save and add to View list</button>
                   </div>
                 </div>
               </div>
@@ -123,47 +211,8 @@ class NewDashboard extends React.Component<any, any> {
               </ul>
               <div className="analytics-tabs-section-container">
                 <div className="tabs-left-section">
-                  <h5>AWS</h5>
-                  <ul>
-                    <li>
-                      <a href="#">
-                        <i className="fa fa-ellipsis-h"></i>
-                        <span>Amazon VloudWatch Logs</span>
-                      </a>
-                      <ul>
-                        <li>
-                          <a href="#">
-                            <i className="fa fa-caret-right"></i>
-                            Move Right
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#">
-                            <i className="fa fa-caret-left"></i>
-                            Move Left
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#">
-                            <i className="fa fa-trash"></i>
-                            Delete
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <i className="fa fa-ellipsis-h"></i>
-                        <span>Amazon RDS</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <i className="fa fa-ellipsis-h"></i>
-                        <span>AWS VPN</span>
-                      </a>
-                    </li>
-                  </ul>
+                  <h5>AWS RDS</h5>
+                  <ul>{this.displayActiveTabSidebar()}</ul>
                 </div>
                 <div className="tabs-right-section">
                   <div className="analytics-aws-heading">
@@ -173,6 +222,7 @@ class NewDashboard extends React.Component<any, any> {
               </div>
             </div>
           </div>
+          <DeleteTabPopup ref={this.openDeleteTabRef} />
         </div>
       </React.Fragment>
     );
@@ -185,4 +235,4 @@ const mapDispatchToProps = {
   updateLocation,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewDashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(ManageDashboard);

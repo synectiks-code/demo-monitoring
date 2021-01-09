@@ -402,6 +402,35 @@ class AddNewTab extends React.Component<any, any> {
     return retData;
   };
 
+  sendData = () => {
+    let dashboardData = [];
+    const { folderArray } = this.state;
+    for (let i = 0; i < folderArray.length; i++) {
+      let row = folderArray[i];
+      if (row.checkValueStatus === true) {
+        for (let j = 0; j < row.subData.length; j++) {
+          row.subData[j].checkValue = false;
+        }
+        dashboardData.push({ label: row.title, tabsSidebarContent: row.subData });
+      } else {
+        let subData = [];
+        for (let j = 0; j < row.subData.length; j++) {
+          let subdata = row.subData[j];
+          if (subdata.checkValue === true) {
+            subdata.checkValue = false;
+            subData.push(subdata);
+          }
+        }
+        if (subData.length > 0) {
+          dashboardData.push({ label: row.title, tabsSidebarContent: subData });
+        }
+      }
+    }
+    console.log(dashboardData);
+    localStorage.setItem('newdashboarddata', JSON.stringify(dashboardData));
+    window.location.assign(`/analytics/new/dashboard`);
+  };
+
   render() {
     const breadCrumbs = this.breadCrumbs;
     const pageTitle = 'ANALYTICS';
@@ -530,9 +559,9 @@ class AddNewTab extends React.Component<any, any> {
                   <div className="manage-dashboard-general">{this.openCloseManageDashboardFolder()}</div>
                   {Enablepreview === true && (
                     <div className="text-right">
-                      <a href="/analytics/new/dashboard">
-                        <button className="alert-blue-button">Preview</button>
-                      </a>
+                      <button className="alert-blue-button" onClick={this.sendData}>
+                        Preview
+                      </button>
                     </div>
                   )}
                 </div>

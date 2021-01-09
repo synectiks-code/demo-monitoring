@@ -273,6 +273,9 @@ class ManageDashboard extends React.Component<any, any> {
                   <div className="analytics-aws-heading">
                     <p>AWS RDS {'>'} CPUUtilisation, CreditsUsage, CreditBalance</p>
                   </div>
+                  <div>
+                    <img src="/public/img/metrics.svg" />
+                  </div>
                 </div>
               </div>
             </div>
