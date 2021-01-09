@@ -195,7 +195,9 @@ class ManageDashboard extends React.Component<any, any> {
                 </div>
                 <div className="col-lg-6 col-md-6 col-sm-6">
                   <div className="d-block text-right">
-                    <button className="alert-blue-button">Save and add to View list</button>
+                    <a href="/analytics/">
+                      <button className="alert-blue-button">Save and add to View list</button>
+                    </a>
                   </div>
                 </div>
               </div>

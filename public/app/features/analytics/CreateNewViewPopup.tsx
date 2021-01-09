@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
+import { CustomTextbox, CustomTextarea } from './components';
 
 export class CreateNewViewPopup extends React.Component<any, any> {
   steps: any;
@@ -7,6 +8,9 @@ export class CreateNewViewPopup extends React.Component<any, any> {
     super(props);
     this.state = {
       modal: false,
+      viewName: '',
+      description: '',
+      isSubmitted: false,
     };
   }
 
@@ -21,8 +25,59 @@ export class CreateNewViewPopup extends React.Component<any, any> {
     });
   };
 
+  handleStateChange = (e: any) => {
+    const { name, value } = e.target;
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  validate = (isSubmitted: any) => {
+    const validObj = {
+      isValid: true,
+      message: '',
+    };
+    let isValid = true;
+    const retData = {
+      viewName: validObj,
+      description: validObj,
+      isValid,
+    };
+    if (isSubmitted) {
+      const { viewName, description } = this.state;
+      if (!viewName) {
+        retData.viewName = {
+          isValid: false,
+          message: 'Name is required',
+        };
+        isValid = false;
+      }
+      if (!description) {
+        retData.description = {
+          isValid: false,
+          message: 'Description is required',
+        };
+        isValid = false;
+      }
+    }
+    retData.isValid = isValid;
+    return retData;
+  };
+
+  handleSubmit = (event: any) => {
+    event.preventDefault();
+    this.setState({
+      isSubmitted: true,
+    });
+    const errorData = this.validate(true);
+    if (errorData.isValid) {
+      window.location.assign('/analytics/f/new');
+    }
+  };
+
   render() {
-    const { modal } = this.state;
+    const { modal, viewName, description, isSubmitted } = this.state;
+    const errorData = this.validate(isSubmitted);
     return (
       <Modal isOpen={modal} toggle={this.toggle} className="catalog-modal-container">
         <ModalHeader toggle={this.toggle}>Creating New View</ModalHeader>
@@ -30,30 +85,41 @@ export class CreateNewViewPopup extends React.Component<any, any> {
           <div className="d-block width-100">
             <div className="form-group">
               <label htmlFor="viewName">View Name</label>
-              <input
-                type="text"
-                className="input-group-text"
+              <CustomTextbox
+                containerClass="form-group mb-4 position-relative"
+                inputClass="input-group-text"
+                htmlFor="viewName"
                 id="viewName"
+                placeholder=""
                 name="viewName"
-                placeholder="A descriptive name of View"
+                value={viewName}
+                onChange={this.handleStateChange}
+                isValid={errorData.viewName.isValid}
+                message={errorData.viewName.message}
               />
             </div>
             <div className="form-group">
               <label htmlFor="description">Description</label>
-              <textarea
+              <CustomTextarea
+                containerClass="form-group mb-4 position-relative"
+                inputClass="input-group-text"
+                htmlFor="description"
                 id="description"
-                className="input-group-text"
+                placeholder=""
                 name="description"
-                placeholder="What kind of Dashboards are included in this View"
-              ></textarea>
+                value={description}
+                onChange={this.handleStateChange}
+                isValid={errorData.description.isValid}
+                message={errorData.description.message}
+              />
             </div>
             <div className="d-block text-right p-t-20">
               <button className="alert-gray-button cancel" onClick={this.handleClose}>
                 Cancel
               </button>
-              <a href="/analytics/f/new">
-                <button className="alert-blue-button m-r-0 continue">Continue</button>
-              </a>
+              <button className="alert-blue-button m-r-0 continue" onClick={this.handleSubmit}>
+                Continue
+              </button>
             </div>
           </div>
         </ModalBody>

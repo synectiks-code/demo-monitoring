@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { updateLocation } from 'app/core/actions';
 import { CustomNavigationBar } from 'app/core/components/CustomNav';
 import { DeleteTabPopup } from './DeleteTabPopup';
+import DashboardContent from './dashboardContent';
 
 // Services & Utils
 export interface Props {
@@ -103,6 +104,13 @@ class ManageDashboard extends React.Component<any, any> {
         },
       ],
       activeTab: 0,
+      activeSidebar: 0,
+      dashboardContent: [
+        {
+          label: 'CPUUtilisation, CreditsUsage, CreditBalance',
+          displayaction: false,
+        },
+      ],
     };
     this.openDeleteTabRef = React.createRef();
   }
@@ -163,15 +171,15 @@ class ManageDashboard extends React.Component<any, any> {
   };
 
   displayActiveTabSidebar = () => {
-    const { sideBarData } = this.state;
+    const { sideBarData, activeSidebar } = this.state;
     let retData = [];
     for (let i = 0; i < sideBarData.length; i++) {
       let row = sideBarData[i];
       retData.push(
         <li>
-          <a href="#">
+          <a href="#" onClick={() => this.setDashboardContent(row, i)}>
             <i className="fa fa-ellipsis-h" onClick={() => this.displayAction(i)}></i>
-            <span>{row.label}</span>
+            <span className={i === activeSidebar ? 'active' : ''}>{row.label}</span>
           </a>
           {row.displayaction === true && (
             <ul>
@@ -199,6 +207,13 @@ class ManageDashboard extends React.Component<any, any> {
       );
     }
     return retData;
+  };
+
+  setDashboardContent = (content: any, index: any) => {
+    this.setState({
+      dashboardContent: content,
+      activeSidebar: index,
+    });
   };
 
   moveArrayPosition = () => {
@@ -274,7 +289,7 @@ class ManageDashboard extends React.Component<any, any> {
                     <p>AWS RDS {'>'} CPUUtilisation, CreditsUsage, CreditBalance</p>
                   </div>
                   <div>
-                    <img src="/public/img/metrics.svg" />
+                    <DashboardContent dashbordData={this.state.dashboardContent} />
                   </div>
                 </div>
               </div>

@@ -304,9 +304,19 @@ class AddNewTab extends React.Component<any, any> {
     }
     if (countCheckedCheckbox === parentCheckbox.subData.length) {
       parentCheckbox.checkValueStatus = true;
-      enable = true;
     } else {
       parentCheckbox.checkValueStatus = false;
+    }
+    for (let i = 0; i < folderArray.length; i++) {
+      if (folderArray[i].checkValueStatus === true) {
+        enable = true;
+      } else {
+        for (let j = 0; j < folderArray[i].subData.length; j++) {
+          if (folderArray[i].subData[j].checkValueStatus === true) {
+            enable = true;
+          }
+        }
+      }
     }
     this.setState({
       folderArray,
@@ -330,8 +340,21 @@ class AddNewTab extends React.Component<any, any> {
     for (let j = 0; j < parentCheckbox.subData.length; j++) {
       parentCheckbox.subData[j].checkValue = checked;
       parentCheckbox.checkValueStatus = checked;
-      if (parentCheckbox.checkValueStatus === true || parentCheckbox.subData[j].checkValue === true) {
-        enable = checked;
+      if (parentCheckbox.checkValueStatus === true) {
+        enable = true;
+      } else {
+        enable = true;
+      }
+    }
+    for (let i = 0; i < folderArray.length; i++) {
+      if (folderArray[i].checkValueStatus === true) {
+        enable = true;
+      } else {
+        for (let j = 0; j < folderArray[i].subData.length; j++) {
+          if (folderArray[i].subData[j].checkValueStatus === true) {
+            enable = true;
+          }
+        }
       }
     }
     this.setState({

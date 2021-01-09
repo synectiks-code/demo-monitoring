@@ -247,6 +247,10 @@
                 width: 85%;
               }
 
+              span.active {
+                color: #0099ff;
+              }
+
               &:hover {
                 background-color: #ffffff;
 
@@ -778,4 +782,8 @@
     font-size: 14px;
     color: #0099ff;
   }
+}
+
+.invalid-feedback {
+  color: #ff4040ed;
 }
