@@ -3,8 +3,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { updateLocation } from 'app/core/actions';
 import { CustomNavigationBar } from 'app/core/components/CustomNav';
+import CustomDashboardLoader from '../custom-dashboard-loader';
 import { DeleteTabPopup } from './DeleteTabPopup';
-import DashboardContent from './dashboardContent';
+// import DashboardContent from './dashboardContent';
 
 // Services & Utils
 export interface Props {
@@ -35,18 +36,26 @@ class ManageDashboard extends React.Component<any, any> {
             {
               label: 'CPUUtilisation, CreditsUsage, CreditBalance',
               displayaction: false,
+              slug: '',
+              uid: 'dHDp4K-Gz',
             },
             {
               label: 'DatabaseConnections, Transaction Log Generation',
               displayaction: false,
+              slug: '',
+              uid: '0u_c4F-Mz',
             },
             {
               label: 'ReadWrite Latency, IOPS, Network Receive/Transmit ThroughPut',
               displayaction: false,
+              slug: '',
+              uid: '8LIhVK-Mk',
             },
             {
               label: 'StorageSpace, RAM, ReadWrite Throughput',
               displayaction: false,
+              slug: '',
+              uid: 'dHDp4K-Gz',
             },
           ],
         },
@@ -56,18 +65,26 @@ class ManageDashboard extends React.Component<any, any> {
             {
               label: 'East-1-Logs-Accepts-1',
               displayaction: false,
+              slug: '',
+              uid: '0u_c4F-Mz',
             },
             {
               label: 'East-1-Logs-Accepts-2',
               displayaction: false,
+              slug: '',
+              uid: 'ZX9tVKaGz',
             },
             {
               label: 'East-1-Logs-Accepts-1',
               displayaction: false,
+              slug: '',
+              uid: '8LIhVK-Mk',
             },
             {
               label: 'East-1-Logs-Accepts-2',
               displayaction: false,
+              slug: '',
+              uid: 'dHDp4K-Gz',
             },
           ],
         },
@@ -89,28 +106,30 @@ class ManageDashboard extends React.Component<any, any> {
         {
           label: 'CPUUtilisation, CreditsUsage, CreditBalance',
           displayaction: false,
+          slug: '',
+          uid: 'dHDp4K-Gz',
         },
         {
           label: 'DatabaseConnections, Transaction Log Generation',
           displayaction: false,
+          slug: '',
+          uid: '0u_c4F-Mz',
         },
         {
           label: 'ReadWrite Latency, IOPS, Network Receive/Transmit ThroughPut',
           displayaction: false,
+          slug: '',
+          uid: '8LIhVK-Mk',
         },
         {
           label: 'StorageSpace, RAM, ReadWrite Throughput',
           displayaction: false,
+          slug: '',
+          uid: 'dHDp4K-Gz',
         },
       ],
       activeTab: 0,
       activeSidebar: 0,
-      dashboardContent: [
-        {
-          label: 'CPUUtilisation, CreditsUsage, CreditBalance',
-          displayaction: false,
-        },
-      ],
     };
     this.openDeleteTabRef = React.createRef();
   }
@@ -211,7 +230,8 @@ class ManageDashboard extends React.Component<any, any> {
 
   setDashboardContent = (content: any, index: any) => {
     this.setState({
-      dashboardContent: content,
+      uid: content.uid,
+      slug: content.slug,
       activeSidebar: index,
     });
   };
@@ -222,6 +242,29 @@ class ManageDashboard extends React.Component<any, any> {
     this.setState({
       sideBarData,
     });
+  };
+
+  createDashboard = () => {
+    const { activeSidebar, sideBarData } = this.state;
+    let retData = [];
+    for (let i = 0; i < sideBarData.length; i++) {
+      const dashboard = sideBarData[i];
+      // if (dashboard.type === 'dash-db') {
+      retData.push(
+        <div>
+          {activeSidebar === i && (
+            <CustomDashboardLoader
+              $scope={this.props.$scope}
+              $injector={this.props.$injector}
+              urlUid={dashboard.uid}
+              urlSlug={dashboard.slug}
+            />
+          )}
+        </div>
+      );
+      // }
+    }
+    return retData;
   };
 
   render() {
@@ -288,9 +331,7 @@ class ManageDashboard extends React.Component<any, any> {
                   <div className="analytics-aws-heading">
                     <p>AWS RDS {'>'} CPUUtilisation, CreditsUsage, CreditBalance</p>
                   </div>
-                  <div>
-                    <DashboardContent dashbordData={this.state.dashboardContent} />
-                  </div>
+                  <div>{this.createDashboard()}</div>
                 </div>
               </div>
             </div>
