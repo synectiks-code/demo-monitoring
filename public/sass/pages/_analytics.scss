@@ -787,3 +787,25 @@
 .invalid-feedback {
   color: #ff4040ed;
 }
+
+.popup-btn {
+  width: 110px;
+  padding: 10px 0;
+  margin-right: 40px;
+  background-color: #f5f6f5 !important;
+  ul {
+    display: inline-block;
+    li {
+      list-style: none;
+      a {
+        font-size: 12px;
+        color: #414d55;
+        opacity: 70%;
+      }
+      i {
+        color: #8392a7;
+        padding: 0 10px;
+      }
+    }
+  }
+}

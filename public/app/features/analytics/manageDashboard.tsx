@@ -217,7 +217,7 @@ class ManageDashboard extends React.Component<any, any> {
             <i className="fa fa-ellipsis-h" id={`PopoverFocus-${i}`}></i>
           </a>
           <UncontrolledPopover trigger="legacy" placement="bottom" target={`PopoverFocus-${i}`}>
-            <PopoverBody>
+            <PopoverBody className="popup-btn">
               <ul>
                 <li>
                   <a href="#">
