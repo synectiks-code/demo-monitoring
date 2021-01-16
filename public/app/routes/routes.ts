@@ -562,7 +562,7 @@ export function setupAngularRoutes($routeProvider: route.IRouteProvider, $locati
       reloadOnSearch: false,
       resolve: {
         component: () =>
-          SafeDynamicImport(import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/analytics/analytics')),
+          SafeDynamicImport(import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/analytics')),
       },
     })
     .when('/analytics/:Id', {
@@ -572,9 +572,7 @@ export function setupAngularRoutes($routeProvider: route.IRouteProvider, $locati
       reloadOnSearch: false,
       resolve: {
         component: () =>
-          SafeDynamicImport(
-            import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/analytics/manageDashboard')
-          ),
+          SafeDynamicImport(import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/analytics/ManageView')),
       },
     })
     .when('/analytics/f/new', {
@@ -584,7 +582,7 @@ export function setupAngularRoutes($routeProvider: route.IRouteProvider, $locati
       reloadOnSearch: false,
       resolve: {
         component: () =>
-          SafeDynamicImport(import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/analytics/addNewTab')),
+          SafeDynamicImport(import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/analytics/AddNewView')),
       },
     })
     .when('/analytics/new/dashboard', {
@@ -594,7 +592,7 @@ export function setupAngularRoutes($routeProvider: route.IRouteProvider, $locati
       reloadOnSearch: false,
       resolve: {
         component: () =>
-          SafeDynamicImport(import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/analytics/newDashboard')),
+          SafeDynamicImport(import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/analytics/ViewNewView')),
       },
     })
     .otherwise({

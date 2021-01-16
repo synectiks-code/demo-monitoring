@@ -12,7 +12,7 @@ export interface Props {
   Id?: string;
 }
 
-class ManageDashboard extends React.Component<any, any> {
+class ViewNewView extends React.Component<any, any> {
   openDeleteTabRef: any;
   breadCrumbs: any = [
     {
@@ -237,4 +237,4 @@ const mapDispatchToProps = {
   updateLocation,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageDashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(ViewNewView);
