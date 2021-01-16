@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { CustomTextbox, CustomTextarea } from './components';
+import { getLocationSrv } from '@grafana/runtime';
 
 export class CreateNewViewPopup extends React.Component<any, any> {
   steps: any;
@@ -71,7 +72,8 @@ export class CreateNewViewPopup extends React.Component<any, any> {
     });
     const errorData = this.validate(true);
     if (errorData.isValid) {
-      window.location.assign('/analytics/f/new');
+      getLocationSrv().update({ path: '/analytics/f/new' });
+      // window.location.assign('/analytics/f/new');
     }
   };
 
