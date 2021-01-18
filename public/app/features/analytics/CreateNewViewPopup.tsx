@@ -83,7 +83,7 @@ export class CreateNewViewPopup extends React.Component<any, any> {
     return (
       <Modal isOpen={modal} toggle={this.toggle} className="catalog-modal-container">
         <ModalHeader toggle={this.toggle}>Creating New View</ModalHeader>
-        <ModalBody style={{ height: 'calc(45vh - 50px)', overflowY: 'auto', overflowX: 'hidden' }}>
+        <ModalBody style={{ height: 'calc(52vh - 50px)', overflowY: 'auto', overflowX: 'hidden' }}>
           <div className="d-block width-100">
             <div className="form-group">
               <label htmlFor="viewName">View Name</label>

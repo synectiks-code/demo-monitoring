@@ -625,9 +625,17 @@
   border-radius: 10px;
   padding: 10px 20px;
 }
-
+.modal-backdrop {
+  background-color: rgba(20, 20, 20, 0.7);
+  opacity: 0.8;
+}
+.modal {
+  box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px;
+  max-width: 992px;
+  background: rgb(255, 255, 255);
+}
 .catalog-modal-container {
-  max-width: 750px !important;
+  max-width: 992px !important;
   box-shadow: 0px 0px 16px #3b48593d;
   border-radius: 10px;
   background: white;
@@ -797,13 +805,16 @@
 
   ul {
     display: inline-block;
+
     li {
       list-style: none;
+
       a {
         font-size: 12px;
         color: #414d55;
         opacity: 70%;
       }
+
       i {
         color: #8392a7;
         padding: 0 10px;
