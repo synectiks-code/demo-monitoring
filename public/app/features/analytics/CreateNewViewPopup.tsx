@@ -83,7 +83,7 @@ export class CreateNewViewPopup extends React.Component<any, any> {
     return (
       <Modal isOpen={modal} toggle={this.toggle} className="catalog-modal-container">
         <ModalHeader toggle={this.toggle}>Creating New View</ModalHeader>
-        <ModalBody style={{ height: 'calc(52vh - 50px)', overflowY: 'auto', overflowX: 'hidden' }}>
+        <ModalBody style={{ height: 'calc(54vh - 50px)', overflowY: 'auto', overflowX: 'hidden' }}>
           <div className="d-block width-100">
             <div className="form-group">
               <label htmlFor="viewName">View Name</label>
@@ -103,7 +103,7 @@ export class CreateNewViewPopup extends React.Component<any, any> {
             <div className="form-group">
               <label htmlFor="description">Description</label>
               <CustomTextarea
-                containerClass="form-group mb-4 position-relative"
+                containerClass="form-group position-relative"
                 inputClass="input-group-text"
                 htmlFor="description"
                 id="description"
@@ -115,7 +115,7 @@ export class CreateNewViewPopup extends React.Component<any, any> {
                 message={errorData.description.message}
               />
             </div>
-            <div className="d-block text-right p-t-20">
+            <div className="d-block text-right">
               <button className="alert-gray-button cancel" onClick={this.handleClose}>
                 Cancel
               </button>

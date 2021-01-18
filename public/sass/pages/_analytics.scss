@@ -641,7 +641,7 @@
   background: white;
 
   .modal-content {
-    padding: 30px 30px;
+    padding: 30px 30px !important;
 
     .modal-header {
       background: white;
@@ -678,7 +678,7 @@
     }
 
     .modal-body {
-      padding: 0px;
+      padding: 0px !important;
 
       img {
         max-width: 100%;
@@ -688,6 +688,7 @@
 
       .form-group {
         padding-bottom: 20px;
+        margin-bottom: 0 !important;
 
         label {
           display: block;
@@ -696,6 +697,7 @@
           line-height: 34px;
           color: #3b4859;
           width: 100%;
+          margin-bottom: 0;
         }
 
         .input-group-text {
