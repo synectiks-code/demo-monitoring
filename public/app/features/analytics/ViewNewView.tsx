@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { updateLocation } from 'app/core/actions';
 import { CustomNavigationBar } from 'app/core/components/CustomNav';
 import { DeleteTabPopup } from './DeleteTabPopup';
+import { UncontrolledPopover, PopoverBody } from 'reactstrap';
+import CustomDashboardLoader from '../custom-dashboard-loader';
 
 // Services & Utils
 export interface Props {
@@ -30,6 +32,9 @@ class ViewNewView extends React.Component<any, any> {
       tabs: [],
       sideBarData: [],
       activeTab: 0,
+      selectedData: {},
+      deletedId: 0,
+      activeSidebar: 0,
     };
     this.openDeleteTabRef = React.createRef();
   }
@@ -38,6 +43,7 @@ class ViewNewView extends React.Component<any, any> {
     const { activeTab } = this.state;
     let data: any;
     let arryData: any;
+    let selectedLabel = {};
     data = localStorage.getItem('newdashboarddata');
     arryData = JSON.parse(data);
     let sidebar = [];
@@ -45,6 +51,7 @@ class ViewNewView extends React.Component<any, any> {
       if (i === activeTab) {
         for (let j = 0; j < arryData[i].tabsSidebarContent.length; j++) {
           let row = arryData[i].tabsSidebarContent[j];
+          selectedLabel = { label: row.tableTitle };
           sidebar.push(row);
         }
       }
@@ -52,6 +59,7 @@ class ViewNewView extends React.Component<any, any> {
     this.setState({
       tabs: arryData,
       sideBarData: sidebar,
+      selectedData: selectedLabel,
     });
   };
 
@@ -76,6 +84,7 @@ class ViewNewView extends React.Component<any, any> {
     this.setState({
       sideBarData: [],
       activeTab: index,
+      activeSidebar: 0,
     });
     for (let i = 0; i < tabs.length; i++) {
       let tab = tabs[i];
@@ -106,60 +115,115 @@ class ViewNewView extends React.Component<any, any> {
     });
   };
 
-  deleteTabData = () => {
+  deleteTabData = (data: any, index: any) => {
+    this.setState({
+      selectedData: data,
+      deletedId: index,
+    });
     this.openDeleteTabRef.current.toggle();
   };
 
+  setDashboardContent = (content: any, index: any) => {
+    this.setState({
+      uid: content.uid,
+      slug: content.slug,
+      activeSidebar: index,
+      selectedData: content,
+    });
+  };
+
   displayActiveTabSidebar = () => {
-    const { sideBarData } = this.state;
+    const { sideBarData, activeSidebar } = this.state;
     let retData = [];
     for (let i = 0; i < sideBarData.length; i++) {
       let row = sideBarData[i];
       retData.push(
         <li>
-          <a href="#">
-            <i className="fa fa-ellipsis-h" onClick={() => this.displayAction(i)}></i>
-            <span>{row.tableTitle}</span>
+          <a onClick={() => this.setDashboardContent(row, i)}>
+            <span className={i === activeSidebar ? 'active' : ''}>{row.tableTitle}</span>
+            <i className="fa fa-ellipsis-h" id={`PopoverFocus-${i}`}></i>
           </a>
-          {row.checkValue === true && (
-            <ul>
-              <li>
-                <a href="#">
-                  <i className="fa fa-caret-right"></i>
-                  Move Up
-                </a>
-              </li>
-              <li onClick={this.moveArrayPosition}>
-                <a href="#">
-                  <i className="fa fa-caret-left"></i>
-                  Move Down
-                </a>
-              </li>
-              <li onClick={this.deleteTabData}>
-                <a href="#">
-                  <i className="fa fa-trash"></i>
-                  Delete
-                </a>
-              </li>
-            </ul>
-          )}
+          <UncontrolledPopover trigger="legacy" placement="bottom" target={`PopoverFocus-${i}`}>
+            <PopoverBody className="popup-btn">
+              <ul>
+                {i !== 0 && (
+                  <li onClick={() => this.moveArrayPosition(i, i - 1)}>
+                    <a href="#">
+                      <i className="fa fa-caret-up"></i>
+                      Move Up
+                    </a>
+                  </li>
+                )}
+                {i !== sideBarData.length - 1 && (
+                  <li onClick={() => this.moveArrayPosition(i, i + 1)}>
+                    <a href="#">
+                      <i className="fa fa-caret-down"></i>Move Down
+                    </a>
+                  </li>
+                )}
+                <li onClick={() => this.deleteTabData(row, i)}>
+                  <a href="#">
+                    <i className="fa fa-trash"></i>
+                    Delete
+                  </a>
+                </li>
+              </ul>
+            </PopoverBody>
+          </UncontrolledPopover>
         </li>
       );
     }
     return retData;
   };
 
-  moveArrayPosition = () => {
-    const { sideBarData } = this.state;
-    sideBarData.push(sideBarData.shift());
+  removeDashboardRecord = () => {
+    const { deletedId, sideBarData } = this.state;
+    for (let i = 0; i < sideBarData.length; i++) {
+      if (i === deletedId) {
+        sideBarData.splice(i, 1);
+      }
+    }
     this.setState({
       sideBarData,
     });
   };
 
+  moveArrayPosition = (fromIndex: any, toIndex: any) => {
+    const { sideBarData } = this.state;
+    var element = sideBarData[fromIndex];
+    sideBarData.splice(fromIndex, 1);
+    sideBarData.splice(toIndex, 0, element);
+    this.setState({
+      sideBarData,
+    });
+  };
+
+  createDashboard = () => {
+    const { activeSidebar, sideBarData } = this.state;
+    let retData = [];
+    for (let i = 0; i < sideBarData.length; i++) {
+      const dashboard = sideBarData[i];
+      // if (dashboard.type === 'dash-db') {
+      retData.push(
+        <div>
+          {activeSidebar === i && (
+            <CustomDashboardLoader
+              $scope={this.props.$scope}
+              $injector={this.props.$injector}
+              urlUid={dashboard.uid}
+              urlSlug={dashboard.slug}
+            />
+          )}
+        </div>
+      );
+      // }
+    }
+    return retData;
+  };
   render() {
     const breadCrumbs = this.breadCrumbs;
     const pageTitle = 'ANALYTICS';
+    const { selectedData } = this.state;
     return (
       <React.Fragment>
         <CustomNavigationBar />
@@ -220,11 +284,16 @@ class ViewNewView extends React.Component<any, any> {
                   <div className="analytics-aws-heading">
                     <p>AWS RDS {'>'} CPUUtilisation, CreditsUsage, CreditBalance</p>
                   </div>
+                  {/* <div>{this.createDashboard()}</div> */}
                 </div>
               </div>
             </div>
           </div>
-          <DeleteTabPopup ref={this.openDeleteTabRef} />
+          <DeleteTabPopup
+            ref={this.openDeleteTabRef}
+            deleteContent={selectedData}
+            deleteDataFromSidebar={this.removeDashboardRecord}
+          />
         </div>
       </React.Fragment>
     );

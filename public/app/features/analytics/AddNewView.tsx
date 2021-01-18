@@ -2,6 +2,8 @@
 import React from 'react';
 import { CustomNavigationBar } from 'app/core/components/CustomNav';
 import { Collapse } from 'reactstrap';
+import { getLocationSrv } from '@grafana/runtime';
+import { UncontrolledPopover, PopoverBody } from 'reactstrap';
 
 // Services & Utils
 export interface Props {
@@ -26,12 +28,15 @@ class AddNewTab extends React.Component<any, any> {
       tabs: [
         {
           label: 'New Tab',
+          isEdit: false,
         },
         {
-          label: 'New Tab2',
+          label: 'New Tab 2',
+          isEdit: false,
         },
         {
-          label: 'New Tab3',
+          label: 'New Tab 3',
+          isEdit: false,
         },
       ],
       folderArray: [
@@ -230,6 +235,32 @@ class AddNewTab extends React.Component<any, any> {
     };
   }
 
+  editTabTitle = (index: any) => {
+    const { tabs } = this.state;
+    for (let i = 0; i < tabs.length; i++) {
+      if (i === index) {
+        tabs[i].isEdit = true;
+        console.log(tabs[i].isEdit);
+      }
+    }
+    this.setState({
+      tabs,
+    });
+  };
+
+  handleStateChange = (e: any, index: any) => {
+    const { tabs } = this.state;
+    const { value } = e.target;
+    for (let i = 0; i < tabs.length; i++) {
+      if (i === index) {
+        tabs[i].label = value;
+      }
+    }
+    this.setState({
+      tabs,
+    });
+  };
+
   displayTabs = () => {
     const { tabs, activeTab } = this.state;
     const retData = [];
@@ -237,39 +268,98 @@ class AddNewTab extends React.Component<any, any> {
       let tab = tabs[i];
       retData.push(
         <li key={`tab-${i}`} className={`nav-item `}>
-          <a className={i === activeTab ? 'nav-link active' : 'nav-link'} onClick={e => this.navigateTab(i)}>
-            {tab.label}&nbsp; <i className="fa fa-angle-down"></i>
+          <a
+            className={i === activeTab ? 'nav-link active' : 'nav-link'}
+            onClick={e => this.navigateTab(i)}
+            id={`PopoverFocus-${i}`}
+          >
+            {!tab.isEdit && tab.label}&nbsp;
+            <i className="fa fa-angle-down"></i>
+            {tab.isEdit && (
+              <input
+                type="text"
+                className="form-control tab-edit"
+                value={tab.label}
+                name="title"
+                onChange={e => this.handleStateChange(e, i)}
+                onBlur={() => this.onFocusOutTitle(i)}
+              />
+            )}
           </a>
-          <ul>
-            <li>
-              <a href="#">
-                <i className="fa fa-edit"></i>
-                Rename Tab
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <i className="fa fa-caret-right"></i>
-                Move Right
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <i className="fa fa-caret-left"></i>
-                Move Left
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <i className="fa fa-trash"></i>
-                Delete
-              </a>
-            </li>
-          </ul>
+          {!tab.isEdit && (
+            <UncontrolledPopover trigger="legacy" placement="bottom" target={`PopoverFocus-${i}`}>
+              <PopoverBody className="popup-btn">
+                <ul>
+                  <li onClick={() => this.editTabTitle(i)}>
+                    <a href="#">
+                      <i className="fa fa-edit"></i>
+                      Rename Tab
+                    </a>
+                  </li>
+                  {i !== tabs.length - 1 && (
+                    <li onClick={() => this.moveArrayPosition(i, i + 1)}>
+                      <a href="#">
+                        <i className="fa fa-caret-right"></i>
+                        Move Right
+                      </a>
+                    </li>
+                  )}
+                  {i !== 0 && (
+                    <li onClick={() => this.moveArrayPosition(i, i - 1)}>
+                      <a href="#">
+                        <i className="fa fa-caret-left"></i>
+                        Move Left
+                      </a>
+                    </li>
+                  )}
+                  <li onClick={() => this.deleteTabData(i)}>
+                    <a href="#">
+                      <i className="fa fa-trash"></i>
+                      Delete
+                    </a>
+                  </li>
+                </ul>
+              </PopoverBody>
+            </UncontrolledPopover>
+          )}
         </li>
       );
     }
     return retData;
+  };
+
+  moveArrayPosition = (fromIndex: any, toIndex: any) => {
+    const { tabs } = this.state;
+    var element = tabs[fromIndex];
+    tabs.splice(fromIndex, 1);
+    tabs.splice(toIndex, 0, element);
+    this.setState({
+      tabs,
+    });
+  };
+
+  onFocusOutTitle = (index: any) => {
+    const { tabs } = this.state;
+    for (let i = 0; i < tabs.length; i++) {
+      if (i === index) {
+        tabs[i].isEdit = false;
+      }
+    }
+    this.setState({
+      tabs,
+    });
+  };
+
+  deleteTabData = (index: any) => {
+    const { tabs } = this.state;
+    for (let i = 0; i < tabs.length; i++) {
+      if (i === index) {
+        tabs.splice(i, 1);
+      }
+    }
+    this.setState({
+      tabs,
+    });
   };
 
   navigateTab(index: any) {
@@ -281,7 +371,7 @@ class AddNewTab extends React.Component<any, any> {
   addTab = () => {
     const { tabs } = this.state;
     const length = tabs.length;
-    tabs.push({ label: 'New Tab' });
+    tabs.push({ label: 'New Tab' + ' ' + (length + 1), isEdit: false });
     this.setState({
       tabs,
       activeTab: length,
@@ -449,7 +539,6 @@ class AddNewTab extends React.Component<any, any> {
         }
       }
     }
-    console.log(dashboardData);
     localStorage.setItem('newdashboarddata', JSON.stringify(dashboardData));
     window.location.assign(`/analytics/new/dashboard`);
   };
@@ -493,7 +582,10 @@ class AddNewTab extends React.Component<any, any> {
                 </div>
                 <div className="col-lg-6 col-md-6 col-sm-6">
                   <div className="d-block text-right">
-                    <button className="alert-white-button min-width-auto m-r-0">
+                    <button
+                      className="alert-white-button min-width-auto m-r-0"
+                      onClick={() => getLocationSrv().update({ path: '/analytics' })}
+                    >
                       <i className="fa fa-arrow-circle-left"></i>
                       &nbsp;&nbsp;Back
                     </button>
@@ -504,7 +596,7 @@ class AddNewTab extends React.Component<any, any> {
             <div className="analytics-tabs-container">
               <ul className="nav nav-tabs">
                 {this.displayTabs()}
-                <li className="nav-item">
+                <li className="nav-item" onClick={this.addTab}>
                   <a className="nav-link add-tab">
                     <i className="fa fa-plus"></i>
                   </a>

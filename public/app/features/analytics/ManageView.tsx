@@ -6,6 +6,7 @@ import { CustomNavigationBar } from 'app/core/components/CustomNav';
 import CustomDashboardLoader from '../custom-dashboard-loader';
 import { DeleteTabPopup } from './DeleteTabPopup';
 import { UncontrolledPopover, PopoverBody } from 'reactstrap';
+import { getLocationSrv } from '@grafana/runtime';
 
 // Services & Utils
 export interface Props {
@@ -35,25 +36,21 @@ class ManageView extends React.Component<any, any> {
           tabsSidebarContent: [
             {
               label: 'CPUUtilisation, CreditsUsage, CreditBalance',
-              displayaction: false,
               slug: '',
               uid: 'dHDp4K-Gz',
             },
             {
               label: 'DatabaseConnections, Transaction Log Generation',
-              displayaction: false,
               slug: '',
               uid: '0u_c4F-Mz',
             },
             {
               label: 'ReadWrite Latency, IOPS, Network Receive/Transmit ThroughPut',
-              displayaction: false,
               slug: '',
               uid: '8LIhVK-Mk',
             },
             {
               label: 'StorageSpace, RAM, ReadWrite Throughput',
-              displayaction: false,
               slug: '',
               uid: 'dHDp4K-Gz',
             },
@@ -64,25 +61,21 @@ class ManageView extends React.Component<any, any> {
           tabsSidebarContent: [
             {
               label: 'East-1-Logs-Accepts-1',
-              displayaction: false,
               slug: '',
               uid: '0u_c4F-Mz',
             },
             {
               label: 'East-1-Logs-Accepts-2',
-              displayaction: false,
               slug: '',
               uid: 'ZX9tVKaGz',
             },
             {
               label: 'East-1-Logs-Accepts-1',
-              displayaction: false,
               slug: '',
               uid: '8LIhVK-Mk',
             },
             {
               label: 'East-1-Logs-Accepts-2',
-              displayaction: false,
               slug: '',
               uid: 'dHDp4K-Gz',
             },
@@ -93,11 +86,9 @@ class ManageView extends React.Component<any, any> {
           tabsSidebarContent: [
             {
               label: 'East-1-Logs-Accepts-1',
-              displayaction: false,
             },
             {
               label: 'DatabaseConnections, Transaction Log Generation',
-              displayaction: false,
             },
           ],
         },
@@ -188,15 +179,6 @@ class ManageView extends React.Component<any, any> {
     });
   };
 
-  // displayAction = (index: any) => {
-  //   const { sideBarData } = this.state;
-  //   sideBarData[index].displayaction = !sideBarData[index].displayaction;
-  //   console.log(sideBarData[index].displayaction);
-  //   this.setState({
-  //     sideBarData,
-  //   });
-  // };
-
   deleteTabData = (data: any, index: any) => {
     this.setState({
       selectedData: data,
@@ -219,18 +201,22 @@ class ManageView extends React.Component<any, any> {
           <UncontrolledPopover trigger="legacy" placement="bottom" target={`PopoverFocus-${i}`}>
             <PopoverBody className="popup-btn">
               <ul>
-                <li>
-                  <a href="#">
-                    <i className="fa fa-caret-up"></i>
-                    Move Up
-                  </a>
-                </li>
-                <li onClick={this.moveArrayPosition}>
-                  <a href="#">
-                    <i className="fa fa-caret-down"></i>
-                    Move Down
-                  </a>
-                </li>
+                {i !== 0 && (
+                  <li onClick={() => this.moveArrayPosition(i, i - 1)}>
+                    <a href="#">
+                      <i className="fa fa-caret-up"></i>
+                      Move Up
+                    </a>
+                  </li>
+                )}
+                {i !== sideBarData.length - 1 && (
+                  <li onClick={() => this.moveArrayPosition(i, i + 1)}>
+                    <a href="#">
+                      <i className="fa fa-caret-down"></i>
+                      Move Down
+                    </a>
+                  </li>
+                )}
                 <li onClick={() => this.deleteTabData(row, i)}>
                   <a href="#">
                     <i className="fa fa-trash"></i>
@@ -255,9 +241,11 @@ class ManageView extends React.Component<any, any> {
     });
   };
 
-  moveArrayPosition = () => {
+  moveArrayPosition = (fromIndex: any, toIndex: any) => {
     const { sideBarData } = this.state;
-    sideBarData.push(sideBarData.shift());
+    var element = sideBarData[fromIndex];
+    sideBarData.splice(fromIndex, 1);
+    sideBarData.splice(toIndex, 0, element);
     this.setState({
       sideBarData,
     });
@@ -337,7 +325,10 @@ class ManageView extends React.Component<any, any> {
                 </div>
                 <div className="col-lg-6 col-md-6 col-sm-6">
                   <div className="d-block text-right">
-                    <button className="alert-white-button min-width-auto m-r-0">
+                    <button
+                      className="alert-white-button min-width-auto m-r-0"
+                      onClick={() => getLocationSrv().update({ path: '/analytics' })}
+                    >
                       <i className="fa fa-arrow-circle-left"></i>
                       &nbsp;&nbsp;Back
                     </button>
