@@ -797,6 +797,9 @@
 .invalid-feedback {
   color: #ff4040ed;
 }
+.bs-popover-auto {
+  z-index: 1;
+}
 
 .popup-btn {
   width: 110px;
@@ -819,7 +822,8 @@
 
       i {
         color: #8392a7;
-        padding: 0 10px;
+        width: 25px;
+        text-align: center;
       }
     }
   }
