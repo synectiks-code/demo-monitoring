@@ -315,8 +315,8 @@ class AddNewTab extends React.Component<any, any> {
             )}
           </a>
           {!tab.isEdit && (
-            <UncontrolledPopover trigger="legacy" placement="bottom" target={`PopoverFocus-${i}`}>
-              <PopoverBody className="popup-btn">
+            <UncontrolledPopover trigger="legacy" className="popup-btn" placement="bottom" target={`PopoverFocus-${i}`}>
+              <PopoverBody>
                 <ul>
                   <li onClick={() => this.editTabTitle(i)}>
                     <a href="#">

@@ -198,8 +198,8 @@ class ManageView extends React.Component<any, any> {
             <span className={i === activeSidebar ? 'active' : ''}>{row.label}</span>
             <i className="fa fa-ellipsis-h" id={`PopoverFocus-${i}`}></i>
           </a>
-          <UncontrolledPopover trigger="legacy" placement="bottom" target={`PopoverFocus-${i}`}>
-            <PopoverBody className="popup-btn">
+          <UncontrolledPopover trigger="legacy" className="popup-btn" placement="bottom" target={`PopoverFocus-${i}`}>
+            <PopoverBody>
               <ul>
                 {i !== 0 && (
                   <li onClick={() => this.moveArrayPosition(i, i - 1)}>
