@@ -4,8 +4,10 @@ import { CustomNavigationBar } from 'app/core/components/CustomNav';
 import { Collapse } from 'reactstrap';
 import { getLocationSrv } from '@grafana/runtime';
 import { UncontrolledPopover, PopoverBody } from 'reactstrap';
+import { backendSrv } from 'app/core/services/backend_srv';
 
 // Services & Utils
+
 export interface Props {
   $scope: any;
   $injector: any;
@@ -29,14 +31,7 @@ class AddNewTab extends React.Component<any, any> {
         {
           label: 'New Tab',
           isEdit: false,
-        },
-        {
-          label: 'New Tab 2',
-          isEdit: false,
-        },
-        {
-          label: 'New Tab 3',
-          isEdit: false,
+          dashboardList: [],
         },
       ],
       folderArray: [
@@ -235,6 +230,43 @@ class AddNewTab extends React.Component<any, any> {
     };
   }
 
+  componentDidMount() {
+    backendSrv.search({}).then((result: any) => {
+      const retData = this.manipulateData(result);
+      const { tabs, activeTab } = this.state;
+      if (tabs[activeTab]) {
+        tabs[activeTab].dashboardList = JSON.parse(JSON.stringify(retData));
+      }
+      this.setState({
+        folderArray: JSON.parse(JSON.stringify(retData)),
+        tabs,
+      });
+    });
+  }
+
+  manipulateData(result: any) {
+    const retData: any = {};
+    for (let i = 0; i < result.length; i++) {
+      const dash = result[i];
+      dash.checkValue = false;
+      if (dash.type === 'dash-db') {
+        retData[dash.folderId] = retData[dash.folderId] || { subData: [] };
+        retData[dash.folderId].title = dash.folderTitle;
+        retData[dash.folderId].folderId = dash.folderId;
+        retData[dash.folderId].checkValueStatus = false;
+        retData[dash.folderId].openSubFolder = false;
+        retData[dash.folderId].subData.push(dash);
+      }
+      console.log(retData);
+    }
+    let keys = Object.keys(retData);
+    let folders: any = [];
+    for (let i = 0; i < keys.length; i++) {
+      folders.push(retData[keys[i]]);
+    }
+    return folders;
+  }
+
   editTabTitle = (index: any) => {
     const { tabs } = this.state;
     for (let i = 0; i < tabs.length; i++) {
@@ -268,13 +300,9 @@ class AddNewTab extends React.Component<any, any> {
       let tab = tabs[i];
       retData.push(
         <li key={`tab-${i}`} className={`nav-item `}>
-          <a
-            className={i === activeTab ? 'nav-link active' : 'nav-link'}
-            onClick={e => this.navigateTab(i)}
-            id={`PopoverFocus-${i}`}
-          >
-            {!tab.isEdit && tab.label}&nbsp;
-            <i className="fa fa-angle-down"></i>
+          <a className={i === activeTab ? 'nav-link active' : 'nav-link'}>
+            {!tab.isEdit && <span onClick={e => this.navigateTab(i)}>{tab.label}</span>}
+            {!tab.isEdit && <i className="fa fa-angle-down" id={`PopoverFocus-${i}`}></i>}
             {tab.isEdit && (
               <input
                 type="text"
@@ -363,184 +391,178 @@ class AddNewTab extends React.Component<any, any> {
   };
 
   navigateTab(index: any) {
+    this.checkFolderValue();
     this.setState({
       activeTab: index,
     });
   }
 
   addTab = () => {
-    const { tabs } = this.state;
+    const { tabs, folderArray } = this.state;
     const length = tabs.length;
-    tabs.push({ label: 'New Tab' + ' ' + (length + 1), isEdit: false });
+    tabs.push({
+      label: 'New Tab' + ' ' + (length + 1),
+      isEdit: false,
+      dashboardList: JSON.parse(JSON.stringify(folderArray)),
+    });
     this.setState({
       tabs,
       activeTab: length,
+      Enablepreview: false,
     });
   };
 
   onClickChildCheckbox = (parentIndex: any, childIndex: any) => {
     let countCheckedCheckbox = 0;
-    const { folderArray } = this.state;
-    let enable = false;
-    const parentCheckbox = folderArray[parentIndex];
-    parentCheckbox.subData[childIndex].checkValue = !parentCheckbox.subData[childIndex].checkValue;
-    for (let j = 0; j < parentCheckbox.subData.length; j++) {
-      if (parentCheckbox.subData[j].checkValue === true) {
-        countCheckedCheckbox++;
-        enable = true;
-      } else {
-        countCheckedCheckbox--;
-      }
-    }
-    if (countCheckedCheckbox === parentCheckbox.subData.length) {
-      parentCheckbox.checkValueStatus = true;
-    } else {
-      parentCheckbox.checkValueStatus = false;
-    }
-    for (let i = 0; i < folderArray.length; i++) {
-      if (folderArray[i].checkValueStatus === true) {
-        enable = true;
-      } else {
-        for (let j = 0; j < folderArray[i].subData.length; j++) {
-          if (folderArray[i].subData[j].checkValueStatus === true) {
-            enable = true;
-          }
+    const { tabs, activeTab } = this.state;
+    if (tabs[activeTab]) {
+      const dashboardList = tabs[activeTab].dashboardList;
+      const parentCheckbox = dashboardList[parentIndex];
+      parentCheckbox.subData[childIndex].checkValue = !parentCheckbox.subData[childIndex].checkValue;
+      for (let j = 0; j < parentCheckbox.subData.length; j++) {
+        if (parentCheckbox.subData[j].checkValue === true) {
+          countCheckedCheckbox++;
+        } else {
+          countCheckedCheckbox--;
         }
       }
+      if (countCheckedCheckbox === parentCheckbox.subData.length) {
+        parentCheckbox.checkValueStatus = true;
+      } else {
+        parentCheckbox.checkValueStatus = false;
+      }
+      this.checkFolderValue();
+      this.setState({
+        dashboardList,
+      });
     }
-    this.setState({
-      folderArray,
-      Enablepreview: enable,
-    });
   };
 
   onClickOpenSubFolder = (index: any) => {
-    const { folderArray } = this.state;
-    folderArray[index].openSubFolder = !folderArray[index].openSubFolder;
-    this.setState({
-      folderArray: folderArray,
-    });
+    const { tabs, activeTab } = this.state;
+    if (tabs[activeTab]) {
+      const dashboardList = tabs[activeTab].dashboardList;
+      dashboardList[index].openSubFolder = !dashboardList[index].openSubFolder;
+      this.setState({
+        dashboardList: dashboardList,
+      });
+    }
   };
 
   onChangeParentCheckbox = (e: any, index: any) => {
-    const { folderArray } = this.state;
-    let enable = false;
-    const parentCheckbox = folderArray[index];
-    const checked = e.target.checked;
-    for (let j = 0; j < parentCheckbox.subData.length; j++) {
-      parentCheckbox.subData[j].checkValue = checked;
-      parentCheckbox.checkValueStatus = checked;
-      if (parentCheckbox.checkValueStatus === true) {
-        enable = true;
-      } else {
-        enable = true;
+    const { tabs, activeTab } = this.state;
+    if (tabs[activeTab]) {
+      const dashboardList = tabs[activeTab].dashboardList;
+      const parentCheckbox = dashboardList[index];
+      const checked = e.target.checked;
+      for (let j = 0; j < parentCheckbox.subData.length; j++) {
+        parentCheckbox.subData[j].checkValue = checked;
+        parentCheckbox.checkValueStatus = checked;
       }
+      this.checkFolderValue();
+      this.setState({
+        dashboardList,
+      });
     }
-    for (let i = 0; i < folderArray.length; i++) {
-      if (folderArray[i].checkValueStatus === true) {
-        enable = true;
-      } else {
-        for (let j = 0; j < folderArray[i].subData.length; j++) {
-          if (folderArray[i].subData[j].checkValueStatus === true) {
-            enable = true;
+  };
+
+  checkFolderValue = () => {
+    const { tabs, activeTab } = this.state;
+    let enable = false;
+    let countchild = 0;
+    if (tabs[activeTab]) {
+      const dashboardList = tabs[activeTab].dashboardList;
+      for (let i = 0; i < dashboardList.length; i++) {
+        const folder = dashboardList[i];
+        if (folder.checkValueStatus === true) {
+          for (let j = 0; j < folder.subData.length; j++) {
+            if (folder.subData[j].checkValue === true) {
+              countchild++;
+            } else {
+              countchild--;
+            }
+            if (countchild > 0) {
+              enable = true;
+            }
+            console.log(countchild, enable);
           }
         }
       }
+      this.setState({
+        Enablepreview: enable,
+      });
     }
-    this.setState({
-      folderArray,
-      Enablepreview: enable,
-    });
   };
 
   openCloseManageDashboardFolder = () => {
     const retData = [];
-    const { folderArray } = this.state;
-    const length = folderArray.length;
-    for (let i = 0; i < length; i++) {
-      const folder = folderArray[i];
-      const subFolders = folder.subData;
-      const subFolderJSX = [];
-      for (let j = 0; j < subFolders.length; j++) {
-        const attribute = subFolders[j].attribute;
-        const subAttributeFolder = [];
-        if (subFolders[j].attribute) {
-          for (let k = 0; k < attribute.length; k++) {
-            const subAtt = attribute[k];
-            subAttributeFolder.push(<div className={`${subAtt.backColorClass} tag`}>{subAtt.attributeName}</div>);
+    const { tabs, activeTab } = this.state;
+    if (tabs[activeTab]) {
+      const dashboardList = tabs[activeTab].dashboardList;
+      const length = dashboardList.length;
+      for (let i = 0; i < length; i++) {
+        const folder = dashboardList[i];
+        const subFolders = folder.subData;
+        const subFolderJSX = [];
+        for (let j = 0; j < subFolders.length; j++) {
+          const attribute = subFolders[j].attribute;
+          const subAttributeFolder = [];
+          if (subFolders[j].attribute) {
+            for (let k = 0; k < attribute.length; k++) {
+              const subAtt = attribute[k];
+              subAttributeFolder.push(<div className={`${subAtt.backColorClass} tag`}>{subAtt.attributeName}</div>);
+            }
           }
+          const subFolder = subFolders[j];
+          subFolderJSX.push(
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  className="checkbox"
+                  checked={subFolder.checkValue}
+                  onClick={() => this.onClickChildCheckbox(i, j)}
+                />
+                <span>{subFolder.title}</span>
+              </td>
+              <td>
+                <div className="d-block text-right">{subAttributeFolder}</div>
+              </td>
+            </tr>
+          );
         }
-        const subFolder = subFolders[j];
-        subFolderJSX.push(
-          <tr>
-            <td>
+        retData.push(
+          <div>
+            <div className="general-heading">
               <input
                 type="checkbox"
+                checked={folder.checkValueStatus}
+                onChange={e => this.onChangeParentCheckbox(e, i)}
                 className="checkbox"
-                checked={subFolder.checkValue}
-                onClick={() => this.onClickChildCheckbox(i, j)}
               />
-              <span>{subFolder.tableTitle}</span>
-            </td>
-            <td>
-              <div className="d-block text-right">{subAttributeFolder}</div>
-            </td>
-          </tr>
+              <span onClick={() => this.onClickOpenSubFolder(i)}>
+                <img src="/public/img/open-folder.png" alt="" />
+              </span>
+              <h4>{folder.title}</h4>
+            </div>
+            <Collapse isOpen={folder.openSubFolder}>
+              <div className="general-logs">
+                <div className="general-logs-inner">
+                  <table className="data-table">{subFolderJSX}</table>
+                </div>
+              </div>
+            </Collapse>
+          </div>
         );
       }
-      retData.push(
-        <div>
-          <div className="general-heading">
-            <input
-              type="checkbox"
-              checked={folder.checkValueStatus}
-              onChange={e => this.onChangeParentCheckbox(e, i)}
-              className="checkbox"
-            />
-            <span onClick={() => this.onClickOpenSubFolder(i)}>
-              <img src="/public/img/open-folder.png" alt="" />
-            </span>
-            <h4>{folder.title}</h4>
-          </div>
-          <Collapse isOpen={folder.openSubFolder}>
-            <div className="general-logs">
-              <div className="general-logs-inner">
-                <table className="data-table">{subFolderJSX}</table>
-              </div>
-            </div>
-          </Collapse>
-        </div>
-      );
     }
     return retData;
   };
 
   sendData = () => {
-    let dashboardData = [];
-    const { folderArray } = this.state;
-    for (let i = 0; i < folderArray.length; i++) {
-      let row = folderArray[i];
-      if (row.checkValueStatus === true) {
-        for (let j = 0; j < row.subData.length; j++) {
-          row.subData[j].checkValue = false;
-        }
-        dashboardData.push({ label: row.title, tabsSidebarContent: row.subData });
-      } else {
-        let subData = [];
-        for (let j = 0; j < row.subData.length; j++) {
-          let subdata = row.subData[j];
-          if (subdata.checkValue === true) {
-            subdata.checkValue = false;
-            subData.push(subdata);
-          }
-        }
-        if (subData.length > 0) {
-          dashboardData.push({ label: row.title, tabsSidebarContent: subData });
-        }
-      }
-    }
-    localStorage.setItem('newdashboarddata', JSON.stringify(dashboardData));
-    window.location.assign(`/analytics/new/dashboard`);
+    const { tabs } = this.state;
+    localStorage.setItem('newdashboarddata', JSON.stringify(tabs));
+    getLocationSrv().update({ path: '/analytics/new/dashboard' });
   };
 
   render() {

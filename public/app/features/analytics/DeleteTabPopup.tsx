@@ -38,7 +38,7 @@ export class DeleteTabPopup extends React.Component<any, any> {
         <ModalBody style={{ height: 'calc(30vh - 50px)', overflowY: 'auto', overflowX: 'hidden' }}>
           <div className="d-block width-100 warning-content">
             <p>Are you Sure you want to delete this Dashboard from your view tab?</p>
-            <a href="#">{deleteContent.label}</a>
+            <a href="#">{deleteContent.title}</a>
           </div>
           <div className="d-block text-center p-t-20">
             <button className="alert-gray-button cancel" onClick={this.handleClose}>
