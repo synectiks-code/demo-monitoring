@@ -806,6 +806,7 @@
   .bs-popover-auto {
     width: 110px;
     border: none;
+    z-index: 1000;
     .arrow {
       display: none !important;
     }
