@@ -651,7 +651,7 @@ class AddNewTab extends React.Component<any, any> {
                 <div className="tabs-right-section">
                   <div className="manage-dashboard-search">
                     <div className="row">
-                      <div className="col-lg-3 col-md-6 col-sm-12">
+                      <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12">
                         <div className="form-group search-control-group">
                           <form>
                             <input type="text" className="input-group-text" placeholder="Search dashboards by name" />
@@ -661,7 +661,7 @@ class AddNewTab extends React.Component<any, any> {
                           </form>
                         </div>
                       </div>
-                      <div className="col-lg-3 col-md-6 col-sm-12">
+                      <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12">
                         <div className="sort-select-menu">
                           <span>
                             <img src="/public/img/tag.png" alt="" />
@@ -673,13 +673,13 @@ class AddNewTab extends React.Component<any, any> {
                           </select>
                         </div>
                       </div>
-                      <div className="col-lg-3 col-md-6 col-sm-12">
+                      <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12">
                         <div className="sort-checkbox">
                           <input type="checkbox" className="checkbox" />
                           <span>Filter by starred</span>
                         </div>
                       </div>
-                      <div className="col-lg-3 col-md-6 col-sm-12">
+                      <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12">
                         <div className="sort-select-menu">
                           <span>
                             <img src="/public/img/sort.png" alt="" />
