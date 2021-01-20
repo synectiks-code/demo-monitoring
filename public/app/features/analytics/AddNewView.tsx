@@ -5,6 +5,7 @@ import { Collapse } from 'reactstrap';
 import { getLocationSrv } from '@grafana/runtime';
 import { UncontrolledPopover, PopoverBody } from 'reactstrap';
 import { backendSrv } from 'app/core/services/backend_srv';
+import { getTagColorsFromName } from '@grafana/ui';
 
 // Services & Utils
 
@@ -505,12 +506,17 @@ class AddNewTab extends React.Component<any, any> {
         const subFolders = folder.subData;
         const subFolderJSX = [];
         for (let j = 0; j < subFolders.length; j++) {
-          const attribute = subFolders[j].attribute;
+          const attribute = subFolders[j].tags;
           const subAttributeFolder = [];
-          if (subFolders[j].attribute) {
+          if (attribute) {
             for (let k = 0; k < attribute.length; k++) {
               const subAtt = attribute[k];
-              subAttributeFolder.push(<div className={`${subAtt.backColorClass} tag`}>{subAtt.attributeName}</div>);
+              const color = getTagColorsFromName(subAtt);
+              subAttributeFolder.push(
+                <div className={`tag`} style={{ backgroundColor: color.color }}>
+                  {subAtt}
+                </div>
+              );
             }
           }
           const subFolder = subFolders[j];
