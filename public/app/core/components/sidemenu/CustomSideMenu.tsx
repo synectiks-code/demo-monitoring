@@ -40,7 +40,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
   handleLocationChange = () => {
     const pathName = location.pathname;
     // let isActive = false;
-    const totalItem = this.mainMenu.length;
     let menuState = menuStates.MENU_OPEN;
     let subMenuState = 0;
     let showSubMenu = false;
@@ -58,8 +57,36 @@ export class CustomSideMenu extends PureComponent<any, any> {
         isSubMenuPinned,
       };
     }
+    let retData = this.findActiveItem(pathName, this.mainMenu);
+    if (retData.isFound) {
+      return retData;
+    }
+    retData = this.findActiveItem(pathName, this.insights);
+    if (retData.isFound) {
+      return retData;
+    }
+    retData = this.findActiveItem(pathName, this.catalogue);
+    if (retData.isFound) {
+      return retData;
+    }
+    retData = this.findActiveItem(pathName, this.assets);
+    if (retData.isFound) {
+      return retData;
+    }
+    retData = this.findActiveItem(pathName, this.settings);
+    return retData;
+  };
+
+  findActiveItem = (pathName: any, menuList: any) => {
+    let totalItem = menuList.length;
+    let isFound = false;
+    let menuState = menuStates.MENU_OPEN;
+    let subMenuState = 0;
+    let showSubMenu = false;
+    let activeMenuItem = null;
+    let isSubMenuPinned = false;
     for (let i = 0; i < totalItem; i++) {
-      const item = this.mainMenu[i];
+      const item = menuList[i];
       if (
         (pathName.indexOf(item.activeLink) !== -1 || (item.tempLink && pathName.indexOf(item.tempLink) !== -1)) &&
         item.activeLink !== '/'
@@ -90,6 +117,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
         }
         // isActive = true;
         activeMenuItem = item;
+        isFound = true;
         break;
       }
     }
@@ -99,6 +127,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       showSubMenu,
       activeMenuItem,
       isSubMenuPinned,
+      isFound,
     };
   };
 
@@ -148,72 +177,27 @@ export class CustomSideMenu extends PureComponent<any, any> {
       isImplemented: true,
       childName: 'overview',
     },
-    {
-      link: '/activity-log',
-      text: 'Activity Log',
-      cssClass: 'activity-log',
-      activeLink: '/activity-log',
-      childName: 'activity-log',
-    },
-    {
-      link: '/plugins/xformation-alertmanager-ui-plugin/page/monitoralerts',
-      text: 'Alerts',
-      cssClass: 'alerts',
-      activeLink: 'plugins/xformation-alertmanager-ui-plugin',
-      tempLink: 'alerting/list',
-      isImplemented: true,
-      childName: 'alerts',
-      subMenu: [
-        {
-          link: '/plugins/xformation-alertmanager-ui-plugin/page/monitoralerts',
-          text: 'Dashboard',
-          cssClass: 'dashboard',
-          activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/monitoralerts',
-          activeLink: 'plugins/xformation-alertmanager-ui-plugin',
-          isImplemented: true,
-          childName: 'alert-manager-dashboard',
-        },
-        {
-          link: '/plugins/xformation-alertmanager-ui-plugin/page/alertrulebuilder',
-          text: 'New Alert Rule',
-          cssClass: 'new-alert-rule',
-          activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/alertrulebuilder',
-          activeLink: 'plugins/xformation-alertmanager-ui-plugin',
-          isImplemented: true,
-          childName: 'new-alert-rule',
-        },
-        {
-          link: '/alerting/list',
-          text: 'All Alert Rules',
-          cssClass: 'new-alert-rule',
-          activeSLink: 'alerting/list',
-          activeLink: 'alerting/list',
-          isImplemented: true,
-          childName: 'all-alert-rule',
-        },
-        {
-          link: '/plugins/xformation-alertmanager-ui-plugin/page/managealertrule',
-          text: 'Manage Alert Rule',
-          cssClass: 'new-alert-rule',
-          activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/managealertrule',
-          activeLink: 'plugins/xformation-alertmanager-ui-plugin',
-          isImplemented: true,
-          childName: 'new-alert-rule',
-        },
-        {
-          link: '/plugins/xformation-alertmanager-ui-plugin/page/manageworkflow',
-          text: 'Manage Workflows',
-          cssClass: 'new-alert-rule',
-          activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/manageworkflow',
-          activeLink: 'plugins/xformation-alertmanager-ui-plugin',
-          childName: 'new-alert-rule',
-        },
-      ],
-    },
+    // {
+    //   link: '/service-health',
+    //   text: 'Service Health',
+    //   cssClass: 'service-health',
+    //   activeLink: '/service-health',
+    //   childName: 'service-health',
+    // },
+    // {
+    //   link: '/workbooks',
+    //   text: 'Workbooks',
+    //   cssClass: 'workbooks',
+    //   activeLink: '/workbooks',
+    //   childName: 'workbooks',
+    // },
+  ];
+
+  insights: any = [
     {
       link: 'plugins/xformation-perfmanager-ui-plugin/page/managedashboard',
-      text: 'Metrics',
-      cssClass: 'metrics',
+      text: 'Performance',
+      cssClass: 'alerts',
       activeLink: 'plugins/xformation-perfmanager-ui-plugin',
       isImplemented: true,
       childName: 'metrics',
@@ -293,26 +277,19 @@ export class CustomSideMenu extends PureComponent<any, any> {
       ],
     },
     {
+      link: '/avalability',
+      text: 'Avalability',
+      cssClass: 'metrics',
+      activeLink: '/avalability',
+      childName: 'avalability',
+    },
+    {
       link: 'plugins/xformation-logmanager-ui-plugin/page/dashboard',
       text: 'Logs',
       cssClass: 'logs',
       activeLink: 'plugins/xformation-logmanager-ui-plugin',
       isImplemented: true,
       childName: 'grafana-logs',
-    },
-    {
-      link: '/service-health',
-      text: 'Service Health',
-      cssClass: 'service-health',
-      activeLink: '/service-health',
-      childName: 'service-health',
-    },
-    {
-      link: '/workbooks',
-      text: 'Workbooks',
-      cssClass: 'workbooks',
-      activeLink: '/workbooks',
-      childName: 'workbooks',
     },
     {
       link: 'plugins/xformation-compliancemanager-ui-plugin/page/dashboard',
@@ -388,8 +365,63 @@ export class CustomSideMenu extends PureComponent<any, any> {
       ],
     },
     {
+      link: '/plugins/xformation-alertmanager-ui-plugin/page/monitoralerts',
+      text: 'Alerts',
+      cssClass: 'alerts',
+      activeLink: 'plugins/xformation-alertmanager-ui-plugin',
+      tempLink: 'alerting/list',
+      isImplemented: true,
+      childName: 'alerts',
+      subMenu: [
+        {
+          link: '/plugins/xformation-alertmanager-ui-plugin/page/monitoralerts',
+          text: 'Dashboard',
+          cssClass: 'dashboard',
+          activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/monitoralerts',
+          activeLink: 'plugins/xformation-alertmanager-ui-plugin',
+          isImplemented: true,
+          childName: 'alert-manager-dashboard',
+        },
+        {
+          link: '/plugins/xformation-alertmanager-ui-plugin/page/alertrulebuilder',
+          text: 'New Alert Rule',
+          cssClass: 'new-alert-rule',
+          activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/alertrulebuilder',
+          activeLink: 'plugins/xformation-alertmanager-ui-plugin',
+          isImplemented: true,
+          childName: 'new-alert-rule',
+        },
+        {
+          link: '/alerting/list',
+          text: 'All Alert Rules',
+          cssClass: 'new-alert-rule',
+          activeSLink: 'alerting/list',
+          activeLink: 'alerting/list',
+          isImplemented: true,
+          childName: 'all-alert-rule',
+        },
+        {
+          link: '/plugins/xformation-alertmanager-ui-plugin/page/managealertrule',
+          text: 'Manage Alert Rule',
+          cssClass: 'new-alert-rule',
+          activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/managealertrule',
+          activeLink: 'plugins/xformation-alertmanager-ui-plugin',
+          isImplemented: true,
+          childName: 'new-alert-rule',
+        },
+        {
+          link: '/plugins/xformation-alertmanager-ui-plugin/page/manageworkflow',
+          text: 'Manage Workflows',
+          cssClass: 'new-alert-rule',
+          activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/manageworkflow',
+          activeLink: 'plugins/xformation-alertmanager-ui-plugin',
+          childName: 'new-alert-rule',
+        },
+      ],
+    },
+    {
       link: 'plugins/xformation-servicedesk-ui-plugin/page/dashboard',
-      text: 'Tickets',
+      text: 'Service desk',
       cssClass: 'tickets',
       activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
       isImplemented: true,
@@ -443,7 +475,8 @@ export class CustomSideMenu extends PureComponent<any, any> {
       ],
     },
   ];
-  insights: any = [
+
+  catalogue: any = [
     {
       link: '/analytics',
       text: 'Applications',
@@ -474,14 +507,18 @@ export class CustomSideMenu extends PureComponent<any, any> {
       childName: 'jobs',
     },
   ];
-  settings: any = [
+
+  assets: any = [
     {
       link: '/diagnostic-settings',
-      text: 'Diagnostic Settings',
+      text: 'Tools & Diagnostics',
       cssClass: 'diagnostic-settings',
       activeLink: '/diagnostic-settings',
       childName: 'diagnostic-settings',
     },
+  ];
+
+  settings: any = [
     {
       link: '/plugins/xformation-rbac-ui-plugin/page/home',
       text: 'RBAC Settings',
@@ -637,7 +674,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       const menuItem = menuItems[i];
       retItem.push(
         <Rbac parentName="grafana-ui" childName={menuItem.childName || ''}>
-          <li className="item">
+          <li className="item" title={menuItem.text}>
             <a
               href={'#'}
               className={`menu-item ${
@@ -736,11 +773,15 @@ export class CustomSideMenu extends PureComponent<any, any> {
               <i className="fa fa-arrow-left left-arrow"></i>
             </div>
           </div>
-          <ul>{this.createOpenMenu(this.mainMenu)}</ul>
+          <ul className="m-0">{this.createOpenMenu(this.mainMenu)}</ul>
           <div className="menu-item-header">INSIGHTS</div>
-          <ul>{this.createOpenMenu(this.insights)}</ul>
+          <ul className="m-0">{this.createOpenMenu(this.insights)}</ul>
+          <div className="menu-item-header">CATALOGUE</div>
+          <ul className="m-0">{this.createOpenMenu(this.catalogue)}</ul>
+          <div className="menu-item-header">ASSETS</div>
+          <ul className="m-0">{this.createOpenMenu(this.assets)}</ul>
           <div className="menu-item-header">SETTINGS</div>
-          <ul>{this.createOpenMenu(this.settings)}</ul>
+          <ul className="m-0">{this.createOpenMenu(this.settings)}</ul>
         </div>
         <div className="close-menu">
           <div className="sidemenu-search-container">
@@ -748,11 +789,15 @@ export class CustomSideMenu extends PureComponent<any, any> {
               <i className="fa fa-arrow-right right-arrow"></i>
             </div>
           </div>
-          <ul>{this.createCloseMenu(this.mainMenu)}</ul>
+          <ul className="m-0">{this.createCloseMenu(this.mainMenu)}</ul>
           <div className="menu-item-header"></div>
-          <ul>{this.createCloseMenu(this.insights)}</ul>
+          <ul className="m-0">{this.createCloseMenu(this.insights)}</ul>
           <div className="menu-item-header"></div>
-          <ul>{this.createCloseMenu(this.settings)}</ul>
+          <ul className="m-0">{this.createCloseMenu(this.catalogue)}</ul>
+          <div className="menu-item-header"></div>
+          <ul className="m-0">{this.createCloseMenu(this.assets)}</ul>
+          <div className="menu-item-header"></div>
+          <ul className="m-0">{this.createCloseMenu(this.settings)}</ul>
         </div>
         <div className={`sub-menu ${showSubMenu ? 'active-sub-menu' : ''}`}>
           <div className="open-menu" onMouseLeave={this.onMouseLeaveOpenedSubMenu}>
