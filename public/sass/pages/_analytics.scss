@@ -389,11 +389,12 @@
           .sort-checkbox {
             background-color: #f0f3f7;
             border-radius: 5px;
-            height: 36px;
+            // height: 36px;
             display: block;
             width: 100%;
             line-height: 36px;
             padding: 0 10px;
+            overflow: hidden;
 
             input {
               display: inline-block;
@@ -404,7 +405,7 @@
             span {
               display: inline-block;
               vertical-align: top;
-              padding-left: 10px;
+              padding-left: 8px;
             }
           }
         }
@@ -842,5 +843,31 @@
         }
       }
     }
+  }
+}
+
+.scroll-canvas--dashboard {
+  overflow-x: scroll;
+}
+
+@media only screen and (min-width: 1201px) and(max-width: 1242px) {
+  .sort-checkbox {
+    padding: 0 6px !important;
+    span {
+      padding-left: 8px !important;
+    }
+  }
+}
+@media only screen and (min-width: 1024px) and(max-width: 1200px) {
+  .search-control-group,
+  .sort-select-menu {
+    margin-bottom: 10px;
+  }
+}
+@media only screen and (min-width: 768px) and(max-width: 1023px) {
+  .search-control-group,
+  .sort-select-menu,
+  .sort-checkbox {
+    margin-bottom: 10px;
   }
 }
