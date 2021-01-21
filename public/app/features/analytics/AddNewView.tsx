@@ -35,199 +35,10 @@ class AddNewTab extends React.Component<any, any> {
           dashboardList: [],
         },
       ],
-      folderArray: [
-        {
-          title: 'General',
-          openSubFolder: true,
-          checkValueStatus: false,
-          subData: [
-            {
-              tableTitle: 'Amazon CloudWatch Logs',
-              checkValue: false,
-              attribute: [
-                {
-                  attributeName: 'AWS',
-                  backColorClass: 'aws-bg',
-                },
-                {
-                  attributeName: 'Amazon',
-                  backColorClass: 'amazon-bg',
-                },
-                {
-                  attributeName: 'Cloud Watch',
-                  backColorClass: 'cloudwatch-bg',
-                },
-                {
-                  attributeName: 'Logs',
-                  backColorClass: 'logs-bg',
-                },
-              ],
-            },
-            {
-              tableTitle: 'Amazon RDS',
-              checkValue: false,
-              attribute: [
-                {
-                  attributeName: 'Cloud Watch',
-                  backColorClass: 'cloudwatch-bg',
-                },
-                {
-                  attributeName: 'Monitoringartist',
-                  backColorClass: 'aws-bg',
-                },
-              ],
-            },
-            {
-              tableTitle: 'AWS VPN',
-              checkValue: false,
-              attribute: [
-                {
-                  attributeName: 'Cloud Watch',
-                  backColorClass: 'cloudwatch-bg',
-                },
-                {
-                  attributeName: 'Monitoringartist',
-                  backColorClass: 'aws-bg',
-                },
-              ],
-            },
-            {
-              tableTitle: 'AWS VPN Dashboard',
-              checkValue: false,
-            },
-            {
-              tableTitle: 'Cloud Trial',
-              checkValue: false,
-            },
-            {
-              tableTitle: 'Cloud Watch',
-              checkValue: false,
-            },
-          ],
-        },
-        {
-          title: 'Main',
-          openSubFolder: false,
-          checkValueStatus: false,
-          subData: [
-            {
-              tableTitle: 'Amazon CloudWatch Logs',
-              checkValue: false,
-              attribute: [
-                {
-                  attributeName: 'AWS',
-                  backColorClass: 'aws-bg',
-                },
-                {
-                  attributeName: 'Amazon',
-                  backColorClass: 'amazon-bg',
-                },
-                {
-                  attributeName: 'Cloud Watch',
-                  backColorClass: 'cloudwatch-bg',
-                },
-                {
-                  attributeName: 'Logs',
-                  backColorClass: 'logs-bg',
-                },
-              ],
-            },
-            {
-              tableTitle: 'Amazon RDS',
-              checkValue: false,
-              attribute: [
-                {
-                  attributeName: 'Cloud Watch',
-                  backColorClass: 'cloudwatch-bg',
-                },
-                {
-                  attributeName: 'Monitoringartist',
-                  backColorClass: 'aws-bg',
-                },
-              ],
-            },
-            {
-              tableTitle: 'AWS VPN',
-              checkValue: false,
-              attribute: [
-                {
-                  attributeName: 'Cloud Watch',
-                  backColorClass: 'cloudwatch-bg',
-                },
-                {
-                  attributeName: 'Monitoringartist',
-                  backColorClass: 'aws-bg',
-                },
-              ],
-            },
-            {
-              tableTitle: 'AWS VPN Dashboard',
-              checkValue: false,
-            },
-            {
-              tableTitle: 'Cloud Trial',
-              checkValue: false,
-            },
-            {
-              tableTitle: 'Cloud Watch',
-              checkValue: false,
-            },
-          ],
-        },
-        {
-          title: 'Open',
-          openSubFolder: false,
-          checkValueStatus: false,
-          subData: [
-            {
-              tableTitle: 'Amazon CloudWatch Logs',
-              checkValue: false,
-            },
-            {
-              tableTitle: 'Amazon RDS',
-              checkValue: false,
-              attribute: [
-                {
-                  attributeName: 'Cloud Watch',
-                  backColorClass: 'cloudwatch-bg',
-                },
-                {
-                  attributeName: 'Monitoringartist',
-                  backColorClass: 'aws-bg',
-                },
-              ],
-            },
-            {
-              tableTitle: 'AWS VPN',
-              checkValue: false,
-              attribute: [
-                {
-                  attributeName: 'Cloud Watch',
-                  backColorClass: 'cloudwatch-bg',
-                },
-                {
-                  attributeName: 'Monitoringartist',
-                  backColorClass: 'aws-bg',
-                },
-              ],
-            },
-            {
-              tableTitle: 'AWS VPN Dashboard',
-              checkValue: false,
-            },
-            {
-              tableTitle: 'Cloud Trial',
-              checkValue: false,
-            },
-            {
-              tableTitle: 'Cloud Watch',
-              checkValue: false,
-            },
-          ],
-        },
-      ],
+      folderArray: [],
       activeTab: 0,
-      Enablepreview: false,
+      isPreviewEnabled: false,
+      selectedDashboards: [],
     };
   }
 
@@ -258,7 +69,6 @@ class AddNewTab extends React.Component<any, any> {
         retData[dash.folderId].openSubFolder = false;
         retData[dash.folderId].subData.push(dash);
       }
-      console.log(retData);
     }
     let keys = Object.keys(retData);
     let folders: any = [];
@@ -392,7 +202,6 @@ class AddNewTab extends React.Component<any, any> {
   };
 
   navigateTab(index: any) {
-    this.checkFolderValue();
     this.setState({
       activeTab: index,
     });
@@ -409,8 +218,9 @@ class AddNewTab extends React.Component<any, any> {
     this.setState({
       tabs,
       activeTab: length,
-      Enablepreview: false,
+      isPreviewEnabled: false,
     });
+    this.checkForEnabled(tabs);
   };
 
   onClickChildCheckbox = (parentIndex: any, childIndex: any) => {
@@ -427,14 +237,10 @@ class AddNewTab extends React.Component<any, any> {
           countCheckedCheckbox--;
         }
       }
-      if (countCheckedCheckbox === parentCheckbox.subData.length) {
-        parentCheckbox.checkValueStatus = true;
-      } else {
-        parentCheckbox.checkValueStatus = false;
-      }
-      this.checkFolderValue();
+      parentCheckbox.checkValueStatus = countCheckedCheckbox === parentCheckbox.subData.length;
+      this.checkForEnabled(tabs);
       this.setState({
-        dashboardList,
+        tabs,
       });
     }
   };
@@ -445,7 +251,7 @@ class AddNewTab extends React.Component<any, any> {
       const dashboardList = tabs[activeTab].dashboardList;
       dashboardList[index].openSubFolder = !dashboardList[index].openSubFolder;
       this.setState({
-        dashboardList: dashboardList,
+        tabs,
       });
     }
   };
@@ -460,42 +266,39 @@ class AddNewTab extends React.Component<any, any> {
         parentCheckbox.subData[j].checkValue = checked;
         parentCheckbox.checkValueStatus = checked;
       }
-      this.checkFolderValue();
+      this.checkForEnabled(tabs);
       this.setState({
-        dashboardList,
+        tabs,
       });
     }
   };
 
-  checkFolderValue = () => {
-    const { tabs, activeTab } = this.state;
-    let enable = false;
-    let countchild = 0;
-    if (tabs[activeTab]) {
-      const dashboardList = tabs[activeTab].dashboardList;
-      for (let i = 0; i < dashboardList.length; i++) {
-        const folder = dashboardList[i];
-        if (folder.checkValueStatus === true) {
-          for (let j = 0; j < folder.subData.length; j++) {
-            if (folder.subData[j].checkValue === true) {
-              countchild++;
-            } else {
-              countchild--;
-            }
-            if (countchild > 0) {
-              enable = true;
-            }
-            console.log(countchild, enable);
+  checkForEnabled = (tabs: any) => {
+    let isPreviewEnabled = true;
+    let selectedDashboards = [];
+    for (let i = 0; i < tabs.length; i++) {
+      const dashboardList = tabs[i].dashboardList;
+      let isAnyDashboardSelected = false;
+      let selectedDashboardsForTab = [];
+      for (let j = 0; j < dashboardList.length; j++) {
+        const subData = dashboardList[j].subData;
+        for (let k = 0; k < subData.length; k++) {
+          if (subData[k].checkValue) {
+            isAnyDashboardSelected = true;
+            selectedDashboardsForTab.push(subData[k].title);
           }
         }
       }
-      this.setState({
-        Enablepreview: enable,
-      });
+      isPreviewEnabled = isPreviewEnabled && isAnyDashboardSelected;
+      selectedDashboards.push(selectedDashboardsForTab);
     }
+    this.setState({
+      isPreviewEnabled,
+      selectedDashboards,
+    });
   };
 
-  openCloseManageDashboardFolder = () => {
+  renderDashboardTree = () => {
     const retData = [];
     const { tabs, activeTab } = this.state;
     if (tabs[activeTab]) {
@@ -571,10 +374,29 @@ class AddNewTab extends React.Component<any, any> {
     getLocationSrv().update({ path: '/analytics/new/dashboard' });
   };
 
+  renderSelectedDashboardInLeftSide = () => {
+    const { selectedDashboards, activeTab } = this.state;
+    const retData = [];
+    if (selectedDashboards[activeTab]) {
+      const selectedDashboardsForTab = selectedDashboards[activeTab];
+      for (let i = 0; i < selectedDashboardsForTab.length; i++) {
+        retData.push(
+          <li key={`left-side-dash-name-${i}`}>
+            <a href="javascript: void(0)">
+              <i className="fa fa-ellipsis-h"></i>
+              <span>{selectedDashboardsForTab[i]}</span>
+            </a>
+          </li>
+        );
+      }
+    }
+    return retData;
+  };
+
   render() {
     const breadCrumbs = this.breadCrumbs;
     const pageTitle = 'ANALYTICS';
-    const { Enablepreview } = this.state;
+    const { isPreviewEnabled } = this.state;
     return (
       <React.Fragment>
         <CustomNavigationBar />
@@ -633,26 +455,7 @@ class AddNewTab extends React.Component<any, any> {
               <div className="analytics-tabs-section-container">
                 <div className="tabs-left-section">
                   <h5>New Tab</h5>
-                  <ul>
-                    <li>
-                      <a href="#">
-                        <i className="fa fa-ellipsis-h"></i>
-                        <span></span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <i className="fa fa-ellipsis-h"></i>
-                        <span></span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <i className="fa fa-ellipsis-h"></i>
-                        <span></span>
-                      </a>
-                    </li>
-                  </ul>
+                  <ul>{this.renderSelectedDashboardInLeftSide()}</ul>
                 </div>
                 <div className="tabs-right-section">
                   <div className="manage-dashboard-search">
@@ -699,8 +502,8 @@ class AddNewTab extends React.Component<any, any> {
                       </div>
                     </div>
                   </div>
-                  <div className="manage-dashboard-general">{this.openCloseManageDashboardFolder()}</div>
-                  {Enablepreview === true && (
+                  <div className="manage-dashboard-general">{this.renderDashboardTree()}</div>
+                  {isPreviewEnabled && (
                     <div className="text-right">
                       <button className="alert-blue-button" onClick={this.sendData}>
                         Preview
