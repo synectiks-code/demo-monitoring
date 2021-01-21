@@ -6,8 +6,10 @@ import { getLocationSrv } from '@grafana/runtime';
 import { UncontrolledPopover, PopoverBody } from 'reactstrap';
 import { backendSrv } from 'app/core/services/backend_srv';
 import { getTagColorsFromName } from '@grafana/ui';
-
-// Services & Utils
+import { SortPicker } from 'app/core/components/Select/SortPicker';
+import { TagFilter } from 'app/core/components/TagFilter/TagFilter';
+import { Checkbox } from '@grafana/ui';
+import { FilterInput } from 'app/core/components/FilterInput/FilterInput';
 
 export interface Props {
   $scope: any;
@@ -15,6 +17,7 @@ export interface Props {
 }
 
 class AddNewTab extends React.Component<any, any> {
+  showStarredFilter: any;
   breadCrumbs: any = [
     {
       label: 'Home',
@@ -25,6 +28,9 @@ class AddNewTab extends React.Component<any, any> {
       isCurrentPage: true,
     },
   ];
+
+  tagsPromiseResolve: any;
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -39,11 +45,22 @@ class AddNewTab extends React.Component<any, any> {
       activeTab: 0,
       isPreviewEnabled: false,
       selectedDashboards: [],
+      selectedTags: [],
+      sortValue: '',
+      isStared: false,
+      searchkey: '',
     };
   }
 
   componentDidMount() {
-    backendSrv.search({}).then((result: any) => {
+    const sendData = {
+      tags: [],
+    };
+    this.getsearchData(sendData);
+  }
+
+  getsearchData = (data: any) => {
+    backendSrv.search(data).then((result: any) => {
       const retData = this.manipulateData(result);
       const { tabs, activeTab } = this.state;
       if (tabs[activeTab]) {
@@ -54,10 +71,11 @@ class AddNewTab extends React.Component<any, any> {
         tabs,
       });
     });
-  }
+  };
 
   manipulateData(result: any) {
     const retData: any = {};
+    let tagList = [];
     for (let i = 0; i < result.length; i++) {
       const dash = result[i];
       dash.checkValue = false;
@@ -69,12 +87,22 @@ class AddNewTab extends React.Component<any, any> {
         retData[dash.folderId].openSubFolder = false;
         retData[dash.folderId].subData.push(dash);
       }
+      if (dash.tags.length > 0) {
+        for (let i = 0; i < dash.tags.length; i++) {
+          let row = dash.tags[i];
+          tagList.push({
+            term: row,
+            count: i + 1,
+          });
+        }
+      }
     }
     let keys = Object.keys(retData);
     let folders: any = [];
     for (let i = 0; i < keys.length; i++) {
       folders.push(retData[keys[i]]);
     }
+    this.tagsPromiseResolve && this.tagsPromiseResolve(tagList);
     return folders;
   }
 
@@ -83,7 +111,6 @@ class AddNewTab extends React.Component<any, any> {
     for (let i = 0; i < tabs.length; i++) {
       if (i === index) {
         tabs[i].isEdit = true;
-        console.log(tabs[i].isEdit);
       }
     }
     this.setState({
@@ -393,10 +420,72 @@ class AddNewTab extends React.Component<any, any> {
     return retData;
   };
 
+  getTagOptions = () => {
+    return new Promise<any>((resolve, reject) => {
+      this.tagsPromiseResolve = resolve;
+    });
+  };
+
+  onTagFilterChange = (tags: any) => {
+    const { sortValue, isStared, searchkey } = this.state;
+    this.setState({
+      selectedTags: tags,
+    });
+    const sendData = {
+      tag: tags,
+      sort: sortValue,
+      starred: isStared,
+      query: searchkey,
+    };
+    this.getsearchData(sendData);
+  };
+
+  onSortChange = (sortvalue: any) => {
+    const { selectedTags, isStared, searchkey } = this.state;
+    this.setState({
+      sortValue: sortvalue.value,
+    });
+    const sendData = {
+      tag: selectedTags,
+      sort: sortvalue.value,
+      starred: isStared,
+      query: searchkey,
+    };
+    this.getsearchData(sendData);
+  };
+
+  onStarredFilterChange = (e: any) => {
+    const { selectedTags, sortValue, searchkey } = this.state;
+    this.setState({
+      isStared: e.target.checked,
+    });
+    const sendData = {
+      tag: selectedTags,
+      sort: sortValue,
+      starred: e.target.checked,
+      query: searchkey,
+    };
+    this.getsearchData(sendData);
+  };
+
+  onQueryChange = (search: any) => {
+    const { selectedTags, sortValue, isStared } = this.state;
+    this.setState({
+      searchkey: search,
+    });
+    const sendData = {
+      tag: selectedTags,
+      sort: sortValue,
+      starred: isStared,
+      query: search,
+    };
+    this.getsearchData(sendData);
+  };
+
   render() {
     const breadCrumbs = this.breadCrumbs;
     const pageTitle = 'ANALYTICS';
-    const { isPreviewEnabled } = this.state;
+    const { isPreviewEnabled, selectedTags, sortValue, isStared, searchkey } = this.state;
     return (
       <React.Fragment>
         <CustomNavigationBar />
@@ -463,42 +552,29 @@ class AddNewTab extends React.Component<any, any> {
                       <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12">
                         <div className="form-group search-control-group">
                           <form>
-                            <input type="text" className="input-group-text" placeholder="Search dashboards by name" />
-                            <button>
-                              <i className="fa fa-search"></i>
-                            </button>
+                            <FilterInput
+                              labelClassName="gf-form--has-input-icon"
+                              inputClassName="gf-form-input width-20"
+                              value={searchkey}
+                              onChange={this.onQueryChange}
+                              placeholder={'Search dashboards by name'}
+                            />
                           </form>
                         </div>
                       </div>
                       <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                        <div className="sort-select-menu">
-                          <span>
-                            <img src="/public/img/tag.png" alt="" />
-                          </span>
-                          <select>
-                            <option>Filter by tag</option>
-                            <option>Filter by tag</option>
-                            <option>Filter by tag</option>
-                          </select>
-                        </div>
+                        <TagFilter
+                          isClearable
+                          tags={selectedTags}
+                          tagOptions={this.getTagOptions}
+                          onChange={this.onTagFilterChange}
+                        />
                       </div>
                       <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                        <div className="sort-checkbox">
-                          <input type="checkbox" className="checkbox" />
-                          <span>Filter by starred</span>
-                        </div>
+                        <Checkbox label="Filter by starred" onChange={this.onStarredFilterChange} value={isStared} />
                       </div>
                       <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                        <div className="sort-select-menu">
-                          <span>
-                            <img src="/public/img/sort.png" alt="" />
-                          </span>
-                          <select>
-                            <option>Sort (Default A-Z)</option>
-                            <option>Sort (Default A-Z)</option>
-                            <option>Sort (Default A-Z)</option>
-                          </select>
-                        </div>
+                        <SortPicker onChange={this.onSortChange} value={sortValue} />
                       </div>
                     </div>
                   </div>
