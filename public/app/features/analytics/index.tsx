@@ -34,44 +34,7 @@ class Analytics extends React.Component<any, any> {
     this.perPageLimit = 6;
     this.checkboxValue = false;
     this.state = {
-      ticketDataList: [
-        {
-          name: 'AWS',
-          description: 'AWS Config Overview - Interactive',
-          createdBy: 'System Admin',
-          lastModified: '16/06/2020 by System Admin',
-        },
-        {
-          name: 'Admin Linux',
-          description: 'AWS Config Overview - Live',
-          createdBy: 'System Admin',
-          lastModified: '16/06/2020 by System Admin',
-        },
-        {
-          name: 'AWS',
-          description: 'Resource Modification Details - Interactive',
-          createdBy: 'System Admin',
-          lastModified: '16/06/2020 by System Admin',
-        },
-        {
-          name: 'Admin Linux',
-          description: 'Configuration Trend',
-          createdBy: 'System Admin',
-          lastModified: '16/06/2020 by System Admin',
-        },
-        {
-          name: 'AWS',
-          description: 'Latest Resource Modifications',
-          createdBy: 'System Admin',
-          lastModified: '16/06/2020 by System Admin',
-        },
-        {
-          name: 'Admin Linux',
-          description: 'Most Frequently Modified Resource Types',
-          createdBy: 'System Admin',
-          lastModified: '16/06/2020 by System Admin',
-        },
-      ],
+      viewList: [],
       columns: [
         {
           label: 'Name',
@@ -130,7 +93,7 @@ class Analytics extends React.Component<any, any> {
         console.log(response);
         if (response) {
           this.setState({
-            ticketDataList: response,
+            viewList: response,
           });
         }
       });
@@ -143,7 +106,7 @@ class Analytics extends React.Component<any, any> {
   render() {
     const breadCrumbs = this.breadCrumbs;
     const pageTitle = 'ANALYTICS';
-    const { ticketDataList, columns } = this.state;
+    const { viewList, columns } = this.state;
     return (
       <React.Fragment>
         <CustomNavigationBar />
@@ -189,7 +152,7 @@ class Analytics extends React.Component<any, any> {
               <Table
                 valueFromData={{
                   columns: columns,
-                  data: ticketDataList,
+                  data: viewList,
                 }}
                 perPageLimit={this.perPageLimit}
                 visiblecheckboxStatus={this.checkboxValue}

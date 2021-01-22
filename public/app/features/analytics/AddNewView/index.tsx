@@ -56,11 +56,24 @@ class AddNewView extends React.Component<any, any> {
         },
       ],
       showView: false,
+      viewName: '',
+      description: '',
     };
     this.viewRef = React.createRef();
   }
 
   componentDidMount() {
+    let viewData: any = localStorage.getItem('viewData');
+    if (viewData) {
+      viewData = JSON.parse(viewData);
+      this.setState({
+        viewName: viewData.viewName,
+        deescription: viewData.description,
+      });
+    } else {
+      getLocationSrv().update({ path: '/analytics' });
+      return;
+    }
     const sendData = {
       tags: [],
     };
@@ -418,7 +431,11 @@ class AddNewView extends React.Component<any, any> {
     // const { tabs } = this.state;
     // localStorage.setItem('newdashboarddata', JSON.stringify(tabs));
     // getLocationSrv().update({ path: '/analytics/new/dashboard' });
-    this.viewRef.current.setData(this.state.tabs);
+    const viewData = {
+      viewName: this.state.viewName,
+      description: this.state.description,
+    };
+    this.viewRef.current.setData(this.state.tabs, viewData);
     this.setState({
       showView: true,
     });

@@ -72,6 +72,8 @@ export class CreateNewViewPopup extends React.Component<any, any> {
     });
     const errorData = this.validate(true);
     if (errorData.isValid) {
+      const { viewName, description } = this.state;
+      localStorage.setItem('viewData', JSON.stringify({ viewName, description }));
       getLocationSrv().update({ path: '/analytics/new/dashboard' });
       // window.location.assign('/analytics/f/new');
     }

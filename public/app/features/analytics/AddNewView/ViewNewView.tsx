@@ -37,11 +37,13 @@ class ViewNewView extends React.Component<Props, any> {
       deletedId: 0,
       activeSidebar: 0,
       loading: false,
+      viewName: '',
+      description: '',
     };
     this.openDeleteTabRef = React.createRef();
   }
 
-  setData = (tabs: any) => {
+  setData = (tabs: any, viewData: any) => {
     const data = [];
     for (let i = 0; i < tabs.length; i++) {
       const tab = tabs[i];
@@ -62,6 +64,8 @@ class ViewNewView extends React.Component<Props, any> {
     }
     this.setState({
       tabs: data,
+      viewName: viewData.viewName,
+      description: viewData.description,
     });
   };
 
@@ -208,18 +212,13 @@ class ViewNewView extends React.Component<Props, any> {
   };
 
   saveDashboard = () => {
-    const { tabs } = this.state;
-    const sendData = {
-      name: 'test',
-      description: 'test',
-      tabs,
-    };
+    const { tabs, viewName } = this.state;
+    const formData = new FormData();
+    formData.append('viewName', viewName);
+    formData.append('viewJson', JSON.stringify(tabs));
     let requestOptions: any = {
       method: `POST`,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      body: JSON.stringify(sendData),
+      body: formData,
     };
     this.setState({
       loading: true,
