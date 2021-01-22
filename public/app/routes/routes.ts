@@ -575,16 +575,6 @@ export function setupAngularRoutes($routeProvider: route.IRouteProvider, $locati
           SafeDynamicImport(import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/analytics/ManageView')),
       },
     })
-    .when('/analytics/f/new', {
-      template: '<react-container />',
-      //@ts-ignore
-      pageClass: 'page-dashboard',
-      reloadOnSearch: false,
-      resolve: {
-        component: () =>
-          SafeDynamicImport(import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/analytics/AddNewView')),
-      },
-    })
     .when('/analytics/new/dashboard', {
       template: '<react-container />',
       //@ts-ignore
@@ -592,7 +582,7 @@ export function setupAngularRoutes($routeProvider: route.IRouteProvider, $locati
       reloadOnSearch: false,
       resolve: {
         component: () =>
-          SafeDynamicImport(import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/analytics/ViewNewView')),
+          SafeDynamicImport(import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/analytics/AddNewView')),
       },
     })
     .otherwise({

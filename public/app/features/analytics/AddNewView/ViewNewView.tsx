@@ -3,19 +3,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { updateLocation } from 'app/core/actions';
 import { CustomNavigationBar } from 'app/core/components/CustomNav';
-import { DeleteTabPopup } from './DeleteTabPopup';
-import { UncontrolledPopover, PopoverBody } from 'reactstrap';
-import CustomDashboardLoader from '../custom-dashboard-loader';
-import { config } from '../config';
+// import { DeleteTabPopup } from '../DeleteTabPopup';
+// import { UncontrolledPopover, PopoverBody } from 'reactstrap';
+import CustomDashboardLoader from '../../custom-dashboard-loader';
+import { config } from '../../config';
 import { getLocationSrv } from '@grafana/runtime';
-// Services & Utils
-export interface Props {
+
+interface Props {
   $scope: any;
   $injector: any;
-  Id?: string;
+  ref: any;
 }
 
-class ViewNewView extends React.Component<any, any> {
+class ViewNewView extends React.Component<Props, any> {
   openDeleteTabRef: any;
   breadCrumbs: any = [
     {
@@ -33,39 +33,35 @@ class ViewNewView extends React.Component<any, any> {
       tabs: [],
       sideBarData: [],
       activeTab: 0,
-      selectedData: {},
+      activeSideTab: 0,
       deletedId: 0,
       activeSidebar: 0,
+      loading: false,
     };
     this.openDeleteTabRef = React.createRef();
   }
 
-  componentDidMount = () => {
-    const { activeTab } = this.state;
-    let data: any;
-    let arryData: any;
-    let selectedLabel = {};
-    data = localStorage.getItem('newdashboarddata');
-    arryData = JSON.parse(data);
-    let sidebar = [];
-    for (let i = 0; i < arryData.length; i++) {
-      if (i === activeTab) {
-        for (let j = 0; j < arryData[i].dashboardList.length; j++) {
-          let row = arryData[i].dashboardList[j];
-          for (let j = 0; j < row.subData.length; j++) {
-            let sideData = row.subData[j];
-            if (sideData.checkValue === true) {
-              sidebar.push(sideData);
-              selectedLabel = sideData;
-            }
+  setData = (tabs: any) => {
+    const data = [];
+    for (let i = 0; i < tabs.length; i++) {
+      const tab = tabs[i];
+      const dashboardList = tab.dashboardList;
+      const selectedDashboards = [];
+      for (let j = 0; j < dashboardList.length; j++) {
+        let subData = dashboardList[j].subData;
+        for (let k = 0; k < subData.length; k++) {
+          if (subData[k].checkValue) {
+            selectedDashboards.push(subData[k]);
           }
         }
       }
+      data.push({
+        label: tab.label,
+        dashboards: selectedDashboards,
+      });
     }
     this.setState({
-      tabs: arryData,
-      sideBarData: sidebar,
-      selectedData: selectedLabel,
+      tabs: data,
     });
   };
 
@@ -76,8 +72,8 @@ class ViewNewView extends React.Component<any, any> {
       let tab = tabs[i];
       retData.push(
         <li key={`tab-${i}`} className={`nav-item `}>
-          <a className={i === activeTab ? 'nav-link active' : 'nav-link'} onClick={e => this.navigateTab(i)}>
-            {tab.label}&nbsp; <i className="fa fa-angle-down"></i>
+          <a className={i === activeTab ? 'nav-link active' : 'nav-link'} onClick={e => this.setActiveTab(i)}>
+            {tab.label}&nbsp;
           </a>
         </li>
       );
@@ -85,44 +81,12 @@ class ViewNewView extends React.Component<any, any> {
     return retData;
   };
 
-  navigateTab(index: any) {
-    const { tabs } = this.state;
-    let sidebar = [];
+  setActiveTab(index: any) {
     this.setState({
-      sideBarData: [],
       activeTab: index,
-      activeSidebar: 0,
-    });
-    for (let i = 0; i < tabs.length; i++) {
-      let tab = tabs[i];
-      if (i === index && tab.dashboardList) {
-        for (let j = 0; j < tab.dashboardList.length; j++) {
-          let tabData = tab.dashboardList[j];
-          if (tabData.subData) {
-            for (let k = 0; k < tabData.subData.length; k++) {
-              let row = tabData.subData[k];
-              if (row.checkValue === true) {
-                sidebar.push(row);
-              }
-            }
-          }
-        }
-      }
-    }
-    this.setState({
-      sideBarData: sidebar,
+      activeSideTab: 0,
     });
   }
-
-  addTab = () => {
-    const { tabs } = this.state;
-    const length = tabs.length;
-    tabs.push({ label: 'Tab' + (length + 1) });
-    this.setState({
-      tabs,
-      activeTab: length,
-    });
-  };
 
   displayAction = (index: any) => {
     const { sideBarData } = this.state;
@@ -132,38 +96,38 @@ class ViewNewView extends React.Component<any, any> {
     });
   };
 
-  deleteTabData = (data: any, index: any) => {
-    console.log(data);
-    this.setState({
-      selectedData: data,
-      deletedId: index,
-    });
-    this.openDeleteTabRef.current.toggle();
-  };
+  // deleteTabData = (data: any, index: any) => {
+  //   console.log(data);
+  //   this.setState({
+  //     selectedData: data,
+  //     deletedId: index,
+  //   });
+  //   this.openDeleteTabRef.current.toggle();
+  // };
 
-  setDashboardContent = (content: any, index: any) => {
+  setActiveSideTab = (index: any) => {
     this.setState({
-      uid: content.uid,
-      slug: content.slug,
-      activeSidebar: index,
-      selectedData: content,
+      activeSideTab: index,
     });
   };
 
-  displayActiveTabSidebar = () => {
-    const { sideBarData, activeSidebar } = this.state;
+  renderSideBar = () => {
+    const { activeTab, tabs, activeSideTab } = this.state;
     let retData = [];
-    for (let i = 0; i < sideBarData.length; i++) {
-      let sideData = sideBarData[i];
-      retData.push(
-        <li>
-          <a>
-            <span className={i === activeSidebar ? 'active' : ''} onClick={() => this.setDashboardContent(sideData, i)}>
-              {sideData.title}
-            </span>
-            <i className="fa fa-ellipsis-h" id={`PopoverFocus-${i}`}></i>
-          </a>
-          <UncontrolledPopover trigger="legacy" placement="bottom" target={`PopoverFocus-${i}`}>
+    const sidebarData = tabs[activeTab];
+    if (sidebarData) {
+      const dashboards = sidebarData.dashboards;
+      for (let i = 0; i < dashboards.length; i++) {
+        let sideData = dashboards[i];
+        retData.push(
+          <li>
+            <a>
+              <span className={i === activeSideTab ? 'active' : ''} onClick={() => this.setActiveSideTab(i)}>
+                {sideData.title}
+              </span>
+              <i className="fa fa-ellipsis-h" id={`PopoverFocus-${i}`}></i>
+            </a>
+            {/* <UncontrolledPopover trigger="legacy" placement="bottom" target={`PopoverFocus-${i}`}>
             <PopoverBody className="popup-btn">
               <ul>
                 {i !== 0 && (
@@ -189,24 +153,25 @@ class ViewNewView extends React.Component<any, any> {
                 </li>
               </ul>
             </PopoverBody>
-          </UncontrolledPopover>
-        </li>
-      );
+          </UncontrolledPopover> */}
+          </li>
+        );
+      }
     }
     return retData;
   };
 
-  removeDashboardRecord = () => {
-    const { deletedId, sideBarData } = this.state;
-    for (let i = 0; i < sideBarData.length; i++) {
-      if (i === deletedId) {
-        sideBarData.splice(i, 1);
-      }
-    }
-    this.setState({
-      sideBarData,
-    });
-  };
+  // removeDashboardRecord = () => {
+  //   const { deletedId, sideBarData } = this.state;
+  //   for (let i = 0; i < sideBarData.length; i++) {
+  //     if (i === deletedId) {
+  //       sideBarData.splice(i, 1);
+  //     }
+  //   }
+  //   this.setState({
+  //     sideBarData,
+  //   });
+  // };
 
   moveArrayPosition = (fromIndex: any, toIndex: any) => {
     const { sideBarData } = this.state;
@@ -219,14 +184,15 @@ class ViewNewView extends React.Component<any, any> {
   };
 
   createDashboard = () => {
-    const { activeSidebar, sideBarData } = this.state;
+    const { activeTab, activeSideTab, tabs } = this.state;
     let retData = [];
-    for (let i = 0; i < sideBarData.length; i++) {
-      const dashboard = sideBarData[i];
-      if (dashboard.type === 'dash-db') {
+    if (tabs[activeTab] && tabs[activeTab].dashboards && tabs[activeTab].dashboards.length > 0) {
+      const dashboards = tabs[activeTab].dashboards;
+      for (let j = 0; j < dashboards.length; j++) {
+        const dashboard = dashboards[j];
         retData.push(
-          <div>
-            {activeSidebar === i && (
+          <div key={dashboard.uid}>
+            {activeSideTab === j && (
               <CustomDashboardLoader
                 $scope={this.props.$scope}
                 $injector={this.props.$injector}
@@ -242,30 +208,34 @@ class ViewNewView extends React.Component<any, any> {
   };
 
   saveDashboard = () => {
-    const { selectedData } = this.state;
-    let sendData = {
-      data: selectedData,
+    const { tabs } = this.state;
+    const sendData = {
+      name: 'test',
+      description: 'test',
+      tabs,
     };
     let requestOptions: any = {
       method: `POST`,
       headers: {
-        ...{ 'Content-Type': 'application/json;charset=UTF-8' },
+        'Content-Type': 'application/json;charset=UTF-8',
       },
       body: JSON.stringify(sendData),
     };
-    console.log(requestOptions);
-    fetch(`${config.ADD_DASHBOARD}`, requestOptions)
-      .then(response => response.json())
-      .then((response: any) => {
-        console.log(response);
+    this.setState({
+      loading: true,
+    });
+    fetch(`${config.ADD_DASHBOARD}`, requestOptions).then((response: any) => {
+      this.setState({
+        loading: false,
       });
-    getLocationSrv().update({ path: '/analytics' });
+      getLocationSrv().update({ path: '/analytics' });
+    });
   };
 
   render() {
     const breadCrumbs = this.breadCrumbs;
     const pageTitle = 'ANALYTICS';
-    const { selectedData } = this.state;
+    const { loading } = this.state;
     return (
       <React.Fragment>
         <CustomNavigationBar />
@@ -302,7 +272,11 @@ class ViewNewView extends React.Component<any, any> {
                 <div className="col-lg-6 col-md-6 col-sm-6">
                   <div className="d-block text-right">
                     <a>
-                      <button className="analytics-blue-button" onClick={this.saveDashboard}>
+                      <button
+                        disabled={loading}
+                        className={`analytics-blue-button ${loading ? 'disabled' : ''}`}
+                        onClick={this.saveDashboard}
+                      >
                         Save and add to View list
                       </button>
                     </a>
@@ -321,33 +295,33 @@ class ViewNewView extends React.Component<any, any> {
               </ul>
               <div className="analytics-tabs-section-container">
                 <div className="tabs-left-section">
-                  <h5>AWS RDS</h5>
-                  <ul>{this.displayActiveTabSidebar()}</ul>
+                  {/* <h5>AWS RDS</h5> */}
+                  <ul>{this.renderSideBar()}</ul>
                 </div>
                 <div className="tabs-right-section">
-                  <div className="analytics-aws-heading">
+                  {/* <div className="analytics-aws-heading">
                     <p>AWS RDS {'>'} CPUUtilisation, CreditsUsage, CreditBalance</p>
-                  </div>
+                  </div> */}
                   <div>{this.createDashboard()}</div>
                 </div>
               </div>
             </div>
           </div>
-          <DeleteTabPopup
+          {/* <DeleteTabPopup
             ref={this.openDeleteTabRef}
             deleteContent={selectedData}
             deleteDataFromSidebar={this.removeDashboardRecord}
-          />
+          /> */}
         </div>
       </React.Fragment>
     );
   }
 }
 
-export const mapStateToProps = (state: any) => state;
+const mapStateToProps = (state: any) => state;
 
 const mapDispatchToProps = {
   updateLocation,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ViewNewView);
+export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(ViewNewView);

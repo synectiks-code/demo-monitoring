@@ -10,13 +10,14 @@ import { SortPicker } from 'app/core/components/Select/SortPicker';
 import { TagFilter } from 'app/core/components/TagFilter/TagFilter';
 import { Checkbox } from '@grafana/ui';
 import { FilterInput } from 'app/core/components/FilterInput/FilterInput';
+import ViewNewView from './ViewNewView';
 
 export interface Props {
   $scope: any;
   $injector: any;
 }
 
-class AddNewTab extends React.Component<any, any> {
+class AddNewView extends React.Component<any, any> {
   showStarredFilter: any;
   breadCrumbs: any = [
     {
@@ -30,7 +31,7 @@ class AddNewTab extends React.Component<any, any> {
   ];
 
   tagsPromiseResolve: any;
-
+  viewRef: any;
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -54,7 +55,9 @@ class AddNewTab extends React.Component<any, any> {
           searchKey: '',
         },
       ],
+      showView: false,
     };
+    this.viewRef = React.createRef();
   }
 
   componentDidMount() {
@@ -412,9 +415,13 @@ class AddNewTab extends React.Component<any, any> {
   };
 
   sendData = () => {
-    const { tabs } = this.state;
-    localStorage.setItem('newdashboarddata', JSON.stringify(tabs));
-    getLocationSrv().update({ path: '/analytics/new/dashboard' });
+    // const { tabs } = this.state;
+    // localStorage.setItem('newdashboarddata', JSON.stringify(tabs));
+    // getLocationSrv().update({ path: '/analytics/new/dashboard' });
+    this.viewRef.current.setData(this.state.tabs);
+    this.setState({
+      showView: true,
+    });
   };
 
   renderSelectedDashboardInLeftSide = () => {
@@ -509,114 +516,119 @@ class AddNewTab extends React.Component<any, any> {
   render() {
     const breadCrumbs = this.breadCrumbs;
     const pageTitle = 'ANALYTICS';
-    const { isPreviewEnabled, filterData, activeTab } = this.state;
+    const { isPreviewEnabled, filterData, activeTab, showView } = this.state;
     const { isStarred, searchKey, selectedTags, sortValue } = filterData[activeTab];
     return (
       <React.Fragment>
-        <CustomNavigationBar />
-        <div className="scroll-canvas--dashboard monitor-main-body">
-          <div className="breadcrumbs-container">
-            {pageTitle && <div className="page-title">{pageTitle}</div>}
-            <div className="breadcrumbs">
-              {breadCrumbs.map((breadcrumb: any, index: any) => {
-                if (breadcrumb.isCurrentPage) {
-                  return (
-                    <span key={index} className="current-page">
-                      {breadcrumb.label}
-                    </span>
-                  );
-                } else {
-                  return (
-                    <React.Fragment key={index}>
-                      <a className="breadcrumbs-link">{breadcrumb.label}</a>
-                      <span className="separator">
-                        <i className="fa fa-chevron-right"></i>
+        <div style={{ display: `${showView ? 'none' : 'block'}` }}>
+          <CustomNavigationBar />
+          <div className="scroll-canvas--dashboard monitor-main-body">
+            <div className="breadcrumbs-container">
+              {pageTitle && <div className="page-title">{pageTitle}</div>}
+              <div className="breadcrumbs">
+                {breadCrumbs.map((breadcrumb: any, index: any) => {
+                  if (breadcrumb.isCurrentPage) {
+                    return (
+                      <span key={index} className="current-page">
+                        {breadcrumb.label}
                       </span>
-                    </React.Fragment>
-                  );
-                }
-              })}
-            </div>
-          </div>
-          <div className="analytics-container">
-            <div className="analytics-heading-container">
-              <div className="row">
-                <div className="col-lg-6 col-md-6 col-sm-6">
-                  <h4 style={{ lineHeight: '36px' }}>NGINX</h4>
-                </div>
-                <div className="col-lg-6 col-md-6 col-sm-6">
-                  <div className="d-block text-right">
-                    <button
-                      className="analytics-white-button min-width-auto m-r-0"
-                      onClick={() => getLocationSrv().update({ path: '/analytics' })}
-                    >
-                      <i className="fa fa-arrow-circle-left"></i>
-                      &nbsp;&nbsp;Back
-                    </button>
-                  </div>
-                </div>
+                    );
+                  } else {
+                    return (
+                      <React.Fragment key={index}>
+                        <a className="breadcrumbs-link">{breadcrumb.label}</a>
+                        <span className="separator">
+                          <i className="fa fa-chevron-right"></i>
+                        </span>
+                      </React.Fragment>
+                    );
+                  }
+                })}
               </div>
             </div>
-            <div className="analytics-tabs-container">
-              <ul className="nav nav-tabs">
-                {this.displayTabs()}
-                <li className="nav-item" onClick={this.addTab}>
-                  <a className="nav-link add-tab">
-                    <i className="fa fa-plus"></i>
-                  </a>
-                </li>
-              </ul>
-              <div className="analytics-tabs-section-container">
-                <div className="tabs-left-section">
-                  <h5>New Tab</h5>
-                  <ul>{this.renderSelectedDashboardInLeftSide()}</ul>
-                </div>
-                <div className="tabs-right-section">
-                  <div className="manage-dashboard-search">
-                    <div className="row" style={{ alignItems: 'center' }}>
-                      <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                        <div className="form-group search-control-group">
-                          <FilterInput
-                            labelClassName="gf-form--has-input-icon"
-                            inputClassName="gf-form-input"
-                            value={searchKey}
-                            onChange={this.onQueryChange}
-                            placeholder={'Search dashboards by name'}
-                          />
-                        </div>
-                      </div>
-                      <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12 tag-filter-container">
-                        <TagFilter
-                          isClearable
-                          tags={selectedTags}
-                          tagOptions={this.getTagOptions}
-                          onChange={this.onTagFilterChange}
-                        />
-                      </div>
-                      <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                        <Checkbox label="Filter by starred" onChange={this.onStarredFilterChange} value={isStarred} />
-                      </div>
-                      <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12 sort-container">
-                        <SortPicker onChange={this.onSortChange} value={sortValue} />
-                      </div>
-                    </div>
+            <div className="analytics-container">
+              <div className="analytics-heading-container">
+                <div className="row">
+                  <div className="col-lg-6 col-md-6 col-sm-6">
+                    <h4 style={{ lineHeight: '36px' }}>NGINX</h4>
                   </div>
-                  <div className="manage-dashboard-general">{this.renderDashboardTree()}</div>
-                  {isPreviewEnabled && (
-                    <div className="text-right">
-                      <button className="analytics-blue-button" onClick={this.sendData}>
-                        Preview
+                  <div className="col-lg-6 col-md-6 col-sm-6">
+                    <div className="d-block text-right">
+                      <button
+                        className="analytics-white-button min-width-auto m-r-0"
+                        onClick={() => getLocationSrv().update({ path: '/analytics' })}
+                      >
+                        <i className="fa fa-arrow-circle-left"></i>
+                        &nbsp;&nbsp;Back
                       </button>
                     </div>
-                  )}
+                  </div>
+                </div>
+              </div>
+              <div className="analytics-tabs-container">
+                <ul className="nav nav-tabs">
+                  {this.displayTabs()}
+                  <li className="nav-item" onClick={this.addTab}>
+                    <a className="nav-link add-tab">
+                      <i className="fa fa-plus"></i>
+                    </a>
+                  </li>
+                </ul>
+                <div className="analytics-tabs-section-container">
+                  <div className="tabs-left-section">
+                    <h5>New Tab</h5>
+                    <ul>{this.renderSelectedDashboardInLeftSide()}</ul>
+                  </div>
+                  <div className="tabs-right-section">
+                    <div className="manage-dashboard-search">
+                      <div className="row" style={{ alignItems: 'center' }}>
+                        <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                          <div className="form-group search-control-group">
+                            <FilterInput
+                              labelClassName="gf-form--has-input-icon"
+                              inputClassName="gf-form-input"
+                              value={searchKey}
+                              onChange={this.onQueryChange}
+                              placeholder={'Search dashboards by name'}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12 tag-filter-container">
+                          <TagFilter
+                            isClearable
+                            tags={selectedTags}
+                            tagOptions={this.getTagOptions}
+                            onChange={this.onTagFilterChange}
+                          />
+                        </div>
+                        <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                          <Checkbox label="Filter by starred" onChange={this.onStarredFilterChange} value={isStarred} />
+                        </div>
+                        <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12 sort-container">
+                          <SortPicker onChange={this.onSortChange} value={sortValue} />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="manage-dashboard-general">{this.renderDashboardTree()}</div>
+                    {isPreviewEnabled && (
+                      <div className="text-right">
+                        <button className="analytics-blue-button" onClick={this.sendData}>
+                          Preview
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+        <div style={{ display: `${showView ? 'block' : 'none'}` }}>
+          <ViewNewView ref={this.viewRef} $scope={this.props.$scope} $injector={this.props.$injector} />
         </div>
       </React.Fragment>
     );
   }
 }
 
-export default AddNewTab;
+export default AddNewView;

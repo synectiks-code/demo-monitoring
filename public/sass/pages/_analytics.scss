@@ -12,6 +12,9 @@
   &:hover {
     background: #0f5efd;
   }
+  &.disabled{
+    background: #6386ca;
+  }
 }
 
 .analytics-gray-button {

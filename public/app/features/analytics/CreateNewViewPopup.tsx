@@ -72,7 +72,7 @@ export class CreateNewViewPopup extends React.Component<any, any> {
     });
     const errorData = this.validate(true);
     if (errorData.isValid) {
-      getLocationSrv().update({ path: '/analytics/f/new' });
+      getLocationSrv().update({ path: '/analytics/new/dashboard' });
       // window.location.assign('/analytics/f/new');
     }
   };
