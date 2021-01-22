@@ -5,6 +5,7 @@ import { updateLocation } from 'app/core/actions';
 import { CustomNavigationBar } from 'app/core/components/CustomNav';
 import Table from './tables/table';
 import { CreateNewViewPopup } from './CreateNewViewPopup';
+import { config } from '../config';
 
 // Services & Utils
 export interface Props {
@@ -114,6 +115,26 @@ class Analytics extends React.Component<any, any> {
     };
     this.opencreateNewViewRef = React.createRef();
   }
+
+  componentDidMount() {
+    this.getTableData();
+  }
+
+  getTableData = () => {
+    let requestOptionsGet: any = {
+      method: `GET`,
+    };
+    fetch(`${config.ANALYTICS_LIST_VIEW}`, requestOptionsGet)
+      .then(response => response.json())
+      .then((response: any) => {
+        console.log(response);
+        if (response) {
+          this.setState({
+            ticketDataList: response,
+          });
+        }
+      });
+  };
 
   onClickCreateNewView = (e: any) => {
     this.opencreateNewViewRef.current.toggle();
