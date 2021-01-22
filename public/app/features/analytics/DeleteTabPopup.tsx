@@ -41,10 +41,10 @@ export class DeleteTabPopup extends React.Component<any, any> {
             <a href="#">{deleteContent.title}</a>
           </div>
           <div className="d-block text-center p-t-20">
-            <button className="alert-gray-button cancel" onClick={this.handleClose}>
+            <button className="analytics-gray-button cancel" onClick={this.handleClose}>
               Cancel
             </button>
-            <button onClick={this.deleteData} className="alert-blue-button m-r-0 continue">
+            <button onClick={this.deleteData} className="analytics-blue-button m-r-0 continue">
               Continue
             </button>
           </div>

@@ -522,7 +522,7 @@ class AddNewTab extends React.Component<any, any> {
                 <div className="col-lg-6 col-md-6 col-sm-6">
                   <div className="d-block text-right">
                     <button
-                      className="alert-white-button min-width-auto m-r-0"
+                      className="analytics-white-button min-width-auto m-r-0"
                       onClick={() => getLocationSrv().update({ path: '/analytics' })}
                     >
                       <i className="fa fa-arrow-circle-left"></i>
@@ -548,21 +548,19 @@ class AddNewTab extends React.Component<any, any> {
                 </div>
                 <div className="tabs-right-section">
                   <div className="manage-dashboard-search">
-                    <div className="row">
+                    <div className="row" style={{ alignItems: 'center' }}>
                       <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12">
                         <div className="form-group search-control-group">
-                          <form>
-                            <FilterInput
-                              labelClassName="gf-form--has-input-icon"
-                              inputClassName="gf-form-input width-20"
-                              value={searchkey}
-                              onChange={this.onQueryChange}
-                              placeholder={'Search dashboards by name'}
-                            />
-                          </form>
+                          <FilterInput
+                            labelClassName="gf-form--has-input-icon"
+                            inputClassName="gf-form-input"
+                            value={searchkey}
+                            onChange={this.onQueryChange}
+                            placeholder={'Search dashboards by name'}
+                          />
                         </div>
                       </div>
-                      <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                      <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12 tag-filter-container">
                         <TagFilter
                           isClearable
                           tags={selectedTags}
@@ -573,7 +571,7 @@ class AddNewTab extends React.Component<any, any> {
                       <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12">
                         <Checkbox label="Filter by starred" onChange={this.onStarredFilterChange} value={isStared} />
                       </div>
-                      <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                      <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12 sort-container">
                         <SortPicker onChange={this.onSortChange} value={sortValue} />
                       </div>
                     </div>
@@ -581,7 +579,7 @@ class AddNewTab extends React.Component<any, any> {
                   <div className="manage-dashboard-general">{this.renderDashboardTree()}</div>
                   {isPreviewEnabled && (
                     <div className="text-right">
-                      <button className="alert-blue-button" onClick={this.sendData}>
+                      <button className="analytics-blue-button" onClick={this.sendData}>
                         Preview
                       </button>
                     </div>

@@ -161,7 +161,7 @@ class Analytics extends React.Component<any, any> {
             </div>
             <div className="analytics-table-container">
               <div className="new-view-btn">
-                <button className="alert-blue-button" onClick={this.onClickCreateNewView}>
+                <button className="analytics-blue-button" onClick={this.onClickCreateNewView}>
                   New View
                 </button>
               </div>

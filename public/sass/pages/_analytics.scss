@@ -1,4 +1,4 @@
-.alert-blue-button {
+.analytics-blue-button {
   background: #3b7cff;
   color: white;
   border: none;
@@ -14,7 +14,7 @@
   }
 }
 
-.alert-gray-button {
+.analytics-gray-button {
   background: #dde4e9;
   color: #8392a7;
   border: none;
@@ -31,7 +31,7 @@
   }
 }
 
-.alert-white-button {
+.analytics-white-button {
   background: white;
   color: rgb(59, 72, 89);
   border: none;
@@ -98,10 +98,10 @@
       border-bottom: none;
       margin-bottom: 2px;
 
-      > li {
+      >li {
         position: relative;
 
-        > a {
+        >a {
           background-color: #f8f9fb;
           border: 0.5px solid #8392a7;
           border-right: none;
@@ -333,56 +333,21 @@
             display: block;
             width: 100%;
 
-            .input-group-text {
-              max-width: 100%;
-              text-align: left;
-              padding-left: 35px;
-              width: 100%;
-              border: 1px solid #8392a7;
-              background-color: #ffffff;
-              font-size: 13px;
-              color: #8998ac;
-              font-weight: 400;
-              height: 36px;
-            }
-
-            button {
-              position: absolute;
-              left: 0;
-              top: 0;
-              z-index: 1;
-              cursor: pointer;
-              border: none;
-              background-color: transparent;
-              width: 36px;
-              height: 36px;
+            >div {
+              width: 100% !important;
             }
           }
 
-          .sort-select-menu {
-            background-color: #f0f3f7;
-            border-radius: 5px;
-            height: 36px;
-            display: block;
-            width: 100%;
-
-            span {
-              display: inline-block;
-              padding-top: 7px;
-              padding-left: 10px;
-              padding-right: 5px;
-              vertical-align: top;
+          .tag-filter-container {
+            >div {
+              width: 100% !important;
+              min-width: 100% !important;
             }
+          }
 
-            select {
-              display: inline-block;
-              background-color: transparent;
-              border: none;
-              vertical-align: top;
-              margin-top: 2px;
-              width: calc(100% - 44px);
-              cursor: pointer;
-              color: #464c54;
+          .sort-container {
+            >div {
+              width: 100% !important;
             }
           }
 
@@ -626,15 +591,18 @@
   border-radius: 10px;
   padding: 10px 20px;
 }
+
 .modal-backdrop {
   background-color: rgba(20, 20, 20, 0.7);
   opacity: 0.8;
 }
+
 .modal {
   box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px;
   max-width: 992px;
   background: rgb(255, 255, 255);
 }
+
 .catalog-modal-container {
   max-width: 992px !important;
   box-shadow: 0px 0px 16px #3b48593d;
@@ -798,6 +766,7 @@
 .invalid-feedback {
   color: #ff4040ed;
 }
+
 .bs-popover-auto {
   z-index: 1000;
   border: none;
@@ -808,9 +777,11 @@
     width: 110px;
     border: none;
     z-index: 1000;
+
     .arrow {
       display: none !important;
     }
+
     .popover-body {
       width: 110px;
       padding: 10px 0;
@@ -818,6 +789,7 @@
       border: none;
       background-color: #f5f6f5;
       box-shadow: 0px 3px 6px #00000029;
+
       ul {
         display: inline-block;
 
@@ -853,18 +825,23 @@
 @media only screen and (min-width: 1201px) and(max-width: 1242px) {
   .sort-checkbox {
     padding: 0 6px !important;
+
     span {
       padding-left: 8px !important;
     }
   }
 }
+
 @media only screen and (min-width: 1024px) and(max-width: 1200px) {
+
   .search-control-group,
   .sort-select-menu {
     margin-bottom: 10px;
   }
 }
+
 @media only screen and (min-width: 768px) and(max-width: 1023px) {
+
   .search-control-group,
   .sort-select-menu,
   .sort-checkbox {

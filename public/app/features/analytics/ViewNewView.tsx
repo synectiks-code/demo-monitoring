@@ -281,7 +281,7 @@ class ViewNewView extends React.Component<any, any> {
                 <div className="col-lg-6 col-md-6 col-sm-6">
                   <div className="d-block text-right">
                     <a href="/analytics/">
-                      <button className="alert-blue-button">Save and add to View list</button>
+                      <button className="analytics-blue-button">Save and add to View list</button>
                     </a>
                   </div>
                 </div>

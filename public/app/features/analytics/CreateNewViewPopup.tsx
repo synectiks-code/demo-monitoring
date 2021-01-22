@@ -116,10 +116,10 @@ export class CreateNewViewPopup extends React.Component<any, any> {
               />
             </div>
             <div className="d-block text-right">
-              <button className="alert-gray-button cancel" onClick={this.handleClose}>
+              <button className="analytics-gray-button cancel" onClick={this.handleClose}>
                 Cancel
               </button>
-              <button className="alert-blue-button m-r-0 continue" onClick={this.handleSubmit}>
+              <button className="analytics-blue-button m-r-0 continue" onClick={this.handleSubmit}>
                 Continue
               </button>
             </div>

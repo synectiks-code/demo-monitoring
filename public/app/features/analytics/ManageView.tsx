@@ -326,7 +326,7 @@ class ManageView extends React.Component<any, any> {
                 <div className="col-lg-6 col-md-6 col-sm-6">
                   <div className="d-block text-right">
                     <button
-                      className="alert-white-button min-width-auto m-r-0"
+                      className="analytics-white-button min-width-auto m-r-0"
                       onClick={() => getLocationSrv().update({ path: '/analytics' })}
                     >
                       <i className="fa fa-arrow-circle-left"></i>
