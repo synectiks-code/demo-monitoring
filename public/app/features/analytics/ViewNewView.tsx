@@ -6,7 +6,8 @@ import { CustomNavigationBar } from 'app/core/components/CustomNav';
 import { DeleteTabPopup } from './DeleteTabPopup';
 import { UncontrolledPopover, PopoverBody } from 'reactstrap';
 import CustomDashboardLoader from '../custom-dashboard-loader';
-
+import { config } from '../config';
+import { getLocationSrv } from '@grafana/runtime';
 // Services & Utils
 export interface Props {
   $scope: any;
@@ -55,7 +56,6 @@ class ViewNewView extends React.Component<any, any> {
             let sideData = row.subData[j];
             if (sideData.checkValue === true) {
               sidebar.push(sideData);
-              // for (let j = 0; j < row.subData.length; j++) {
               selectedLabel = sideData;
             }
           }
@@ -241,6 +241,27 @@ class ViewNewView extends React.Component<any, any> {
     return retData;
   };
 
+  saveDashboard = () => {
+    const { selectedData } = this.state;
+    let sendData = {
+      data: selectedData,
+    };
+    let requestOptions: any = {
+      method: `POST`,
+      headers: {
+        ...{ 'Content-Type': 'application/json;charset=UTF-8' },
+      },
+      body: JSON.stringify(sendData),
+    };
+    console.log(requestOptions);
+    fetch(`${config.ADD_DASHBOARD}`, requestOptions)
+      .then(response => response.json())
+      .then((response: any) => {
+        console.log(response);
+      });
+    getLocationSrv().update({ path: '/analytics' });
+  };
+
   render() {
     const breadCrumbs = this.breadCrumbs;
     const pageTitle = 'ANALYTICS';
@@ -280,8 +301,10 @@ class ViewNewView extends React.Component<any, any> {
                 </div>
                 <div className="col-lg-6 col-md-6 col-sm-6">
                   <div className="d-block text-right">
-                    <a href="/analytics/">
-                      <button className="alert-blue-button">Save and add to View list</button>
+                    <a>
+                      <button className="alert-blue-button" onClick={this.saveDashboard}>
+                        Save and add to View list
+                      </button>
                     </a>
                   </div>
                 </div>
