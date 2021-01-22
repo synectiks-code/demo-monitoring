@@ -45,10 +45,15 @@ class AddNewTab extends React.Component<any, any> {
       activeTab: 0,
       isPreviewEnabled: false,
       selectedDashboards: [],
-      selectedTags: [],
-      sortValue: '',
-      isStared: false,
-      searchkey: '',
+      isStarred: false,
+      filterData: [
+        {
+          isStarred: false,
+          selectedTags: [],
+          sortValue: 'alpha-asc',
+          searchKey: '',
+        },
+      ],
     };
   }
 
@@ -56,24 +61,28 @@ class AddNewTab extends React.Component<any, any> {
     const sendData = {
       tags: [],
     };
-    this.getsearchData(sendData);
+    this.getSearchData(sendData, true);
   }
 
-  getsearchData = (data: any) => {
+  getSearchData = (data: any, isFirstTime: any) => {
     backendSrv.search(data).then((result: any) => {
-      const retData = this.manipulateData(result);
+      const retData = this.manipulateData(result, isFirstTime);
       const { tabs, activeTab } = this.state;
       if (tabs[activeTab]) {
         tabs[activeTab].dashboardList = JSON.parse(JSON.stringify(retData));
       }
+      if (isFirstTime) {
+        this.setState({
+          folderArray: JSON.parse(JSON.stringify(retData)),
+        });
+      }
       this.setState({
-        folderArray: JSON.parse(JSON.stringify(retData)),
         tabs,
       });
     });
   };
 
-  manipulateData(result: any) {
+  manipulateData(result: any, isFirstTime: any) {
     const retData: any = {};
     let tagList = [];
     for (let i = 0; i < result.length; i++) {
@@ -87,7 +96,7 @@ class AddNewTab extends React.Component<any, any> {
         retData[dash.folderId].openSubFolder = false;
         retData[dash.folderId].subData.push(dash);
       }
-      if (dash.tags.length > 0) {
+      if (dash.tags.length > 0 && isFirstTime) {
         for (let i = 0; i < dash.tags.length; i++) {
           let row = dash.tags[i];
           tagList.push({
@@ -102,7 +111,7 @@ class AddNewTab extends React.Component<any, any> {
     for (let i = 0; i < keys.length; i++) {
       folders.push(retData[keys[i]]);
     }
-    this.tagsPromiseResolve && this.tagsPromiseResolve(tagList);
+    isFirstTime && this.tagsPromiseResolve && this.tagsPromiseResolve(tagList);
     return folders;
   }
 
@@ -217,14 +226,14 @@ class AddNewTab extends React.Component<any, any> {
   };
 
   deleteTabData = (index: any) => {
-    const { tabs } = this.state;
-    for (let i = 0; i < tabs.length; i++) {
-      if (i === index) {
-        tabs.splice(i, 1);
-      }
-    }
+    const { tabs, filterData, selectedDashboards } = this.state;
+    tabs.splice(index, 1);
+    filterData.splice(index, 1);
+    selectedDashboards.splice(index, 1);
     this.setState({
       tabs,
+      filterData,
+      activeTab: tabs.length - 1,
     });
   };
 
@@ -235,19 +244,26 @@ class AddNewTab extends React.Component<any, any> {
   }
 
   addTab = () => {
-    const { tabs, folderArray } = this.state;
+    const { tabs, folderArray, filterData, selectedDashboards } = this.state;
     const length = tabs.length;
+    selectedDashboards.push([]);
     tabs.push({
       label: 'New Tab' + ' ' + (length + 1),
       isEdit: false,
       dashboardList: JSON.parse(JSON.stringify(folderArray)),
     });
+    filterData.push({
+      isStarred: false,
+      selectedTags: [],
+      sortValue: 'alpha-asc',
+      searchKey: '',
+    });
     this.setState({
       tabs,
       activeTab: length,
       isPreviewEnabled: false,
+      selectedDashboards,
     });
-    this.checkForEnabled(tabs);
   };
 
   onClickChildCheckbox = (parentIndex: any, childIndex: any) => {
@@ -427,65 +443,74 @@ class AddNewTab extends React.Component<any, any> {
   };
 
   onTagFilterChange = (tags: any) => {
-    const { sortValue, isStared, searchkey } = this.state;
+    const { filterData, activeTab } = this.state;
+    const { searchKey, isStarred, sortValue } = filterData[activeTab];
+    filterData[activeTab].selectedTags = tags;
     this.setState({
-      selectedTags: tags,
+      filterData,
     });
     const sendData = {
       tag: tags,
       sort: sortValue,
-      starred: isStared,
-      query: searchkey,
+      starred: isStarred,
+      query: searchKey,
     };
-    this.getsearchData(sendData);
+    this.getSearchData(sendData, false);
   };
 
   onSortChange = (sortvalue: any) => {
-    const { selectedTags, isStared, searchkey } = this.state;
+    const { filterData, activeTab } = this.state;
+    const { searchKey, isStarred, selectedTags } = filterData[activeTab];
+    filterData[activeTab].sortValue = sortvalue.value;
     this.setState({
-      sortValue: sortvalue.value,
+      filterData,
     });
     const sendData = {
       tag: selectedTags,
       sort: sortvalue.value,
-      starred: isStared,
-      query: searchkey,
+      starred: isStarred,
+      query: searchKey,
     };
-    this.getsearchData(sendData);
+    this.getSearchData(sendData, false);
   };
 
   onStarredFilterChange = (e: any) => {
-    const { selectedTags, sortValue, searchkey } = this.state;
+    const { activeTab, filterData } = this.state;
+    filterData[activeTab].isStarred = e.target.checked;
+    const { searchKey, selectedTags, sortValue } = filterData[activeTab];
     this.setState({
-      isStared: e.target.checked,
+      filterData,
     });
     const sendData = {
       tag: selectedTags,
       sort: sortValue,
       starred: e.target.checked,
-      query: searchkey,
+      query: searchKey,
     };
-    this.getsearchData(sendData);
+    this.getSearchData(sendData, false);
   };
 
   onQueryChange = (search: any) => {
-    const { selectedTags, sortValue, isStared } = this.state;
+    const { activeTab, filterData } = this.state;
+    filterData[activeTab].searchKey = search;
+    const { isStarred, selectedTags, sortValue } = filterData[activeTab];
     this.setState({
-      searchkey: search,
+      filterData,
     });
     const sendData = {
       tag: selectedTags,
       sort: sortValue,
-      starred: isStared,
+      starred: isStarred,
       query: search,
     };
-    this.getsearchData(sendData);
+    this.getSearchData(sendData, false);
   };
 
   render() {
     const breadCrumbs = this.breadCrumbs;
     const pageTitle = 'ANALYTICS';
-    const { isPreviewEnabled, selectedTags, sortValue, isStared, searchkey } = this.state;
+    const { isPreviewEnabled, filterData, activeTab } = this.state;
+    const { isStarred, searchKey, selectedTags, sortValue } = filterData[activeTab];
     return (
       <React.Fragment>
         <CustomNavigationBar />
@@ -554,7 +579,7 @@ class AddNewTab extends React.Component<any, any> {
                           <FilterInput
                             labelClassName="gf-form--has-input-icon"
                             inputClassName="gf-form-input"
-                            value={searchkey}
+                            value={searchKey}
                             onChange={this.onQueryChange}
                             placeholder={'Search dashboards by name'}
                           />
@@ -569,7 +594,7 @@ class AddNewTab extends React.Component<any, any> {
                         />
                       </div>
                       <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12">
-                        <Checkbox label="Filter by starred" onChange={this.onStarredFilterChange} value={isStared} />
+                        <Checkbox label="Filter by starred" onChange={this.onStarredFilterChange} value={isStarred} />
                       </div>
                       <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12 sort-container">
                         <SortPicker onChange={this.onSortChange} value={sortValue} />
