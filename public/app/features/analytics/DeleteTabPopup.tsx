@@ -24,12 +24,11 @@ export class DeleteTabPopup extends React.Component<any, any> {
 
   deleteData = () => {
     this.props.deleteDataFromSidebar();
-    this.toggle();
   };
 
   render() {
     const { modal } = this.state;
-    const { deleteContent } = this.props;
+    const { deleteContent, isLoading } = this.props;
     return (
       <Modal isOpen={modal} toggle={this.toggle} className="catalog-modal-container">
         <h4 className="warning-heading">
@@ -37,14 +36,17 @@ export class DeleteTabPopup extends React.Component<any, any> {
         </h4>
         <ModalBody style={{ height: 'calc(30vh - 50px)', overflowY: 'auto', overflowX: 'hidden' }}>
           <div className="d-block width-100 warning-content">
-            <p>Are you Sure you want to delete this Dashboard from your view tab?</p>
-            <a href="#">{deleteContent.title}</a>
+            <p>{deleteContent}</p>
           </div>
           <div className="d-block text-center p-t-20">
             <button className="analytics-gray-button cancel" onClick={this.handleClose}>
               Cancel
             </button>
-            <button onClick={this.deleteData} className="analytics-blue-button m-r-0 continue">
+            <button
+              disabled={isLoading}
+              onClick={this.deleteData}
+              className={`analytics-blue-button m-r-0 continue ${isLoading ? 'disabled' : ''}`}
+            >
               Continue
             </button>
           </div>

@@ -212,9 +212,10 @@ class ViewNewView extends React.Component<Props, any> {
   };
 
   saveDashboard = () => {
-    const { tabs, viewName } = this.state;
+    const { tabs, viewName, description } = this.state;
     const formData = new FormData();
     formData.append('viewName', viewName);
+    formData.append('description', description);
     formData.append('viewJson', JSON.stringify(tabs));
     let requestOptions: any = {
       method: `POST`,

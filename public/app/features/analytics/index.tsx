@@ -7,6 +7,7 @@ import Table from './tables/table';
 import { CreateNewViewPopup } from './CreateNewViewPopup';
 import { config } from '../config';
 import { getLocationSrv } from '@grafana/runtime';
+import { DeleteTabPopup } from './DeleteTabPopup';
 
 // Services & Utils
 export interface Props {
@@ -18,6 +19,7 @@ export interface Props {
 
 class Analytics extends React.Component<any, any> {
   opencreateNewViewRef: any;
+  openDeleteTabRef: any;
   breadCrumbs: any = [
     {
       label: 'Home',
@@ -43,7 +45,7 @@ class Analytics extends React.Component<any, any> {
           renderCallback: (value: any, view: any) => {
             return (
               <td>
-                <div style={{ color: '#0099ff', cursor: 'anchor' }} onClick={() => this.onClickView(view)}>
+                <div style={{ color: '#0099ff', cursor: 'pointer' }} onClick={() => this.onClickView(view)}>
                   {value}
                 </div>
               </td>
@@ -60,23 +62,20 @@ class Analytics extends React.Component<any, any> {
         },
         {
           label: 'Last Modified',
-          key: 'lastModified',
+          key: 'updatedOn',
         },
         {
           label: 'Action',
           key: 'action',
-          renderCallback: (value: any, ticketObj: any) => {
+          renderCallback: (value: any, viewObj: any) => {
             return (
               <td>
                 <div className="d-inline-block">
                   <button className="btn btn-link">
                     <i className="fa fa-edit"></i>
                   </button>
-                  <button className="btn btn-link">
+                  <button className="btn btn-link" onClick={() => this.onClickDelete(viewObj)}>
                     <i className="fa fa-trash"></i>
-                  </button>
-                  <button className="btn btn-link">
-                    <i className="fa fa-ellipsis-h"></i>
                   </button>
                 </div>
               </td>
@@ -84,9 +83,56 @@ class Analytics extends React.Component<any, any> {
           },
         },
       ],
+      viewToDelete: null,
+      isDeleting: false,
     };
     this.opencreateNewViewRef = React.createRef();
+    this.openDeleteTabRef = React.createRef();
   }
+
+  onClickDelete = (viewObj: any) => {
+    this.setState({
+      viewToDelete: viewObj,
+    });
+    this.openDeleteTabRef.current.toggle();
+  };
+
+  deleteView = () => {
+    if (this.state.viewToDelete) {
+      this.setState({
+        isDeleting: true,
+      });
+      let requestOptionsGet: any = {
+        method: `DELETE`,
+      };
+      fetch(`${config.DELETE_ANALYTICS_VIEW}/${this.state.viewToDelete.id}`, requestOptionsGet).then(() => {
+        this.setState({
+          isDeleting: false,
+        });
+        this.openDeleteTabRef.current.toggle();
+        this.removeViewFromTable();
+      });
+    }
+  };
+
+  removeViewFromTable = () => {
+    const { viewToDelete, viewList } = this.state;
+    if (viewToDelete) {
+      let index = -1;
+      for (let i = 0; i < viewList.length; i++) {
+        if (viewList[i].id === viewToDelete.id) {
+          index = i;
+          break;
+        }
+      }
+      if (index !== -1) {
+        viewList.splice(index, 1);
+        this.setState({
+          viewList,
+        });
+      }
+    }
+  };
 
   componentDidMount() {
     this.getTableData();
@@ -119,7 +165,7 @@ class Analytics extends React.Component<any, any> {
   render() {
     const breadCrumbs = this.breadCrumbs;
     const pageTitle = 'ANALYTICS';
-    const { viewList, columns } = this.state;
+    const { viewList, columns, isDeleting } = this.state;
     return (
       <React.Fragment>
         <CustomNavigationBar />
@@ -180,6 +226,12 @@ class Analytics extends React.Component<any, any> {
           </div>
           <CreateNewViewPopup ref={this.opencreateNewViewRef} />
         </div>
+        <DeleteTabPopup
+          ref={this.openDeleteTabRef}
+          deleteContent="Do you want to delete the view?"
+          deleteDataFromSidebar={this.deleteView}
+          isLoading={isDeleting}
+        />
       </React.Fragment>
     );
   }

@@ -68,7 +68,7 @@ class AddNewView extends React.Component<any, any> {
       viewData = JSON.parse(viewData);
       this.setState({
         viewName: viewData.viewName,
-        deescription: viewData.description,
+        description: viewData.description,
       });
     } else {
       getLocationSrv().update({ path: '/analytics' });
@@ -533,7 +533,7 @@ class AddNewView extends React.Component<any, any> {
   render() {
     const breadCrumbs = this.breadCrumbs;
     const pageTitle = 'ANALYTICS';
-    const { isPreviewEnabled, filterData, activeTab, showView } = this.state;
+    const { isPreviewEnabled, filterData, activeTab, showView, viewName } = this.state;
     const { isStarred, searchKey, selectedTags, sortValue } = filterData[activeTab];
     return (
       <React.Fragment>
@@ -567,7 +567,7 @@ class AddNewView extends React.Component<any, any> {
               <div className="analytics-heading-container">
                 <div className="row">
                   <div className="col-lg-6 col-md-6 col-sm-6">
-                    <h4 style={{ lineHeight: '36px' }}>NGINX</h4>
+                    <h4 style={{ lineHeight: '36px' }}>{viewName}</h4>
                   </div>
                   <div className="col-lg-6 col-md-6 col-sm-6">
                     <div className="d-block text-right">

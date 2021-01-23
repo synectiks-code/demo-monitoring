@@ -7,4 +7,5 @@ export const config = {
   ANALYTICS_LIST_VIEW: catalogSrvUrl + 'listView',
   ADD_ANALYTICS_VIEW: catalogSrvUrl + 'addView',
   GET_ANALYTICS_VIEW: catalogSrvUrl + 'getView',
+  DELETE_ANALYTICS_VIEW: catalogSrvUrl + 'deleteView',
 };
