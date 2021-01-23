@@ -5,5 +5,6 @@ export const config = {
   DELETE_DASHBOARD: uiUrl + 'api/dashboards/deleteDashboard',
   IMPORT_DASHBOARD: uiUrl + 'api/dashboards/db',
   ANALYTICS_LIST_VIEW: catalogSrvUrl + 'listView',
-  ADD_DASHBOARD: catalogSrvUrl + 'addView',
+  ADD_ANALYTICS_VIEW: catalogSrvUrl + 'addView',
+  GET_ANALYTICS_VIEW: catalogSrvUrl + 'getView',
 };

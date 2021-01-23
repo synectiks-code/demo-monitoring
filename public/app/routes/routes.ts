@@ -565,7 +565,7 @@ export function setupAngularRoutes($routeProvider: route.IRouteProvider, $locati
           SafeDynamicImport(import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/analytics')),
       },
     })
-    .when('/analytics/:Id', {
+    .when('/analytics/:id', {
       template: '<react-container />',
       //@ts-ignore
       pageClass: 'page-dashboard',

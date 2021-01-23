@@ -6,6 +6,7 @@ import { CustomNavigationBar } from 'app/core/components/CustomNav';
 import Table from './tables/table';
 import { CreateNewViewPopup } from './CreateNewViewPopup';
 import { config } from '../config';
+import { getLocationSrv } from '@grafana/runtime';
 
 // Services & Utils
 export interface Props {
@@ -39,6 +40,15 @@ class Analytics extends React.Component<any, any> {
         {
           label: 'Name',
           key: 'name',
+          renderCallback: (value: any, view: any) => {
+            return (
+              <td>
+                <div style={{ color: '#0099ff', cursor: 'anchor' }} onClick={() => this.onClickView(view)}>
+                  {value}
+                </div>
+              </td>
+            );
+          },
         },
         {
           label: 'Description',
@@ -72,7 +82,6 @@ class Analytics extends React.Component<any, any> {
               </td>
             );
           },
-          isCaseInsensitive: true,
         },
       ],
     };
@@ -101,6 +110,10 @@ class Analytics extends React.Component<any, any> {
 
   onClickCreateNewView = (e: any) => {
     this.opencreateNewViewRef.current.toggle();
+  };
+
+  onClickView = (view: any) => {
+    getLocationSrv().update({ path: `/analytics/${view.id}` });
   };
 
   render() {

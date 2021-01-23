@@ -16,7 +16,7 @@ interface Props {
 }
 
 class ViewNewView extends React.Component<Props, any> {
-  openDeleteTabRef: any;
+  // openDeleteTabRef: any;
   breadCrumbs: any = [
     {
       label: 'Home',
@@ -40,7 +40,7 @@ class ViewNewView extends React.Component<Props, any> {
       viewName: '',
       description: '',
     };
-    this.openDeleteTabRef = React.createRef();
+    // this.openDeleteTabRef = React.createRef();
   }
 
   setData = (tabs: any, viewData: any) => {
@@ -92,13 +92,13 @@ class ViewNewView extends React.Component<Props, any> {
     });
   }
 
-  displayAction = (index: any) => {
-    const { sideBarData } = this.state;
-    sideBarData[index].checkValue = !sideBarData[index].checkValue;
-    this.setState({
-      sideBarData,
-    });
-  };
+  // displayAction = (index: any) => {
+  //   const { sideBarData } = this.state;
+  //   sideBarData[index].checkValue = !sideBarData[index].checkValue;
+  //   this.setState({
+  //     sideBarData,
+  //   });
+  // };
 
   // deleteTabData = (data: any, index: any) => {
   //   console.log(data);
@@ -223,7 +223,7 @@ class ViewNewView extends React.Component<Props, any> {
     this.setState({
       loading: true,
     });
-    fetch(`${config.ADD_DASHBOARD}`, requestOptions).then((response: any) => {
+    fetch(`${config.ADD_ANALYTICS_VIEW}`, requestOptions).then((response: any) => {
       this.setState({
         loading: false,
       });

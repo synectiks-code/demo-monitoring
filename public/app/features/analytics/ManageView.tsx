@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import { updateLocation } from 'app/core/actions';
 import { CustomNavigationBar } from 'app/core/components/CustomNav';
 import CustomDashboardLoader from '../custom-dashboard-loader';
-import { DeleteTabPopup } from './DeleteTabPopup';
-import { UncontrolledPopover, PopoverBody } from 'reactstrap';
+// import { DeleteTabPopup } from './DeleteTabPopup';
+// import { UncontrolledPopover, PopoverBody } from 'reactstrap';
 import { getLocationSrv } from '@grafana/runtime';
+import { config } from '../config';
 
 // Services & Utils
 export interface Props {
@@ -16,7 +17,7 @@ export interface Props {
 }
 
 class ManageView extends React.Component<any, any> {
-  openDeleteTabRef: any;
+  // openDeleteTabRef: any;
   breadCrumbs: any = [
     {
       label: 'Home',
@@ -27,106 +28,51 @@ class ManageView extends React.Component<any, any> {
       isCurrentPage: true,
     },
   ];
+
   constructor(props: Props) {
     super(props);
     this.state = {
-      tabs: [
-        {
-          label: 'AWS RDS',
-          tabsSidebarContent: [
-            {
-              label: 'CPUUtilisation, CreditsUsage, CreditBalance',
-              slug: '',
-              uid: 'dHDp4K-Gz',
-            },
-            {
-              label: 'DatabaseConnections, Transaction Log Generation',
-              slug: '',
-              uid: '0u_c4F-Mz',
-            },
-            {
-              label: 'ReadWrite Latency, IOPS, Network Receive/Transmit ThroughPut',
-              slug: '',
-              uid: '8LIhVK-Mk',
-            },
-            {
-              label: 'StorageSpace, RAM, ReadWrite Throughput',
-              slug: '',
-              uid: 'dHDp4K-Gz',
-            },
-          ],
-        },
-        {
-          label: 'AWS VPC',
-          tabsSidebarContent: [
-            {
-              label: 'East-1-Logs-Accepts-1',
-              slug: '',
-              uid: '0u_c4F-Mz',
-            },
-            {
-              label: 'East-1-Logs-Accepts-2',
-              slug: '',
-              uid: 'ZX9tVKaGz',
-            },
-            {
-              label: 'East-1-Logs-Accepts-1',
-              slug: '',
-              uid: '8LIhVK-Mk',
-            },
-            {
-              label: 'East-1-Logs-Accepts-2',
-              slug: '',
-              uid: 'dHDp4K-Gz',
-            },
-          ],
-        },
-        {
-          label: 'AWS VPN',
-          tabsSidebarContent: [
-            {
-              label: 'East-1-Logs-Accepts-1',
-            },
-            {
-              label: 'DatabaseConnections, Transaction Log Generation',
-            },
-          ],
-        },
-      ],
-      sideBarData: [
-        {
-          label: 'CPUUtilisation, CreditsUsage, CreditBalance',
-          displayaction: false,
-          slug: '',
-          uid: 'dHDp4K-Gz',
-        },
-        {
-          label: 'DatabaseConnections, Transaction Log Generation',
-          displayaction: false,
-          slug: '',
-          uid: '0u_c4F-Mz',
-        },
-        {
-          label: 'ReadWrite Latency, IOPS, Network Receive/Transmit ThroughPut',
-          displayaction: false,
-          slug: '',
-          uid: '8LIhVK-Mk',
-        },
-        {
-          label: 'StorageSpace, RAM, ReadWrite Throughput',
-          displayaction: false,
-          slug: '',
-          uid: 'dHDp4K-Gz',
-        },
-      ],
+      tabs: [],
+      sideBarData: [],
       activeTab: 0,
-      activeSidebar: 0,
-      selectedData: { label: 'CPUUtilisation, CreditsUsage, CreditBalance' },
-      activeTabData: { label: 'AWS RDS' },
+      activeSideTab: 0,
       deletedId: 0,
+      activeSidebar: 0,
+      loading: false,
+      viewName: '',
+      description: '',
     };
-    this.openDeleteTabRef = React.createRef();
+    // this.openDeleteTabRef = React.createRef();
   }
+
+  componentDidMount() {
+    const { location } = this.props;
+    if (location && location.routeParams && location.routeParams.id) {
+      this.getDashData(location.routeParams.id);
+    } else {
+      getLocationSrv().update({ path: `/analytics` });
+    }
+  }
+
+  getDashData = (id: any) => {
+    let requestOptionsGet: any = {
+      method: `GET`,
+    };
+    this.setState({
+      loading: true,
+    });
+    fetch(`${config.GET_ANALYTICS_VIEW}/${id}`, requestOptionsGet)
+      .then(response => response.json())
+      .then((response: any) => {
+        const { viewJson, name, description } = response;
+        this.setState({
+          viewName: name,
+          description: description,
+          tabs: JSON.parse(viewJson),
+          loading: false,
+        });
+      });
+  };
 
   displayTabs = () => {
     const { tabs, activeTab } = this.state;
@@ -135,8 +81,8 @@ class ManageView extends React.Component<any, any> {
       let tab = tabs[i];
       retData.push(
         <li key={`tab-${i}`} className={`nav-item `}>
-          <a className={i === activeTab ? 'nav-link active' : 'nav-link'} onClick={e => this.navigateTab(i, tab)}>
-            {tab.label}&nbsp; <i className="fa fa-angle-down"></i>
+          <a className={i === activeTab ? 'nav-link active' : 'nav-link'} onClick={e => this.setActiveTab(i)}>
+            {tab.label}&nbsp;
           </a>
         </li>
       );
@@ -144,62 +90,55 @@ class ManageView extends React.Component<any, any> {
     return retData;
   };
 
-  navigateTab(index: any, data: any) {
-    const { tabs } = this.state;
+  setActiveTab(index: any) {
     this.setState({
-      sideBarData: [],
       activeTab: index,
-      activeTabData: data,
-      activeSidebar: 0,
+      activeSideTab: 0,
     });
-    for (let i = 0; i < tabs.length; i++) {
-      let tab = tabs[i];
-      if (i === index && tab.tabsSidebarContent) {
-        let data = {};
-        for (let j = 0; j < tab.tabsSidebarContent.length; j++) {
-          if (j === 0) {
-            data = tab.tabsSidebarContent[j];
-          }
-        }
-        this.setState({
-          sideBarData: tab.tabsSidebarContent,
-          selectedData: data,
-        });
-      }
-    }
   }
 
-  addTab = () => {
-    const { tabs } = this.state;
-    const length = tabs.length;
-    tabs.push({ label: 'Tab' + (length + 1) });
+  setActiveSideTab = (index: any) => {
     this.setState({
-      tabs,
-      activeTab: length,
+      activeSideTab: index,
     });
   };
 
-  deleteTabData = (data: any, index: any) => {
-    this.setState({
-      selectedData: data,
-      deletedId: index,
-    });
-    this.openDeleteTabRef.current.toggle();
-  };
+  // addTab = () => {
+  //   const { tabs } = this.state;
+  //   const length = tabs.length;
+  //   tabs.push({ label: 'Tab' + (length + 1) });
+  //   this.setState({
+  //     tabs,
+  //     activeTab: length,
+  //   });
+  // };
 
-  displayActiveTabSidebar = () => {
-    const { sideBarData, activeSidebar } = this.state;
+  // deleteTabData = (data: any, index: any) => {
+  //   this.setState({
+  //     selectedData: data,
+  //     deletedId: index,
+  //   });
+  //   this.openDeleteTabRef.current.toggle();
+  // };
+
+  renderSideBar = () => {
+    const { activeTab, tabs, activeSideTab } = this.state;
     let retData = [];
-    for (let i = 0; i < sideBarData.length; i++) {
-      let row = sideBarData[i];
-      retData.push(
-        <li>
-          <a onClick={() => this.setDashboardContent(row, i)}>
-            <span className={i === activeSidebar ? 'active' : ''}>{row.label}</span>
-            <i className="fa fa-ellipsis-h" id={`PopoverFocus-${i}`}></i>
-          </a>
-          <UncontrolledPopover trigger="legacy" className="popup-btn" placement="bottom" target={`PopoverFocus-${i}`}>
-            <PopoverBody>
+    const sidebarData = tabs[activeTab];
+    if (sidebarData) {
+      const dashboards = sidebarData.dashboards;
+      for (let i = 0; i < dashboards.length; i++) {
+        let sideData = dashboards[i];
+        retData.push(
+          <li>
+            <a>
+              <span className={i === activeSideTab ? 'active' : ''} onClick={() => this.setActiveSideTab(i)}>
+                {sideData.title}
+              </span>
+              <i className="fa fa-ellipsis-h" id={`PopoverFocus-${i}`}></i>
+            </a>
+            {/* <UncontrolledPopover trigger="legacy" placement="bottom" target={`PopoverFocus-${i}`}>
+            <PopoverBody className="popup-btn">
               <ul>
                 {i !== 0 && (
                   <li onClick={() => this.moveArrayPosition(i, i - 1)}>
@@ -212,12 +151,11 @@ class ManageView extends React.Component<any, any> {
                 {i !== sideBarData.length - 1 && (
                   <li onClick={() => this.moveArrayPosition(i, i + 1)}>
                     <a href="#">
-                      <i className="fa fa-caret-down"></i>
-                      Move Down
+                      <i className="fa fa-caret-down"></i>Move Down
                     </a>
                   </li>
                 )}
-                <li onClick={() => this.deleteTabData(row, i)}>
+                <li onClick={() => this.deleteTabData(sideData, i)}>
                   <a href="#">
                     <i className="fa fa-trash"></i>
                     Delete
@@ -225,20 +163,12 @@ class ManageView extends React.Component<any, any> {
                 </li>
               </ul>
             </PopoverBody>
-          </UncontrolledPopover>
-        </li>
-      );
+          </UncontrolledPopover> */}
+          </li>
+        );
+      }
     }
     return retData;
-  };
-
-  setDashboardContent = (content: any, index: any) => {
-    this.setState({
-      uid: content.uid,
-      slug: content.slug,
-      activeSidebar: index,
-      selectedData: content,
-    });
   };
 
   moveArrayPosition = (fromIndex: any, toIndex: any) => {
@@ -252,24 +182,25 @@ class ManageView extends React.Component<any, any> {
   };
 
   createDashboard = () => {
-    const { activeSidebar, sideBarData } = this.state;
+    const { activeTab, activeSideTab, tabs } = this.state;
     let retData = [];
-    for (let i = 0; i < sideBarData.length; i++) {
-      const dashboard = sideBarData[i];
-      // if (dashboard.type === 'dash-db') {
-      retData.push(
-        <div>
-          {activeSidebar === i && (
-            <CustomDashboardLoader
-              $scope={this.props.$scope}
-              $injector={this.props.$injector}
-              urlUid={dashboard.uid}
-              urlSlug={dashboard.slug}
-            />
-          )}
-        </div>
-      );
-      // }
+    if (tabs[activeTab] && tabs[activeTab].dashboards && tabs[activeTab].dashboards.length > 0) {
+      const dashboards = tabs[activeTab].dashboards;
+      for (let j = 0; j < dashboards.length; j++) {
+        const dashboard = dashboards[j];
+        retData.push(
+          <div key={dashboard.uid}>
+            {activeSideTab === j && (
+              <CustomDashboardLoader
+                $scope={this.props.$scope}
+                $injector={this.props.$injector}
+                urlUid={dashboard.uid}
+                urlSlug={dashboard.slug}
+              />
+            )}
+          </div>
+        );
+      }
     }
     return retData;
   };
@@ -289,7 +220,7 @@ class ManageView extends React.Component<any, any> {
   render() {
     const breadCrumbs = this.breadCrumbs;
     const pageTitle = 'ANALYTICS';
-    const { selectedData, activeTabData } = this.state;
+    const { loading, viewName, tabs } = this.state;
     return (
       <React.Fragment>
         <CustomNavigationBar />
@@ -317,55 +248,55 @@ class ManageView extends React.Component<any, any> {
               })}
             </div>
           </div>
-          <div className="analytics-container">
-            <div className="analytics-heading-container">
-              <div className="row">
-                <div className="col-lg-6 col-md-6 col-sm-6">
-                  <h4 style={{ lineHeight: '36px' }}>NGINX</h4>
+          {loading && <div style={{ textAlign: 'center', marginTop: '40px' }}>View is loading</div>}
+          {!loading && tabs && tabs.length > 0 && (
+            <div className="analytics-container">
+              <div className="analytics-heading-container">
+                <div className="row">
+                  <div className="col-lg-6 col-md-6 col-sm-6">
+                    <h4 style={{ lineHeight: '36px' }}>{viewName}</h4>
+                  </div>
+                  <div className="col-lg-6 col-md-6 col-sm-6">
+                    <div className="d-block text-right">
+                      <button
+                        className="analytics-white-button min-width-auto m-r-0"
+                        onClick={() => getLocationSrv().update({ path: '/analytics' })}
+                      >
+                        <i className="fa fa-arrow-circle-left"></i>
+                        &nbsp;&nbsp;Back
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <div className="col-lg-6 col-md-6 col-sm-6">
-                  <div className="d-block text-right">
-                    <button
-                      className="analytics-white-button min-width-auto m-r-0"
-                      onClick={() => getLocationSrv().update({ path: '/analytics' })}
-                    >
-                      <i className="fa fa-arrow-circle-left"></i>
-                      &nbsp;&nbsp;Back
-                    </button>
+              </div>
+              <div className="analytics-tabs-container">
+                <ul className="nav nav-tabs">
+                  {this.displayTabs()}
+                  <li className="nav-item">
+                    <a className="nav-link add-tab">
+                      <i className="fa fa-plus"></i>
+                    </a>
+                  </li>
+                </ul>
+                <div className="analytics-tabs-section-container">
+                  <div className="tabs-left-section">
+                    <ul>{this.renderSideBar()}</ul>
+                  </div>
+                  <div className="tabs-right-section">
+                    <div>{this.createDashboard()}</div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="analytics-tabs-container">
-              <ul className="nav nav-tabs">
-                {this.displayTabs()}
-                <li className="nav-item">
-                  <a className="nav-link add-tab">
-                    <i className="fa fa-plus"></i>
-                  </a>
-                </li>
-              </ul>
-              <div className="analytics-tabs-section-container">
-                <div className="tabs-left-section">
-                  <h5>AWS RDS</h5>
-                  <ul>{this.displayActiveTabSidebar()}</ul>
-                </div>
-                <div className="tabs-right-section">
-                  <div className="analytics-aws-heading">
-                    <p>
-                      {activeTabData.label} {'>'} {selectedData.label}
-                    </p>
-                  </div>
-                  <div>{this.createDashboard()}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <DeleteTabPopup
+          )}
+          {!loading && (!tabs || (tabs && !tabs.length)) && (
+            <div style={{ textAlign: 'center', marginTop: '40px' }}>There no data in this view</div>
+          )}
+          {/* <DeleteTabPopup
             ref={this.openDeleteTabRef}
             deleteContent={selectedData}
             deleteDataFromSidebar={this.removeDashboardRecord}
-          />
+          /> */}
         </div>
       </React.Fragment>
     );
