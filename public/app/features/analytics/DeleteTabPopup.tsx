@@ -24,6 +24,7 @@ export class DeleteTabPopup extends React.Component<any, any> {
 
   deleteData = () => {
     this.props.deleteDataFromSidebar();
+    this.toggle();
   };
 
   render() {

@@ -585,6 +585,18 @@ export function setupAngularRoutes($routeProvider: route.IRouteProvider, $locati
           SafeDynamicImport(import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/analytics/AddNewView')),
       },
     })
+    .when('/analytics/edit/:id', {
+      template: '<react-container />',
+      //@ts-ignore
+      pageClass: 'page-dashboard',
+      reloadOnSearch: false,
+      resolve: {
+        component: () =>
+          SafeDynamicImport(
+            import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/analytics/EditManageDashboard')
+          ),
+      },
+    })
     .otherwise({
       template: '<react-container />',
       resolve: {

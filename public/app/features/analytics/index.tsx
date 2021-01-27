@@ -71,7 +71,7 @@ class Analytics extends React.Component<any, any> {
             return (
               <td>
                 <div className="d-inline-block">
-                  <button className="btn btn-link">
+                  <button className="btn btn-link" onClick={() => this.editDashbord(viewObj)}>
                     <i className="fa fa-edit"></i>
                   </button>
                   <button className="btn btn-link" onClick={() => this.onClickDelete(viewObj)}>
@@ -95,6 +95,10 @@ class Analytics extends React.Component<any, any> {
       viewToDelete: viewObj,
     });
     this.openDeleteTabRef.current.toggle();
+  };
+
+  editDashbord = (viewObj: any) => {
+    getLocationSrv().update({ path: `/analytics/edit/${viewObj.id}` });
   };
 
   deleteView = () => {
@@ -145,7 +149,6 @@ class Analytics extends React.Component<any, any> {
     fetch(`${config.ANALYTICS_LIST_VIEW}`, requestOptionsGet)
       .then(response => response.json())
       .then((response: any) => {
-        console.log(response);
         if (response) {
           this.setState({
             viewList: response,
