@@ -223,7 +223,7 @@ class Analytics extends React.Component<any, any> {
                   tableParent: 'analytics-tabel',
                   parentClass: 'analytics-tabels',
                 }}
-                showingLine="Showing %start% to %end% of %total% Tickets"
+                showingLine="Showing %start% to %end% of %total% Views"
               />
             </div>
           </div>
