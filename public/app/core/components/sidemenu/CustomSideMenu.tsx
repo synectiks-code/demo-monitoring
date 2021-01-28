@@ -4,8 +4,6 @@ import { getLocationSrv } from '@grafana/runtime';
 import Rbac from './Rbac';
 
 const menuStates: any = {
-  MENU_OPEN: 1,
-  MENU_CLOSE: 2,
   SUBMENU_OPEN: 4,
   SUBMENU_CLOSE: 8,
 };
@@ -20,7 +18,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
       clickedMenuItem: {},
       activeMenuItem: null,
       showSubMenu: false,
-      menuState: menuStates.MENU_OPEN,
       subMenuState: 0,
       isSubMenuPinned: false,
     };
@@ -40,7 +37,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
   handleLocationChange = () => {
     const pathName = location.pathname;
     // let isActive = false;
-    let menuState = menuStates.MENU_OPEN;
     let subMenuState = 0;
     let showSubMenu = false;
     let activeMenuItem = null;
@@ -50,7 +46,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         activeMenuLink: '/',
       });
       return {
-        menuState,
         subMenuState,
         showSubMenu,
         activeMenuItem,
@@ -80,7 +75,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
   findActiveItem = (pathName: any, menuList: any) => {
     let totalItem = menuList.length;
     let isFound = false;
-    let menuState = menuStates.MENU_OPEN;
     let subMenuState = 0;
     let showSubMenu = false;
     let activeMenuItem = null;
@@ -108,7 +102,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
                 activeSubMenuLink: sMenu.activeSLink,
               });
               subMenuState = menuStates.SUBMENU_OPEN;
-              menuState = menuStates.MENU_CLOSE;
               showSubMenu = true;
               isSubMenuPinned = true;
               break;
@@ -122,7 +115,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
       }
     }
     return {
-      menuState,
       subMenuState,
       showSubMenu,
       activeMenuItem,
@@ -158,9 +150,8 @@ export class CustomSideMenu extends PureComponent<any, any> {
     });
 
     const menuData: any = this.handleLocationChange();
-    this.updateState(menuData.menuState | menuData.subMenuState, -1);
+    this.updateState(menuData.subMenuState, -1);
     this.setState({
-      menuState: menuData.menuState,
       subMenuState: menuData.subMenuState,
       showSubMenu: menuData.showSubMenu,
       activeMenuItem: menuData.activeMenuItem,
@@ -529,29 +520,9 @@ export class CustomSideMenu extends PureComponent<any, any> {
     },
   ];
 
-  onClickToggleMenu = () => {
-    // //This is patch to toggle the menu
-    // //never directly use dom elements like this
-    // const grafanaApp: any = document.getElementsByClassName('grafana-app');
-    // if (grafanaApp.length > 0) {
-    //   grafanaApp[0].classList.toggle('wide-side-menu');
-    // }
-    let { menuState, subMenuState } = this.state;
-    const lastState = menuState | subMenuState;
-    if (menuState === menuStates.MENU_OPEN) {
-      menuState = menuStates.MENU_CLOSE;
-    } else {
-      menuState = menuStates.MENU_OPEN;
-    }
-    this.updateState(menuState | subMenuState, lastState);
-    this.setState({
-      menuState,
-    });
-  };
-
   onClickToggleSubMenu = (e: any) => {
-    let { menuState, subMenuState, isSubMenuPinned } = this.state;
-    const lastState = menuState | subMenuState;
+    let { subMenuState, isSubMenuPinned } = this.state;
+    const lastState = subMenuState;
     if (subMenuState === menuStates.SUBMENU_OPEN) {
       if (isSubMenuPinned) {
         subMenuState = menuStates.SUBMENU_CLOSE;
@@ -562,19 +533,18 @@ export class CustomSideMenu extends PureComponent<any, any> {
     } else {
       subMenuState = menuStates.SUBMENU_OPEN;
     }
-    this.updateState(menuState | subMenuState, lastState);
+    this.updateState(subMenuState, lastState);
     this.setState({
       subMenuState,
       isSubMenuPinned,
     });
   };
 
-  setMenuStates = (menuNewState: any, subMenuNewState: any) => {
-    let { menuState, subMenuState } = this.state;
-    const lastState = menuState | subMenuState;
-    this.updateState(menuNewState | subMenuNewState, lastState);
+  setMenuStates = (subMenuNewState: any) => {
+    let { subMenuState } = this.state;
+    const lastState = subMenuState;
+    this.updateState(subMenuNewState, lastState);
     this.setState({
-      menuState: menuNewState,
       subMenuState: subMenuNewState,
     });
   };
@@ -590,10 +560,10 @@ export class CustomSideMenu extends PureComponent<any, any> {
         showSubMenu: showSubMenu,
       });
       if (showSubMenu) {
-        this.setMenuStates(menuStates.MENU_CLOSE, menuStates.SUBMENU_OPEN);
+        this.setMenuStates(menuStates.SUBMENU_OPEN);
         isSubMenuPinned = true;
       } else {
-        this.setMenuStates(menuStates.MENU_OPEN, 0);
+        this.setMenuStates(0);
       }
       getLocationSrv().update({ path: menuItem.link });
       this.setState({
@@ -639,7 +609,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       clickedMenuItem: {},
       showSubMenu: false,
     });
-    this.setMenuStates(menuStates.MENU_OPEN, 0);
+    this.setMenuStates(0);
   };
 
   createOpenMenu = (menuItems: any) => {
@@ -647,14 +617,13 @@ export class CustomSideMenu extends PureComponent<any, any> {
     const { activeMenuLink } = this.state;
     for (let i = 0; i < menuItems.length; i++) {
       const menuItem = menuItems[i];
+      const isActive = activeMenuLink === menuItem.activeLink || activeMenuLink === menuItem.tempLink;
       retItem.push(
         <Rbac parentName="grafana-ui" childName={menuItem.childName || ''}>
           <li className="item">
             <a
               href={'#'}
-              className={`menu-item ${
-                activeMenuLink === menuItem.activeLink || activeMenuLink === menuItem.tempLink ? 'active' : ''
-              }`}
+              className={`menu-item ${isActive ? 'active' : ''}`}
               onClick={(e: any) => this.onClickLink(e, menuItem)}
             >
               <div className={`menu-item-image ${menuItem.cssClass}`}></div>
@@ -672,14 +641,13 @@ export class CustomSideMenu extends PureComponent<any, any> {
     const { activeMenuLink } = this.state;
     for (let i = 0; i < menuItems.length; i++) {
       const menuItem = menuItems[i];
+      const isActive = activeMenuLink === menuItem.activeLink || activeMenuLink === menuItem.tempLink;
       retItem.push(
         <Rbac parentName="grafana-ui" childName={menuItem.childName || ''}>
           <li className="item" title={menuItem.text}>
             <a
               href={'#'}
-              className={`menu-item ${
-                activeMenuLink === menuItem.activeLink || activeMenuLink === menuItem.tempLink ? 'active' : ''
-              }`}
+              className={`menu-item ${isActive ? 'active' : ''}`}
               onClick={(e: any) => this.onClickLink(e, menuItem)}
             >
               <div className={`menu-item-image ${menuItem.cssClass}`}></div>
@@ -705,7 +673,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
                 href={activeMenuItem.subMenu[j].link}
                 onClick={(e: any) => this.onClickSubLink(e, activeMenuItem.subMenu[j])}
               >
-                <div className={`menu-item-image ${activeMenuItem.subMenu[j].cssClass}`}></div>
                 <div className="menu-item-text">{activeMenuItem.subMenu[j].text}</div>
               </a>
             </li>
@@ -721,82 +688,46 @@ export class CustomSideMenu extends PureComponent<any, any> {
     const retData = [];
     if (activeMenuItem && activeMenuItem.subMenu && activeMenuItem.subMenu.length > 0) {
       for (let j = 0; j < activeMenuItem.subMenu.length; j++) {
-        retData.push(
-          <Rbac parentName="grafana-ui" childName={activeMenuItem.subMenu[j].childName || ''}>
-            <li>
-              <a
-                className={`menu-item ${activeSubMenuLink === activeMenuItem.subMenu[j].activeSLink ? 'active' : ''}`}
-                href={activeMenuItem.subMenu[j].link}
-                onClick={(e: any) => this.onClickSubLink(e, activeMenuItem.subMenu[j])}
-              >
-                <div className={`menu-item-image ${activeMenuItem.subMenu[j].cssClass}`}></div>
+        if (activeSubMenuLink === activeMenuItem.subMenu[j].activeSLink) {
+          retData.push(
+            <Rbac parentName="grafana-ui" childName={activeMenuItem.subMenu[j].childName || ''}>
+              <li>
                 <div className="menu-item-text">{activeMenuItem.subMenu[j].text}</div>
-              </a>
-            </li>
-          </Rbac>
-        );
+              </li>
+            </Rbac>
+          );
+          break;
+        }
       }
     }
     return retData;
   };
 
   onMouseEnterClosedSubMenu = () => {
-    const { menuState } = this.state;
-    this.setMenuStates(menuState, menuStates.SUBMENU_OPEN);
+    this.setMenuStates(menuStates.SUBMENU_OPEN);
   };
 
   onMouseLeaveOpenedSubMenu = () => {
-    const { menuState, isSubMenuPinned } = this.state;
+    const { isSubMenuPinned } = this.state;
     if (!isSubMenuPinned) {
-      this.setMenuStates(menuState, menuStates.SUBMENU_CLOSE);
+      this.setMenuStates(menuStates.SUBMENU_CLOSE);
     }
   };
 
   render() {
     const { showSubMenu, isSubMenuPinned } = this.state;
     return [
-      <div className="sidemenu__logo_small_breakpoint">
-        <i className="fa fa-bars" />
-        <span className="sidemenu__close">
-          <i className="fa fa-times" />
-          &nbsp;Close
-        </span>
-      </div>,
       <div className="menu-item-container">
-        <div className="open-menu">
-          <div className="sidemenu-search-container">
-            <label className="gf-form--has-input-icon mr-auto">
-              <input type="text" placeholder="Search" className="gf-form-input sidemenu-search-box" />
-              <i className="gf-form-input-icon fa fa-search"></i>
-            </label>
-            <div className="side-menu-toggle" onClick={this.onClickToggleMenu}>
-              <i className="fa fa-arrow-left left-arrow"></i>
-            </div>
-          </div>
-          <ul className="m-0">{this.createOpenMenu(this.mainMenu)}</ul>
-          <div className="menu-item-header">INSIGHTS</div>
-          <ul className="m-0">{this.createOpenMenu(this.insights)}</ul>
-          <div className="menu-item-header">CATALOGUE</div>
-          <ul className="m-0">{this.createOpenMenu(this.catalogue)}</ul>
-          <div className="menu-item-header">ASSETS</div>
-          <ul className="m-0">{this.createOpenMenu(this.assets)}</ul>
-          <div className="menu-item-header">SETTINGS</div>
-          <ul className="m-0">{this.createOpenMenu(this.settings)}</ul>
-        </div>
-        <div className="close-menu">
-          <div className="sidemenu-search-container">
-            <div className="side-menu-toggle" onClick={this.onClickToggleMenu}>
-              <i className="fa fa-arrow-right right-arrow"></i>
-            </div>
-          </div>
+        <div className="main-menu">
+          <div className="sidemenu-search-container"></div>
           <ul className="m-0">{this.createCloseMenu(this.mainMenu)}</ul>
-          <div className="menu-item-header"></div>
+          <div className="menu-item-header">INSIGHTS</div>
           <ul className="m-0">{this.createCloseMenu(this.insights)}</ul>
-          <div className="menu-item-header"></div>
+          <div className="menu-item-header">CATALOGUE</div>
           <ul className="m-0">{this.createCloseMenu(this.catalogue)}</ul>
-          <div className="menu-item-header"></div>
+          <div className="menu-item-header">ASSETS</div>
           <ul className="m-0">{this.createCloseMenu(this.assets)}</ul>
-          <div className="menu-item-header"></div>
+          <div className="menu-item-header">SETTINGS</div>
           <ul className="m-0">{this.createCloseMenu(this.settings)}</ul>
         </div>
         <div className={`sub-menu ${showSubMenu ? 'active-sub-menu' : ''}`}>

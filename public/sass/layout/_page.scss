@@ -169,73 +169,25 @@
 
 /********************************** New look css **********************************/
 //Main menu open
-.menu_state_1 {
+.menu_state_4 {
   .monitor-main-body {
-    margin-left: 240px;
-    width: calc(100% - 240px);
+    margin-left: 321px;
+    width: calc(100% - 321px);
   }
 }
 
 //Main menu open
 //submenu open
-.menu_state_5 {
+.menu_state_8 {
   .monitor-main-body {
-    margin-left: 480px;
-    width: calc(100% - 480px);
+    margin-left: 141px;
+    width: calc(100% - 141px);
   }
 }
-
-//Main menu open
-//submenu close
-.menu_state_9 {
-  .monitor-main-body {
-    margin-left: 300px;
-    width: calc(100% - 300px);
-  }
-}
-
-//Menu close
-//submenu open
-.menu_state_6 {
-  .monitor-main-body {
-    margin-left: 300px;
-    width: calc(100% - 300px);
-  }
-}
-
-//Menu close
-//submenu close
-.menu_state_10 {
-  .monitor-main-body {
-    margin-left: 120px;
-    width: calc(100% - 120px);
-  }
-}
-
-// .wide-side-menu {
-//   .monitor-main-body {
-//     margin-left: 240px;
-//     width: calc(100% - 240px);
-//   }
-// }
-
-// .wide-close-sub-menu {
-//   .monitor-main-body {
-//     margin-left: 120px;
-//     width: calc(100% - 120px);
-//   }
-// }
-
-// .wide-open-sub-menu {
-//   .monitor-main-body {
-//     margin-left: 280px;
-//     width: calc(100% - 280px);
-//   }
-// }
 
 .monitor-main-body {
-  margin-left: 60px;
-  width: calc(100% - 60px);
+  margin-left: 81px;
+  width: calc(100% - 81px);
   transition: width 0.3s, margin 0.3s;
   padding: 0px !important;
   max-width: 100% !important;
