@@ -192,7 +192,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: '/monitored-assets',
           text: 'Monitored Assets',
-          cssClass: 'metrics-library',
           activeSLink: '/monitored-assets',
           activeLink: '/monitored-assets',
           childName: 'assets',
@@ -200,7 +199,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: '/org-unit',
           text: 'Org Unit',
-          cssClass: 'metrics-library',
           activeSLink: '/org-unit',
           activeLink: '/org-unit',
           childName: 'assets',
@@ -243,7 +241,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: '/create-module',
           text: 'Create Or Import Module Packs',
-          cssClass: 'metrics-library',
           activeSLink: '/create-module',
           activeLink: '/create-module',
           childName: 'create-module',
@@ -308,7 +305,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
     {
       link: '/analytics',
       text: 'Analytics',
-      cssClass: 'applications',
+      cssClass: 'metrics',
       activeLink: '/analytics',
       childName: 'analytics',
       tempLink: 'dashboards',
@@ -326,7 +323,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: '/analytics',
           text: 'Manage Views',
-          cssClass: 'metrics-library',
           activeSLink: '/analytics',
           activeLink: '/analytics',
           childName: 'analytics',
@@ -348,7 +344,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-perfmanager-ui-plugin/page/managedashboard',
           text: 'Dashboard',
-          cssClass: 'metrics-catalog',
           activeSLink: 'plugins/xformation-perfmanager-ui-plugin/page/managedashboard',
           activeLink: 'plugins/xformation-perfmanager-ui-plugin',
           isImplemented: true,
@@ -357,7 +352,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-perfmanager-ui-plugin/page/library',
           text: 'Library',
-          cssClass: 'metrics-library',
           activeSLink: 'plugins/xformation-perfmanager-ui-plugin/page/library',
           activeLink: 'plugins/xformation-perfmanager-ui-plugin',
           isImplemented: true,
@@ -366,7 +360,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-perfmanager-ui-plugin/page/collectionview',
           text: 'Collection',
-          cssClass: 'metrics-collection',
           activeSLink: 'plugins/xformation-perfmanager-ui-plugin/page/collectionview',
           activeLink: 'plugins/xformation-perfmanager-ui-plugin',
           isImplemented: true,
@@ -375,7 +368,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-alertmanager-ui-plugin/page/managealertrule',
           text: 'Rule',
-          cssClass: 'metrics-rule',
           activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/managealertrule',
           activeLink: 'plugins/xformation-perfmanager-ui-plugin',
           isImplemented: true,
@@ -384,7 +376,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-perfmanager-ui-plugin/page/preferences',
           text: 'Preferences',
-          cssClass: 'metrics-preferences',
           activeSLink: 'plugins/xformation-perfmanager-ui-plugin/page/preferences',
           activeLink: 'plugins/xformation-perfmanager-ui-plugin',
           isImplemented: true,
@@ -393,7 +384,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-perfmanager-ui-plugin/page/discovery',
           text: 'Discovery',
-          cssClass: 'metrics-preferences',
           activeSLink: 'plugins/xformation-perfmanager-ui-plugin/page/discovery',
           activeLink: 'plugins/xformation-perfmanager-ui-plugin',
           isImplemented: true,
@@ -402,7 +392,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-perfmanager-ui-plugin/page/view',
           text: 'View',
-          cssClass: 'metrics-preferences',
           activeSLink: 'plugins/xformation-perfmanager-ui-plugin/page/view',
           activeLink: 'plugins/xformation-perfmanager-ui-plugin',
           isImplemented: true,

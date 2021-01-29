@@ -33,30 +33,6 @@ textarea {
       background-image: url('../img/monitor-icons/alerts.svg');
     }
 
-    .metrics {
-      background-image: url('../img/monitor-icons/metrics.svg');
-    }
-
-    .metrics-catalog {
-      background-image: url('../img/monitor-icons/metrics.svg');
-    }
-
-    .metrics-library {
-      background-image: url('../img/monitor-icons/metrics.svg');
-    }
-
-    .metrics-collection {
-      background-image: url('../img/monitor-icons/metrics.svg');
-    }
-
-    .metrics-rule {
-      background-image: url('../img/monitor-icons/metrics.svg');
-    }
-
-    .metrics-preferences {
-      background-image: url('../img/monitor-icons/metrics.svg');
-    }
-
     .logs {
       background-image: url('../img/monitor-icons/logs.svg');
     }
@@ -165,24 +141,28 @@ textarea {
       margin-top: 2px;
     }
 
-    .events{
+    .events {
       background-image: url('../img/monitor-icons/sidemenu/events.svg');
     }
 
-    .automation{
+    .automation {
       background-image: url('../img/monitor-icons/sidemenu/automation.svg');
     }
 
-    .availability{
+    .availability {
       background-image: url('../img/monitor-icons/sidemenu/availability.svg');
     }
 
-    .assets{
+    .assets {
       background-image: url('../img/monitor-icons/sidemenu/assets.svg');
     }
 
-    .catalogue{
+    .catalogue {
       background-image: url('../img/monitor-icons/sidemenu/catalogue.svg');
+    }
+
+    .metrics {
+      background-image: url('../img/monitor-icons/sidemenu/metrics.svg');
     }
   }
 
@@ -195,7 +175,7 @@ textarea {
     .main-menu-items {
       transition: height 0.3s, opacity 0.3s;
 
-      &.main-menu-collapsed{
+      &.main-menu-collapsed {
         height: 0px;
         visibility: hidden;
       }
@@ -266,7 +246,7 @@ textarea {
       border-bottom: 1px solid $sidemenu-link-background-hover-color;
       background: $sidemenu-item-header-background-color;
 
-      i{
+      i {
         font-size: 16px;
       }
     }
