@@ -56,19 +56,15 @@ export class CustomSideMenu extends PureComponent<any, any> {
     if (retData.isFound) {
       return retData;
     }
-    retData = this.findActiveItem(pathName, this.insights);
+    retData = this.findActiveItem(pathName, this.opsCentral);
     if (retData.isFound) {
       return retData;
     }
-    retData = this.findActiveItem(pathName, this.catalogue);
+    retData = this.findActiveItem(pathName, this.devCentral);
     if (retData.isFound) {
       return retData;
     }
-    retData = this.findActiveItem(pathName, this.assets);
-    if (retData.isFound) {
-      return retData;
-    }
-    retData = this.findActiveItem(pathName, this.settings);
+    retData = this.findActiveItem(pathName, this.tools);
     return retData;
   };
 
@@ -168,23 +164,176 @@ export class CustomSideMenu extends PureComponent<any, any> {
       isImplemented: true,
       childName: 'overview',
     },
-    // {
-    //   link: '/service-health',
-    //   text: 'Service Health',
-    //   cssClass: 'service-health',
-    //   activeLink: '/service-health',
-    //   childName: 'service-health',
-    // },
-    // {
-    //   link: '/workbooks',
-    //   text: 'Workbooks',
-    //   cssClass: 'workbooks',
-    //   activeLink: '/workbooks',
-    //   childName: 'workbooks',
-    // },
+    {
+      link: '/assets',
+      text: 'Assets',
+      cssClass: 'service-health',
+      activeLink: '/assets',
+      childName: 'assets',
+      subMenu: [
+        {
+          link: '/environments',
+          text: 'Environments',
+          cssClass: 'service-health',
+          activeSLink: '/environments',
+          activeLink: '/environments',
+          childName: 'assets',
+        },
+        {
+          link: '/discovered-assets',
+          text: 'Discovered Assets',
+          cssClass: 'service-health',
+          activeSLink: '/discovered-assets',
+          activeLink: '/discovered-assets',
+          childName: 'assets',
+        },
+        {
+          link: '/monitored-assets',
+          text: 'Monitored Assets',
+          cssClass: 'metrics-library',
+          activeSLink: '/monitored-assets',
+          activeLink: '/monitored-assets',
+          childName: 'assets',
+        },
+        {
+          link: '/org-unit',
+          text: 'Org Unit',
+          cssClass: 'metrics-library',
+          activeSLink: '/org-unit',
+          activeLink: '/org-unit',
+          childName: 'assets',
+        },
+        {
+          link: '/org-unit',
+          text: 'Org Unit',
+          cssClass: 'metrics-library',
+          activeSLink: '/org-unit',
+          activeLink: '/org-unit',
+          childName: 'assets',
+        },
+        {
+          link: '/custom-resources',
+          text: 'Custom-Resources',
+          cssClass: 'workbooks',
+          activeLink: '/custom-resources',
+          childName: 'custom-resources',
+        },
+      ],
+    },
+    {
+      link: '/import-assets',
+      text: 'App Catalogue',
+      cssClass: 'service-health',
+      activeLink: '/import-assets',
+      childName: 'import-assets',
+      subMenu: [
+        {
+          link: '/import-assets',
+          text: 'Import Assets From Module Pack ',
+          cssClass: 'service-health',
+          activeSLink: '/import-assets',
+          activeLink: '/import-assets',
+          childName: 'app-catalogue',
+        },
+        {
+          link: '/view-search-catalogue',
+          text: 'View And Search Catalogue ',
+          cssClass: 'service-health',
+          activeSLink: '/view-search-catalogue',
+          activeLink: '/view-search-catalogue',
+          childName: 'app-catalogue',
+        },
+        {
+          link: '/create-module',
+          text: 'Create Or Import Module Packs',
+          cssClass: 'metrics-library',
+          activeSLink: '/create-module',
+          activeLink: '/create-module',
+          childName: 'create-module',
+        },
+      ],
+    },
+    {
+      link: '/events',
+      text: 'Events',
+      cssClass: 'service-health',
+      activeLink: '/events',
+      childName: 'events',
+      subMenu: [
+        {
+          link: '/events',
+          text: 'Overview',
+          cssClass: 'service-health',
+          activeSLink: '/events',
+          activeLink: '/events',
+          childName: 'events',
+        },
+        {
+          link: '/new-rule',
+          text: 'New Rule',
+          cssClass: 'service-health',
+          activeSLink: '/new-rule',
+          activeLink: '/new-rule',
+          childName: 'new-rule',
+        },
+        {
+          link: '/manage-rules',
+          text: 'Manage rules',
+          cssClass: 'metrics-library',
+          activeSLink: '/manage-rules',
+          activeLink: '/manage-rules',
+          childName: 'manage-rules',
+        },
+        {
+          link: '/correlation-engine',
+          text: 'Correlation Engine',
+          cssClass: 'service-health',
+          activeSLink: '/correlation-engine',
+          activeLink: '/correlation-engine',
+          childName: 'correlation-engine',
+        },
+        {
+          link: '/preference',
+          text: 'Preference',
+          cssClass: 'metrics-library',
+          activeSLink: '/preference',
+          activeLink: '/preference',
+          childName: 'preference',
+        },
+      ],
+    },
+    {
+      link: '/analytics',
+      text: 'Analytics',
+      cssClass: 'applications',
+      activeLink: '/analytics',
+      childName: 'analytics',
+      tempLink: 'dashboards',
+      isImplemented: true,
+      subMenu: [
+        {
+          link: '/dashboards',
+          text: 'Manage Dashboards',
+          cssClass: 'service-health',
+          activeSLink: '/dashboards',
+          activeLink: '/analytics',
+          childName: 'manage-dashboards',
+          isImplemented: true,
+        },
+        {
+          link: '/analytics',
+          text: 'Analytics',
+          cssClass: 'metrics-library',
+          activeSLink: '/analytics',
+          activeLink: '/analytics',
+          childName: 'analytics',
+          isImplemented: true,
+        },
+      ],
+    },
   ];
 
-  insights: any = [
+  opsCentral: any = [
     {
       link: 'plugins/xformation-perfmanager-ui-plugin/page/managedashboard',
       text: 'Performance',
@@ -281,6 +430,42 @@ export class CustomSideMenu extends PureComponent<any, any> {
       activeLink: 'plugins/xformation-logmanager-ui-plugin',
       isImplemented: true,
       childName: 'grafana-logs',
+      subMenu: [
+        {
+          link: 'plugins/xformation-logmanager-ui-plugin/page/overview',
+          text: 'Overview',
+          cssClass: 'logs',
+          activeSLink: 'plugins/xformation-logmanager-ui-plugin/page/overview',
+          activeLink: 'plugins/xformation-logmanager-ui-plugin',
+          childName: 'grafana-logs',
+        },
+        {
+          link: 'plugins/xformation-logmanager-ui-plugin/page/dashboard',
+          text: 'Dashboard',
+          cssClass: 'logs',
+          activeSLink: 'plugins/xformation-logmanager-ui-plugin/page/dashboard',
+          activeLink: 'plugins/xformation-logmanager-ui-plugin',
+          isImplemented: true,
+          childName: 'grafana-logs',
+        },
+        {
+          link: 'plugins/xformation-logmanager-ui-plugin/page/alerts',
+          text: 'Alerts',
+          cssClass: 'logs',
+          activeSLink: 'plugins/xformation-logmanager-ui-plugin/page/alerts',
+          activeLink: 'plugins/xformation-logmanager-ui-plugin',
+          childName: 'grafana-logs',
+        },
+        {
+          link: 'plugins/xformation-logmanager-ui-plugin/page/preference',
+          text: 'Preference',
+          cssClass: 'logs',
+          activeSLink: 'plugins/xformation-logmanager-ui-plugin/page/preference',
+          activeLink: 'plugins/xformation-logmanager-ui-plugin',
+          isImplemented: true,
+          childName: 'grafana-logs',
+        },
+      ],
     },
     {
       link: 'plugins/xformation-compliancemanager-ui-plugin/page/dashboard',
@@ -292,7 +477,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       subMenu: [
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/dashboard',
-          text: 'Dashboard',
+          text: 'Overview',
           cssClass: 'compliance-dashboard',
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/dashboard',
           activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
@@ -301,7 +486,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
         },
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancerulesets',
-          text: 'Compliance Rulesets',
+          text: 'Rulesets',
           cssClass: 'compliance-rulesets',
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancerulesets',
           activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
@@ -310,12 +495,29 @@ export class CustomSideMenu extends PureComponent<any, any> {
         },
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/gslbuilder',
-          text: 'GSL Builder',
+          text: 'Rule Builder',
           cssClass: 'compliance-builder',
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/gslbuilder',
           activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
           isImplemented: true,
           childName: 'compliance-builder',
+        },
+        {
+          link: 'plugins/xformation-compliancemanager-ui-plugin/page/audits',
+          text: 'Audits',
+          cssClass: 'compliance-builder',
+          activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/audits',
+          activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
+          childName: 'compliance-builder',
+        },
+        {
+          link: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancepolicy',
+          text: 'Policies',
+          cssClass: 'compliance-exclusions',
+          activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancepolicy',
+          activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
+          isImplemented: true,
+          childName: 'compliance-policies',
         },
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceremediation',
@@ -345,13 +547,12 @@ export class CustomSideMenu extends PureComponent<any, any> {
           childName: 'compliance-exclusions',
         },
         {
-          link: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancepolicy',
-          text: 'Compliance Policies',
+          link: 'plugins/xformation-compliancemanager-ui-plugin/page/preference',
+          text: 'Preference',
           cssClass: 'compliance-exclusions',
-          activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancepolicy',
+          activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/preference',
           activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
-          isImplemented: true,
-          childName: 'compliance-policies',
+          childName: 'compliance-preference',
         },
       ],
     },
@@ -465,56 +666,74 @@ export class CustomSideMenu extends PureComponent<any, any> {
         },
       ],
     },
-  ];
-
-  catalogue: any = [
     {
-      link: '/analytics',
-      text: 'Applications',
-      cssClass: 'applications',
-      activeLink: '/analytics',
-      childName: 'analytics',
-      isImplemented: true,
-    },
-    {
-      link: '/virtual-machines',
-      text: 'Virtual Machines',
-      cssClass: 'virtual-machines',
-      activeLink: '/virtual-machines',
-      childName: 'virtual-machines',
-    },
-    {
-      link: '/networks',
-      text: 'Networks (preview)',
-      cssClass: 'networks',
-      activeLink: '/networks',
-      childName: 'networks',
-    },
-    {
-      link: '/jobs',
-      text: 'Jobs',
-      cssClass: 'jobs',
-      activeLink: '/jobs',
-      childName: 'jobs',
+      link: '/automation',
+      text: 'Automation',
+      cssClass: 'metrics',
+      activeLink: '/automation',
+      childName: 'automation',
     },
   ];
 
-  assets: any = [
+  devCentral: any = [
+    {
+      link: '/generators',
+      text: 'Generators',
+      cssClass: 'metrics',
+      activeLink: '/generators',
+      childName: 'generators',
+    },
+    {
+      link: '/delivery',
+      text: 'Delivery',
+      cssClass: 'metrics',
+      activeLink: '/delivery',
+      childName: 'delivery',
+    },
+    {
+      link: '/quality',
+      text: 'Quality',
+      cssClass: 'metrics',
+      activeLink: '/quality',
+      childName: 'quality',
+    },
+    {
+      link: '/test',
+      text: 'Test',
+      cssClass: 'metrics',
+      activeLink: '/test',
+      childName: 'test',
+    },
+  ];
+
+  tools: any = [
     {
       link: '/diagnostic-settings',
-      text: 'Tools & Diagnostics',
+      text: 'Tool & Diagnostics',
       cssClass: 'diagnostic-settings',
       activeLink: '/diagnostic-settings',
       childName: 'diagnostic-settings',
     },
-  ];
-
-  settings: any = [
+    {
+      link: '/preference',
+      text: 'Preference',
+      cssClass: 'preference',
+      activeLink: '/preference',
+      childName: 'preference',
+    },
     {
       link: '/plugins/xformation-rbac-ui-plugin/page/home',
       text: 'RBAC Settings',
       cssClass: 'diagnostic-settings',
       activeSLink: '/plugins/xformation-rbac-ui-plugin/page/home',
+      activeLink: '/plugins/xformation-rbac-ui-plugin',
+      childName: 'rbac-settings',
+    },
+    {
+      link: '/resource',
+      text: 'Resource',
+      cssClass: 'diagnostic-settings',
+      activeSLink: '/resource',
       activeLink: '/plugins/xformation-rbac-ui-plugin',
       childName: 'rbac-settings',
     },
@@ -721,14 +940,12 @@ export class CustomSideMenu extends PureComponent<any, any> {
         <div className="main-menu">
           <div className="sidemenu-search-container"></div>
           <ul className="m-0">{this.createCloseMenu(this.mainMenu)}</ul>
-          <div className="menu-item-header">INSIGHTS</div>
-          <ul className="m-0">{this.createCloseMenu(this.insights)}</ul>
-          <div className="menu-item-header">CATALOGUE</div>
-          <ul className="m-0">{this.createCloseMenu(this.catalogue)}</ul>
-          <div className="menu-item-header">ASSETS</div>
-          <ul className="m-0">{this.createCloseMenu(this.assets)}</ul>
-          <div className="menu-item-header">SETTINGS</div>
-          <ul className="m-0">{this.createCloseMenu(this.settings)}</ul>
+          <div className="menu-item-header">OPS CENTRAL</div>
+          <ul className="m-0">{this.createCloseMenu(this.opsCentral)}</ul>
+          <div className="menu-item-header">DEV CENTRAL</div>
+          <ul className="m-0">{this.createCloseMenu(this.devCentral)}</ul>
+          <div className="menu-item-header"></div>
+          <ul className="m-0">{this.createCloseMenu(this.tools)}</ul>
         </div>
         <div className={`sub-menu ${showSubMenu ? 'active-sub-menu' : ''}`}>
           <div className="open-menu" onMouseLeave={this.onMouseLeaveOpenedSubMenu}>
