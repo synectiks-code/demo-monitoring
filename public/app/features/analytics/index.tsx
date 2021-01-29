@@ -143,18 +143,18 @@ class Analytics extends React.Component<any, any> {
   }
 
   getTableData = () => {
-    //   let requestOptionsGet: any = {
-    //     method: `GET`,
-    //   };
-    //   fetch(`${config.ANALYTICS_LIST_VIEW}`, requestOptionsGet)
-    //     .then(response => response.json())
-    //     .then((response: any) => {
-    //       if (response) {
-    //         this.setState({
-    //           viewList: response,
-    //         });
-    //       }
-    //     });
+    let requestOptionsGet: any = {
+      method: `GET`,
+    };
+    fetch(`${config.ANALYTICS_LIST_VIEW}`, requestOptionsGet)
+      .then(response => response.json())
+      .then((response: any) => {
+        if (response) {
+          this.setState({
+            viewList: response,
+          });
+        }
+      });
   };
 
   onClickCreateNewView = (e: any) => {
