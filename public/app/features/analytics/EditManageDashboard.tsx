@@ -74,7 +74,6 @@ class EditManageDashboard extends React.Component<any, any> {
         });
       });
   };
-
   displayTabs = () => {
     const { tabs, activeTab } = this.state;
     const retData = [];
@@ -210,8 +209,8 @@ class EditManageDashboard extends React.Component<any, any> {
               </span>
               <i className="fa fa-ellipsis-h" id={`PopoverFocus-${i}`}></i>
             </a>
-            <UncontrolledPopover trigger="legacy" placement="bottom" target={`PopoverFocus-${i}`}>
-              <PopoverBody className="popup-btn">
+            <UncontrolledPopover trigger="legacy" className="popup-btn" placement="bottom" target={`PopoverFocus-${i}`}>
+              <PopoverBody>
                 <ul>
                   <li onClick={() => this.deletesidebarData(sideData, i)}>
                     <a href="#">
