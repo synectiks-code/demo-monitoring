@@ -22,121 +22,19 @@ textarea {
   .menu-item {
 
     .overview {
-      background-image: url('../img/monitor-icons/overview.svg');
-    }
-
-    .activity-log {
-      background-image: url('../img/monitor-icons/activity-log.svg');
-    }
-
-    .alerts {
-      background-image: url('../img/monitor-icons/alerts.svg');
+      background-image: url('../img/monitor-icons/sidemenu/overview.svg');
     }
 
     .logs {
-      background-image: url('../img/monitor-icons/logs.svg');
-    }
-
-    .service-health {
-      background-image: url('../img/monitor-icons/service-health.svg');
-    }
-
-    .workbooks {
-      background-image: url('../img/monitor-icons/workbooks.svg');
-    }
-
-    .applications {
-      background-image: url('../img/monitor-icons/applications.svg');
-    }
-
-    .virtual-machines {
-      background-image: url('../img/monitor-icons/virtual-machines.svg');
-    }
-
-    .networks {
-      background-image: url('../img/monitor-icons/networks.svg');
-    }
-
-    .jobs {
-      background-image: url('../img/monitor-icons/jobs.svg');
+      background-image: url('../img/monitor-icons/sidemenu/logs.svg');
     }
 
     .diagnostic-settings {
       background-image: url('../img/monitor-icons/diagnostic-settings.svg');
     }
 
-    .dashboard {
-      background-image: url('../img/monitor-icons/dashboard.svg');
-    }
-
-    .new-alert-rule {
-      background-image: url('../img/monitor-icons/menu-new-alert-rule.svg');
-    }
-
-    .compliance {
-      background-image: url('../img/monitor-icons/dashboard.svg');
-    }
-
-    .compliance-dashboard {
-      background-image: url('../img/monitor-icons/dashboard.svg');
-    }
-
-    .compliance-rulesets {
-      background-image: url('../img/monitor-icons/dashboard.svg');
-    }
-
-    .compliance-builder {
-      background-image: url('../img/monitor-icons/dashboard.svg');
-    }
-
-    .compliance-remediation {
-      background-image: url('../img/monitor-icons/dashboard.svg');
-    }
-
-    .compliance-assessment {
-      background-image: url('../img/monitor-icons/dashboard.svg');
-    }
-
-    .compliance-exclusions {
-      background-image: url('../img/monitor-icons/dashboard.svg');
-    }
-
-    .compliance-exclusions {
-      background-image: url('../img/monitor-icons/dashboard.svg');
-    }
-
     .tickets {
-      background-image: url('../img/monitor-icons/ticket.svg');
-      height: 15px;
-      margin-top: 2px;
-    }
-
-    .tickets-dashboard {
-      background-image: url('../img/monitor-icons/ticket.svg');
-      height: 15px;
-      margin-top: 2px;
-    }
-
-    .tickets-contacts {
-      background-image: url('../img/monitor-icons/ticket.svg');
-      height: 15px;
-      margin-top: 2px;
-    }
-
-    .tickets-companies {
-      background-image: url('../img/monitor-icons/ticket.svg');
-      height: 15px;
-      margin-top: 2px;
-    }
-
-    .tickets-reports {
-      background-image: url('../img/monitor-icons/ticket.svg');
-      height: 15px;
-      margin-top: 2px;
-    }
-
-    .tickets-preferences {
-      background-image: url('../img/monitor-icons/ticket.svg');
+      background-image: url('../img/monitor-icons/sidemenu/ticket.svg');
       height: 15px;
       margin-top: 2px;
     }
@@ -164,6 +62,30 @@ textarea {
     .metrics {
       background-image: url('../img/monitor-icons/sidemenu/metrics.svg');
     }
+
+    .delivery {
+      background-image: url('../img/monitor-icons/sidemenu/delivery.svg');
+    }
+
+    .generator {
+      background-image: url('../img/monitor-icons/sidemenu/generator.svg');
+    }
+
+    .quality {
+      background-image: url('../img/monitor-icons/sidemenu/quality.svg');
+    }
+
+    .test {
+      background-image: url('../img/monitor-icons/sidemenu/test.svg');
+    }
+
+    .compliance {
+      background-image: url('../img/monitor-icons/sidemenu/dashboard.svg');
+    }
+
+    .preference {
+      background-image: url('../img/monitor-icons/sidemenu/preference.svg');
+    }
   }
 
 }
@@ -182,7 +104,7 @@ textarea {
     }
 
     li.item {
-      border-bottom: 1px solid $sidemenu-link-background-hover-color;
+      border-bottom: 1px solid $sidemenu-link-border-color;
 
       &:hover {
         background-color: $sidemenu-link-background-hover-color;
@@ -243,8 +165,9 @@ textarea {
       font-weight: 600;
       text-align: center;
       cursor: pointer;
-      border-bottom: 1px solid $sidemenu-link-background-hover-color;
-      background: $sidemenu-item-header-background-color;
+      border-bottom: 1px solid $sidemenu-link-border-color;
+      background: $sidemenu-link-background-hover-color;
+      color: $sidemenu-link-text-color;
 
       i {
         font-size: 16px;
@@ -292,7 +215,7 @@ textarea {
             color: $sidemenu-link-text-color;
             font-size: 13px;
             padding: 15px 0px 14px 18px;
-            border-bottom: 1px solid $sidemenu-link-background-hover-color;
+            border-bottom: 1px solid $sidemenu-link-border-color;
 
             &:hover {
               background-color: $sidemenu-link-background-hover-color;

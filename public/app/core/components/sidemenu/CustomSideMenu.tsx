@@ -65,7 +65,11 @@ export class CustomSideMenu extends PureComponent<any, any> {
     if (retData.isFound) {
       return retData;
     }
-    retData = this.findActiveItem(pathName, this.tools);
+    retData = this.findActiveItem(pathName, this.diagnostics);
+    if (retData.isFound) {
+      return retData;
+    }
+    retData = this.findActiveItem(pathName, this.extra);
     return retData;
   };
 
@@ -176,7 +180,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: '/environments',
           text: 'Environments',
-          cssClass: 'service-health',
           activeSLink: '/environments',
           activeLink: '/environments',
           childName: 'assets',
@@ -184,7 +187,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: '/discovered-assets',
           text: 'Discovered Assets',
-          cssClass: 'service-health',
           activeSLink: '/discovered-assets',
           activeLink: '/discovered-assets',
           childName: 'assets',
@@ -224,7 +226,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: '/plugins/xformation-perfmanager-ui-plugin/page/catalog',
           text: 'View And Search Catalogue ',
-          cssClass: 'service-health',
           activeSLink: '/plugins/xformation-perfmanager-ui-plugin/page/catalog',
           activeLink: '/plugins/xformation-perfmanager-ui-plugin',
           childName: 'app-catalogue',
@@ -233,7 +234,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: '/import-assets',
           text: 'Import Assets From Module Pack ',
-          cssClass: 'service-health',
           activeSLink: '/import-assets',
           activeLink: '/import-assets',
           childName: 'app-catalogue',
@@ -259,7 +259,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: '/plugins/xformation-alertmanager-ui-plugin/page/monitoralerts',
           text: 'Dashboard',
-          cssClass: 'dashboard',
           activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/monitoralerts',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
           isImplemented: true,
@@ -268,7 +267,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: '/plugins/xformation-alertmanager-ui-plugin/page/alertrulebuilder',
           text: 'New Alert Rule',
-          cssClass: 'new-alert-rule',
           activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/alertrulebuilder',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
           isImplemented: true,
@@ -277,7 +275,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: '/alerting/list',
           text: 'All Alert Rules',
-          cssClass: 'new-alert-rule',
           activeSLink: 'alerting/list',
           activeLink: 'alerting/list',
           isImplemented: true,
@@ -286,7 +283,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: '/plugins/xformation-alertmanager-ui-plugin/page/managealertrule',
           text: 'Manage Alert Rule',
-          cssClass: 'new-alert-rule',
           activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/managealertrule',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
           isImplemented: true,
@@ -295,7 +291,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: '/plugins/xformation-alertmanager-ui-plugin/page/manageworkflow',
           text: 'Manage Workflows',
-          cssClass: 'new-alert-rule',
           activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/manageworkflow',
           activeLink: 'plugins/xformation-alertmanager-ui-plugin',
           childName: 'new-alert-rule',
@@ -314,7 +309,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: '/dashboards',
           text: 'Manage Dashboards',
-          cssClass: 'service-health',
           activeSLink: '/dashboards',
           activeLink: '/analytics',
           childName: 'manage-dashboards',
@@ -410,7 +404,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-logmanager-ui-plugin/page/overview',
           text: 'Overview',
-          cssClass: 'logs',
           activeSLink: 'plugins/xformation-logmanager-ui-plugin/page/overview',
           activeLink: 'plugins/xformation-logmanager-ui-plugin',
           childName: 'grafana-logs',
@@ -418,7 +411,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-logmanager-ui-plugin/page/dashboard',
           text: 'Dashboard',
-          cssClass: 'logs',
           activeSLink: 'plugins/xformation-logmanager-ui-plugin/page/dashboard',
           activeLink: 'plugins/xformation-logmanager-ui-plugin',
           isImplemented: true,
@@ -427,7 +419,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-logmanager-ui-plugin/page/alerts',
           text: 'Alerts',
-          cssClass: 'logs',
           activeSLink: 'plugins/xformation-logmanager-ui-plugin/page/alerts',
           activeLink: 'plugins/xformation-logmanager-ui-plugin',
           childName: 'grafana-logs',
@@ -435,7 +426,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-logmanager-ui-plugin/page/preference',
           text: 'Preference',
-          cssClass: 'logs',
           activeSLink: 'plugins/xformation-logmanager-ui-plugin/page/preference',
           activeLink: 'plugins/xformation-logmanager-ui-plugin',
           isImplemented: true,
@@ -454,7 +444,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/dashboard',
           text: 'Overview',
-          cssClass: 'compliance-dashboard',
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/dashboard',
           activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
           isImplemented: true,
@@ -463,7 +452,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancerulesets',
           text: 'Rulesets',
-          cssClass: 'compliance-rulesets',
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancerulesets',
           activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
           isImplemented: true,
@@ -472,7 +460,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/gslbuilder',
           text: 'Rule Builder',
-          cssClass: 'compliance-builder',
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/gslbuilder',
           activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
           isImplemented: true,
@@ -481,7 +468,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/audits',
           text: 'Audits',
-          cssClass: 'compliance-builder',
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/audits',
           activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
           childName: 'compliance-builder',
@@ -489,7 +475,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancepolicy',
           text: 'Policies',
-          cssClass: 'compliance-exclusions',
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancepolicy',
           activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
           isImplemented: true,
@@ -498,7 +483,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceremediation',
           text: 'Remediation',
-          cssClass: 'compliance-remediation',
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceremediation',
           activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
           isImplemented: true,
@@ -507,7 +491,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceassessmenthistory',
           text: 'Assessment History',
-          cssClass: 'compliance-assessment',
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceassessmenthistory',
           activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
           isImplemented: true,
@@ -516,7 +499,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceexclusions',
           text: 'Exclusions',
-          cssClass: 'compliance-exclusions',
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceexclusions',
           activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
           isImplemented: true,
@@ -525,7 +507,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-compliancemanager-ui-plugin/page/preference',
           text: 'Preference',
-          cssClass: 'compliance-exclusions',
           activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/preference',
           activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
           childName: 'compliance-preference',
@@ -543,7 +524,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-servicedesk-ui-plugin/page/dashboard',
           text: 'Dashboard',
-          cssClass: 'tickets-dashboard',
           activeSLink: 'plugins/xformation-servicedesk-ui-plugin/page/dashboard',
           activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
           isImplemented: true,
@@ -552,7 +532,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-servicedesk-ui-plugin/page/allcontacts',
           text: 'Contacts',
-          cssClass: 'tickets-contacts',
           activeSLink: 'plugins/xformation-servicedesk-ui-plugin/page/allcontacts',
           activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
           isImplemented: true,
@@ -561,7 +540,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-servicedesk-ui-plugin/page/allcompanies',
           text: 'Companies',
-          cssClass: 'tickets-companies',
           activeSLink: 'plugins/xformation-servicedesk-ui-plugin/page/allcompanies',
           activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
           isImplemented: true,
@@ -570,7 +548,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-servicedesk-ui-plugin/page/tickets',
           text: 'Reports',
-          cssClass: 'tickets-reports',
           activeSLink: 'plugins/xformation-servicedesk-ui-plugin/page/tickets',
           activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
           isImplemented: true,
@@ -579,7 +556,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: 'plugins/xformation-servicedesk-ui-plugin/page/opentickets',
           text: 'Preferences',
-          cssClass: 'tickets-preferences',
           activeSLink: 'plugins/xformation-servicedesk-ui-plugin/page/opentickets',
           activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
           isImplemented: true,
@@ -600,41 +576,86 @@ export class CustomSideMenu extends PureComponent<any, any> {
     {
       link: '/generators',
       text: 'Generators',
-      cssClass: 'metrics',
+      cssClass: 'generator',
       activeLink: '/generators',
       childName: 'generators',
     },
     {
       link: '/delivery',
       text: 'Delivery',
-      cssClass: 'metrics',
+      cssClass: 'delivery',
       activeLink: '/delivery',
       childName: 'delivery',
     },
     {
       link: '/quality',
       text: 'Quality',
-      cssClass: 'metrics',
+      cssClass: 'quality',
       activeLink: '/quality',
       childName: 'quality',
     },
     {
       link: '/test',
       text: 'Test',
-      cssClass: 'metrics',
+      cssClass: 'test',
       activeLink: '/test',
       childName: 'test',
     },
   ];
 
-  tools: any = [
+  diagnostics: any = [
     {
-      link: '/diagnostic-settings',
-      text: 'Tool & Diagnostics',
-      cssClass: 'diagnostic-settings',
-      activeLink: '/diagnostic-settings',
-      childName: 'diagnostic-settings',
+      link: '/change-manager',
+      text: 'Change Manager',
+      cssClass: 'generator',
+      activeLink: '/change-manager',
+      childName: 'change-manager',
     },
+    {
+      link: '/explorer',
+      text: 'Explorer',
+      cssClass: 'quality',
+      activeLink: '/explorer',
+      childName: 'explorer',
+    },
+    {
+      link: '/rca',
+      text: 'RCA',
+      cssClass: 'delivery',
+      activeLink: '/rca',
+      childName: 'rca',
+    },
+    {
+      link: '/search-act',
+      text: 'Search & Act',
+      cssClass: 'generator',
+      activeLink: '/search-act',
+      childName: 'search-act',
+    },
+    {
+      link: '/script-manager',
+      text: 'Script Manager',
+      cssClass: 'test',
+      activeLink: '/script-manager',
+      childName: 'script-manager',
+    },
+    {
+      link: '/optimizer',
+      text: 'Optimizer',
+      cssClass: 'delivery',
+      activeLink: '/optimizer',
+      childName: 'optimizer',
+    },
+    {
+      link: '/migration-manager',
+      text: 'Migration Manager',
+      cssClass: 'generator',
+      activeLink: '/migration-manager',
+      childName: 'migration-manager',
+    },
+  ];
+
+  extra: any = [
     {
       link: '/preference',
       text: 'Preference',
@@ -870,6 +891,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
         <div className="main-menu">
           <div className="sidemenu-search-container"></div>
           <ul className="m-0">{this.createCloseMenu(this.mainMenu)}</ul>
+
           <div className="menu-item-header" onClick={() => this.collapseMainMenu(0)}>
             OPS
             <br />
@@ -880,6 +902,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
           <ul className={`m-0 main-menu-items ${!collapsedMenus[0] ? 'main-menu-collapsed' : ''}`}>
             {this.createCloseMenu(this.opsCentral)}
           </ul>
+
           <div className="menu-item-header" onClick={() => this.collapseMainMenu(1)}>
             DEV
             <br />
@@ -890,8 +913,19 @@ export class CustomSideMenu extends PureComponent<any, any> {
           <ul className={`m-0 main-menu-items ${!collapsedMenus[1] ? 'main-menu-collapsed' : ''}`}>
             {this.createCloseMenu(this.devCentral)}
           </ul>
-          {/* <div className="menu-item-header"></div> */}
-          <ul className="m-0">{this.createCloseMenu(this.tools)}</ul>
+
+          <div className="menu-item-header" onClick={() => this.collapseMainMenu(2)}>
+            TOOLS &amp;
+            <br />
+            DIAGNOSTICS
+            <br />
+            <i className={`fa ${!collapsedMenus[2] ? 'fa-arrow-circle-right' : 'fa-arrow-circle-down'}`}></i>
+          </div>
+          <ul className={`m-0 main-menu-items ${!collapsedMenus[2] ? 'main-menu-collapsed' : ''}`}>
+            {this.createCloseMenu(this.diagnostics)}
+          </ul>
+
+          <ul className="m-0">{this.createCloseMenu(this.extra)}</ul>
         </div>
         <div className={`sub-menu ${showSubMenu ? 'active-sub-menu' : ''}`}>
           <div className="open-menu" onMouseLeave={this.onMouseLeaveOpenedSubMenu}>
