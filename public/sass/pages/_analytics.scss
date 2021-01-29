@@ -12,7 +12,7 @@
   &:hover {
     background: #0f5efd;
   }
-  &.disabled{
+  &.disabled {
     background: #6386ca;
   }
 }
@@ -101,10 +101,10 @@
       border-bottom: none;
       margin-bottom: 2px;
 
-      >li {
+      > li {
         position: relative;
 
-        >a {
+        > a {
           background-color: #f8f9fb;
           border: 0.5px solid #8392a7;
           border-right: none;
@@ -336,20 +336,20 @@
             display: block;
             width: 100%;
 
-            >div {
+            > div {
               width: 100% !important;
             }
           }
 
           .tag-filter-container {
-            >div {
+            > div {
               width: 100% !important;
               min-width: 100% !important;
             }
           }
 
           .sort-container {
-            >div {
+            > div {
               width: 100% !important;
             }
           }
@@ -787,18 +787,19 @@
 
     .popover-body {
       width: 110px;
-      padding: 10px 0;
+      padding: 8px 0;
       margin-right: 40px;
       border: none;
       background-color: #f5f6f5;
       box-shadow: 0px 3px 6px #00000029;
 
       ul {
-        display: inline-block;
+        display: block;
 
         li {
           list-style: none;
-          float: left;
+          display: block;
+          text-align: left;
 
           a {
             font-size: 12px;
@@ -808,6 +809,7 @@
             margin-bottom: 0;
             line-height: 20px;
             background-color: transparent;
+            display: inline-block;
           }
 
           i {
@@ -836,7 +838,6 @@
 }
 
 @media only screen and (min-width: 1024px) and(max-width: 1200px) {
-
   .search-control-group,
   .sort-select-menu {
     margin-bottom: 10px;
@@ -844,7 +845,6 @@
 }
 
 @media only screen and (min-width: 768px) and(max-width: 1023px) {
-
   .search-control-group,
   .sort-select-menu,
   .sort-checkbox {
