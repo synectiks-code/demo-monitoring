@@ -29,10 +29,6 @@ textarea {
       background-image: url('../img/monitor-icons/sidemenu/logs.svg');
     }
 
-    .diagnostic-settings {
-      background-image: url('../img/monitor-icons/diagnostic-settings.svg');
-    }
-
     .tickets {
       background-image: url('../img/monitor-icons/sidemenu/ticket.svg');
       height: 15px;
@@ -85,6 +81,10 @@ textarea {
 
     .preference {
       background-image: url('../img/monitor-icons/sidemenu/preference.svg');
+    }
+
+    .resources {
+      background-image: url('../img/monitor-icons/sidemenu/resources.svg');
     }
   }
 

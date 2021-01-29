@@ -208,7 +208,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
         {
           link: '/custom-resources',
           text: 'Custom-Resources',
-          cssClass: 'workbooks',
           activeLink: '/custom-resources',
           childName: 'custom-resources',
         },
@@ -674,7 +673,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
     {
       link: '/resource',
       text: 'Resource',
-      cssClass: 'diagnostic-settings',
+      cssClass: 'resources',
       activeSLink: '/resource',
       activeLink: '/plugins/xformation-rbac-ui-plugin',
       childName: 'rbac-settings',
