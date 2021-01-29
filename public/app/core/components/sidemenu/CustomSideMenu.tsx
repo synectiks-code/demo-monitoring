@@ -125,9 +125,15 @@ export class CustomSideMenu extends PureComponent<any, any> {
   };
 
   componentDidMount() {
-    const that = this;
     window.addEventListener('locationchange', () => {
-      that.handleLocationChange();
+      const menuData: any = this.handleLocationChange();
+      this.updateState(menuData.subMenuState, this.state.subMenuState);
+      this.setState({
+        subMenuState: menuData.subMenuState,
+        showSubMenu: menuData.showSubMenu,
+        activeMenuItem: menuData.activeMenuItem,
+        isSubMenuPinned: menuData.isSubMenuPinned,
+      });
     });
 
     history.pushState = (f =>

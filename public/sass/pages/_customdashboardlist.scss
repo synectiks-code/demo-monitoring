@@ -39,7 +39,7 @@
     }
   }
 
-  .collapse {
+  .collapsed {
     width: 0px;
 
     .dashboard-nav-item {
@@ -110,7 +110,7 @@
 
 .dashboard-list-container {
   .aside-container {
-    &.collapse {
+    &.collapsed {
       width: 42px;
       background-color: transparent;
     }

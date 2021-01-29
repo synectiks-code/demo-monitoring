@@ -175,7 +175,7 @@ class DashboardList extends React.Component<Props, State> {
       retData.push(
         <TabPane tabId={i}>
           <div className="dashboard-list-container">
-            <aside className={`aside-container dashboard-settings__aside ${collapsed ? 'collapse' : ''}`}>
+            <aside className={`aside-container dashboard-settings__aside ${collapsed ? 'collapsed' : ''}`}>
               <a onClick={this.collapseAside} className="aside-a collapse-button text-left">
                 <i className="fa fa-bars"></i>
               </a>
