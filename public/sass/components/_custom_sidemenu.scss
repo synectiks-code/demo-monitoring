@@ -240,14 +240,15 @@ textarea {
       }
 
       ul {
-        transform: rotate(270deg);
-        margin-top: 45px;
+        transform: rotate(180deg);
+        margin: 0;
+        writing-mode: vertical-lr;
+        display: flex;
+        width: 100%;
+        align-items: center;
 
         .menu-item-text {
           color: $sidemenu-link-text-color;
-          min-width: 250px;
-          right: 150px;
-          position: relative;
         }
       }
     }
