@@ -12,6 +12,7 @@
   &:hover {
     background: #0f5efd;
   }
+
   &.disabled {
     background: #6386ca;
   }
@@ -101,28 +102,36 @@
       border-bottom: none;
       margin-bottom: 2px;
 
-      > li {
+      >li {
         position: relative;
 
-        > a {
+        >a {
           background-color: #f8f9fb;
           border: 0.5px solid #8392a7;
-          border-right: none;
+          // border-right: none;
           position: relative;
           margin: 0;
           left: 0;
-          padding: 0 10px;
+          padding: 0px;
+          padding-right: 10px;
           text-align: left;
-          width: 120px;
+          min-width: 120px;
           font-size: 14px;
           line-height: 36px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
 
           i {
-            float: right;
             line-height: 36px;
           }
 
           &.nav-link {
+            span {
+              width: 100%;
+              padding: 0px 10px;
+            }
+
             &.active {
               color: #0099ff;
               background-color: #e9ecf0;
@@ -145,6 +154,7 @@
             width: auto;
             border-right: 0.5px solid #8392a7;
             padding: 0 15px;
+            min-width: auto;
 
             i {
               float: none;
@@ -336,20 +346,20 @@
             display: block;
             width: 100%;
 
-            > div {
+            >div {
               width: 100% !important;
             }
           }
 
           .tag-filter-container {
-            > div {
+            >div {
               width: 100% !important;
               min-width: 100% !important;
             }
           }
 
           .sort-container {
-            > div {
+            >div {
               width: 100% !important;
             }
           }
@@ -838,6 +848,7 @@
 }
 
 @media only screen and (min-width: 1024px) and(max-width: 1200px) {
+
   .search-control-group,
   .sort-select-menu {
     margin-bottom: 10px;
@@ -845,6 +856,7 @@
 }
 
 @media only screen and (min-width: 768px) and(max-width: 1023px) {
+
   .search-control-group,
   .sort-select-menu,
   .sort-checkbox {

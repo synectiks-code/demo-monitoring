@@ -327,11 +327,11 @@ class EditManageDashboard extends React.Component<any, any> {
               <div className="analytics-tabs-container">
                 <ul className="nav nav-tabs">
                   {this.displayTabs()}
-                  <li className="nav-item">
+                  {/* <li className="nav-item">
                     <a className="nav-link add-tab">
                       <i className="fa fa-plus"></i>
                     </a>
-                  </li>
+                  </li> */}
                 </ul>
                 <div className="analytics-tabs-section-container">
                   <div className="tabs-left-section">
