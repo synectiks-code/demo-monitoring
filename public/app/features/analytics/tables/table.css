@@ -110,7 +110,10 @@
   font-size: 13px;
   line-height: 40px;
   font-weight: 500;
-  color: #ffffff;
+}
+
+.theme-dark .custom-table .showing {
+  color:#3b4859;
 }
 
 .theme-light .custom-table .showing {
@@ -148,6 +151,10 @@
   color: #ffffff;
   font-weight: 500;
   padding-left: 15px;
+}
+
+.theme-dark .custom-table .showby span{
+  color: #3b4859;
 }
 
 .theme-light .custom-table .showby span {

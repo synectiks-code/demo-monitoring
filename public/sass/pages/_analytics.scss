@@ -12,6 +12,7 @@
   &:hover {
     background: #0f5efd;
   }
+
   &.disabled {
     background: #6386ca;
   }
@@ -116,6 +117,7 @@
           width: 120px;
           font-size: 14px;
           line-height: 36px;
+          color: #3b4859;
 
           i {
             float: right;
@@ -606,7 +608,7 @@
   background: rgb(255, 255, 255);
 }
 
-.catalog-modal-container {
+.analytics-modal-container {
   max-width: 992px !important;
   box-shadow: 0px 0px 16px #3b48593d;
   border-radius: 10px;

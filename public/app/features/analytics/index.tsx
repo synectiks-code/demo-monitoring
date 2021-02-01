@@ -172,7 +172,7 @@ class Analytics extends React.Component<any, any> {
     return (
       <React.Fragment>
         <CustomNavigationBar />
-        <div className="scroll-canvas--dashboard monitor-main-body">
+        <div className="dashboard monitor-main-body">
           <div className="breadcrumbs-container">
             {pageTitle && <div className="page-title">{pageTitle}</div>}
             <div className="breadcrumbs">

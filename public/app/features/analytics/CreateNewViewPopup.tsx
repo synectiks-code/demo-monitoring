@@ -83,7 +83,7 @@ export class CreateNewViewPopup extends React.Component<any, any> {
     const { modal, viewName, description, isSubmitted } = this.state;
     const errorData = this.validate(isSubmitted);
     return (
-      <Modal isOpen={modal} toggle={this.toggle} className="catalog-modal-container">
+      <Modal isOpen={modal} toggle={this.toggle} className="analytics-modal-container">
         <ModalHeader toggle={this.toggle}>Creating New View</ModalHeader>
         <ModalBody style={{ height: 'calc(54vh - 50px)', overflowY: 'auto', overflowX: 'hidden' }}>
           <div className="d-block width-100">
