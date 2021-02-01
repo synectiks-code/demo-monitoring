@@ -78,7 +78,7 @@ class ViewNewView extends React.Component<Props, any> {
       retData.push(
         <li key={`tab-${i}`} className={`nav-item `}>
           <a className={i === activeTab ? 'nav-link active' : 'nav-link'} onClick={e => this.setActiveTab(i)}>
-            {tab.label}&nbsp;
+            <span>{tab.label}</span>
           </a>
         </li>
       );
@@ -295,11 +295,11 @@ class ViewNewView extends React.Component<Props, any> {
             <div className="analytics-tabs-container">
               <ul className="nav nav-tabs">
                 {this.displayTabs()}
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <a className="nav-link add-tab">
                     <i className="fa fa-plus"></i>
                   </a>
-                </li>
+                </li> */}
               </ul>
               <div className="analytics-tabs-section-container">
                 <div className="tabs-left-section">
