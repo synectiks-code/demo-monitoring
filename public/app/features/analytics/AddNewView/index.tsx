@@ -530,6 +530,12 @@ class AddNewView extends React.Component<any, any> {
     this.getSearchData(sendData, false);
   };
 
+  hideDashboardView = () => {
+    this.setState({
+      showView: false,
+    });
+  };
+
   render() {
     const breadCrumbs = this.breadCrumbs;
     const pageTitle = 'ANALYTICS';
@@ -641,7 +647,12 @@ class AddNewView extends React.Component<any, any> {
           </div>
         </div>
         <div style={{ display: `${showView ? 'block' : 'none'}` }}>
-          <ViewNewView ref={this.viewRef} $scope={this.props.$scope} $injector={this.props.$injector} />
+          <ViewNewView
+            ref={this.viewRef}
+            $scope={this.props.$scope}
+            hidedashboardView={this.hideDashboardView}
+            $injector={this.props.$injector}
+          />
         </div>
       </React.Fragment>
     );

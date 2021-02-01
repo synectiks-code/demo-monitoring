@@ -13,6 +13,7 @@ interface Props {
   $scope: any;
   $injector: any;
   ref: any;
+  hidedashboardView: any;
 }
 
 class ViewNewView extends React.Component<Props, any> {
@@ -272,6 +273,13 @@ class ViewNewView extends React.Component<Props, any> {
                 <div className="col-lg-6 col-md-6 col-sm-6">
                   <div className="d-block text-right">
                     <a>
+                      <button
+                        className="analytics-white-button min-width-auto m-r-1"
+                        onClick={() => this.props.hidedashboardView()}
+                      >
+                        <i className="fa fa-arrow-circle-left"></i>
+                        &nbsp;&nbsp;Back
+                      </button>
                       <button
                         disabled={loading}
                         className={`analytics-blue-button ${loading ? 'disabled' : ''}`}
