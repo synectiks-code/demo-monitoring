@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { CustomMenuModal } from './CustomMenuModal';
 import { getLocationSrv } from '@grafana/runtime';
 import Rbac from './Rbac';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 const menuStates: any = {
   SUBMENU_OPEN: 4,
@@ -893,45 +894,47 @@ export class CustomSideMenu extends PureComponent<any, any> {
     const { showSubMenu, isSubMenuPinned, collapsedMenus } = this.state;
     return (
       <div className="menu-item-container">
-        <div className="main-menu">
-          <div className="sidemenu-search-container"></div>
-          <ul className="m-0">{this.createCloseMenu(this.mainMenu)}</ul>
+        <Scrollbars autoHide>
+          <div className="main-menu">
+            <div className="sidemenu-search-container"></div>
+            <ul className="m-0">{this.createCloseMenu(this.mainMenu)}</ul>
 
-          <div className="menu-item-header" onClick={() => this.collapseMainMenu(0)}>
-            OPS
-            <br />
-            CENTRAL
-            <br />
-            <i className={`fa ${!collapsedMenus[0] ? 'fa-arrow-circle-right' : 'fa-arrow-circle-down'}`}></i>
+            <div className="menu-item-header" onClick={() => this.collapseMainMenu(0)}>
+              OPS
+              <br />
+              CENTRAL
+              <br />
+              <i className={`fa ${!collapsedMenus[0] ? 'fa-arrow-circle-right' : 'fa-arrow-circle-down'}`}></i>
+            </div>
+            <ul className={`m-0 main-menu-items ${!collapsedMenus[0] ? 'main-menu-collapsed' : ''}`}>
+              {this.createCloseMenu(this.opsCentral)}
+            </ul>
+
+            <div className="menu-item-header" onClick={() => this.collapseMainMenu(1)}>
+              DEV
+              <br />
+              CENTRAL
+              <br />
+              <i className={`fa ${!collapsedMenus[1] ? 'fa-arrow-circle-right' : 'fa-arrow-circle-down'}`}></i>
+            </div>
+            <ul className={`m-0 main-menu-items ${!collapsedMenus[1] ? 'main-menu-collapsed' : ''}`}>
+              {this.createCloseMenu(this.devCentral)}
+            </ul>
+
+            <div className="menu-item-header" onClick={() => this.collapseMainMenu(2)}>
+              TOOLS &amp;
+              <br />
+              DIAGNOSTICS
+              <br />
+              <i className={`fa ${!collapsedMenus[2] ? 'fa-arrow-circle-right' : 'fa-arrow-circle-down'}`}></i>
+            </div>
+            <ul className={`m-0 main-menu-items ${!collapsedMenus[2] ? 'main-menu-collapsed' : ''}`}>
+              {this.createCloseMenu(this.diagnostics)}
+            </ul>
+
+            <ul className="m-0">{this.createCloseMenu(this.extra)}</ul>
           </div>
-          <ul className={`m-0 main-menu-items ${!collapsedMenus[0] ? 'main-menu-collapsed' : ''}`}>
-            {this.createCloseMenu(this.opsCentral)}
-          </ul>
-
-          <div className="menu-item-header" onClick={() => this.collapseMainMenu(1)}>
-            DEV
-            <br />
-            CENTRAL
-            <br />
-            <i className={`fa ${!collapsedMenus[1] ? 'fa-arrow-circle-right' : 'fa-arrow-circle-down'}`}></i>
-          </div>
-          <ul className={`m-0 main-menu-items ${!collapsedMenus[1] ? 'main-menu-collapsed' : ''}`}>
-            {this.createCloseMenu(this.devCentral)}
-          </ul>
-
-          <div className="menu-item-header" onClick={() => this.collapseMainMenu(2)}>
-            TOOLS &amp;
-            <br />
-            DIAGNOSTICS
-            <br />
-            <i className={`fa ${!collapsedMenus[2] ? 'fa-arrow-circle-right' : 'fa-arrow-circle-down'}`}></i>
-          </div>
-          <ul className={`m-0 main-menu-items ${!collapsedMenus[2] ? 'main-menu-collapsed' : ''}`}>
-            {this.createCloseMenu(this.diagnostics)}
-          </ul>
-
-          <ul className="m-0">{this.createCloseMenu(this.extra)}</ul>
-        </div>
+        </Scrollbars>
         <div className={`sub-menu ${showSubMenu ? 'active-sub-menu' : ''}`}>
           <div className="open-menu" onMouseLeave={this.onMouseLeaveOpenedSubMenu}>
             <div className="side-menu-toggle text-right" onClick={this.onClickToggleSubMenu}>

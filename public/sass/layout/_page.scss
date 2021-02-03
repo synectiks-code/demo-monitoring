@@ -70,20 +70,20 @@
     height: calc(100% - 56px);
   }
 
-  >div {
+  > div {
     flex-grow: 1;
   }
 
-  >.footer {
+  > .footer {
     flex-shrink: 0;
   }
 
   // Render in correct position even ng-view div is not rendered yet
-  >.footer:first-child {
+  > .footer:first-child {
     flex-grow: 1;
     display: flex;
 
-    >* {
+    > * {
       width: 100%;
       align-self: flex-end;
     }
@@ -106,8 +106,8 @@
   display: flex;
   align-items: flex-start;
 
-  >a,
-  >button {
+  > a,
+  > button {
     margin-left: $spacer;
   }
 }
@@ -187,6 +187,7 @@
 
 .monitor-main-body {
   margin-left: 81px;
+  margin-top: 51px;
   width: calc(100% - 81px);
   transition: width 0.3s, margin 0.3s;
   padding: 0px !important;

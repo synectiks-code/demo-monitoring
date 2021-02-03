@@ -14,13 +14,14 @@ textarea {
 .sidemenu {
   background-color: $sidemenu-background-color !important;
   box-shadow: -4px 6px 8px 0px #3b4859;
-  position: absolute !important;
+  position: fixed !important;
   top: 51px !important;
-  // height: calc(100% - 51px) !important;
+  height: calc(100% - 51px) !important;
   transition: width 0.3s !important;
-
+  .menu-item-container {
+    height: 100%;
+  }
   .menu-item {
-
     .overview {
       background-image: url('../img/monitor-icons/sidemenu/overview.svg');
     }
@@ -87,7 +88,6 @@ textarea {
       background-image: url('../img/monitor-icons/sidemenu/resources.svg');
     }
   }
-
 }
 
 .sidemenu {
@@ -100,6 +100,7 @@ textarea {
       &.main-menu-collapsed {
         height: 0px;
         visibility: hidden;
+        display: none;
       }
     }
 
