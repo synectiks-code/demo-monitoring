@@ -21,10 +21,14 @@ class EditManageDashboard extends React.Component<any, any> {
   breadCrumbs: any = [
     {
       label: 'Home',
-      route: '',
+      route: `/`,
     },
     {
-      label: 'Analytics | View',
+      label: 'Analytics',
+      route: `/analytics`,
+    },
+    {
+      label: 'Edit View',
       isCurrentPage: true,
     },
   ];
@@ -293,7 +297,9 @@ class EditManageDashboard extends React.Component<any, any> {
                 } else {
                   return (
                     <React.Fragment key={index}>
-                      <a className="breadcrumbs-link">{breadcrumb.label}</a>
+                      <a href={`${breadcrumb.route}`} className="breadcrumbs-link">
+                        {breadcrumb.label}
+                      </a>
                       <span className="separator">
                         <i className="fa fa-chevron-right"></i>
                       </span>

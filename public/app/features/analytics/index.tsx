@@ -8,6 +8,7 @@ import { CreateNewViewPopup } from './CreateNewViewPopup';
 import { config } from '../config';
 import { getLocationSrv } from '@grafana/runtime';
 import { DeleteTabPopup } from './DeleteTabPopup';
+//import { Link } from 'react-router-dom';
 
 // Services & Utils
 export interface Props {
@@ -23,10 +24,10 @@ class Analytics extends React.Component<any, any> {
   breadCrumbs: any = [
     {
       label: 'Home',
-      route: '',
+      route: `/`,
     },
     {
-      label: 'Analytics | View',
+      label: 'Analytics',
       isCurrentPage: true,
     },
   ];
@@ -186,7 +187,9 @@ class Analytics extends React.Component<any, any> {
                 } else {
                   return (
                     <React.Fragment key={index}>
-                      <a className="breadcrumbs-link">{breadcrumb.label}</a>
+                      <a href={`${breadcrumb.route}`} className="breadcrumbs-link">
+                        {breadcrumb.label}
+                      </a>
                       <span className="separator">
                         <i className="fa fa-chevron-right"></i>
                       </span>
