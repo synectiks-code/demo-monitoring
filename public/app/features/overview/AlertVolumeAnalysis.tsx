@@ -110,6 +110,17 @@ export class AlertVolumeAnalysis extends React.Component<any, any> {
                   },
                 },
               ],
+              xAxes: [
+                {
+                  ticks: {
+                    callback: function(value: any, index, values) {
+                      let str = value.split('-', 3);
+                      let newData = str[1] + '-' + str[2];
+                      return newData;
+                    },
+                  },
+                },
+              ],
             },
             legend: {
               display: false,
