@@ -177,18 +177,18 @@ export class CustomSideMenu extends PureComponent<any, any> {
       childName: 'overview',
     },
     {
-      link: '/assets/environments',
+      link: '/plugins/xformation-assetmanager-ui-plugin/page/environments',
       text: 'Assets',
       cssClass: 'assets',
-      activeLink: 'assets',
+      activeLink: 'plugins/xformation-assetmanager-ui-plugin',
       childName: 'assets',
       isImplemented: true,
       subMenu: [
         {
-          link: '/assets/environments',
+          link: '/plugins/xformation-assetmanager-ui-plugin/page/environments',
           text: 'Environments',
-          activeSLink: '/assets/environments',
-          activeLink: 'assets',
+          activeSLink: '/plugins/xformation-assetmanager-ui-plugin/page/environments',
+          activeLink: 'plugins/xformation-assetmanager-ui-plugin',
           childName: 'assets',
         },
         {
