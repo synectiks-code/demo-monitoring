@@ -168,7 +168,7 @@ class Overview extends React.Component<any, any> {
                   </div>
                   <div className="col-xl-3 col-lg-4 col-md-5 col-sm-12">
                     <div className="new-discovery-btn">
-                      <a href="#" className="alert-blue-button">
+                      <a href="#" className="overview-blue-button">
                         New Discovery
                       </a>
                     </div>
@@ -191,7 +191,7 @@ class Overview extends React.Component<any, any> {
                       operation &amp; performance of your system.
                     </div>
                     <a
-                      className="alert-blue-button m-t-2"
+                      className="overview-blue-button m-t-2"
                       href="/plugins/xformation-perfmanager-ui-plugin/page/dashboard"
                     >
                       Explore Metrics
@@ -204,7 +204,7 @@ class Overview extends React.Component<any, any> {
                       Logs are activity logs, diagnostic logs and telemetry from monitoring solutions; Analytics queries
                       help with troubleshooting &amp; visualizations.
                     </div>
-                    <button className="alert-blue-button m-t-2">Search Logs</button>
+                    <button className="overview-blue-button m-t-2">Search Logs</button>
                   </div>
                   <div className="overview-item-container">
                     <img src="/public/img/monitor-icons/alert_actions.png" className="item-image" />
@@ -214,7 +214,7 @@ class Overview extends React.Component<any, any> {
                       on triggers from metrics or logs.
                     </div>
                     <a
-                      className="alert-blue-button m-t-2"
+                      className="overview-blue-button m-t-2"
                       href="/plugins/xformation-alertmanager-ui-plugin/page/monitoralerts"
                     >
                       Manage Alert
@@ -228,7 +228,7 @@ class Overview extends React.Component<any, any> {
                       operation &amp; performance of your system.
                     </div>
                     <a
-                      className="alert-blue-button m-t-2"
+                      className="overview-blue-button m-t-2"
                       href="/plugins/xformation-perfmanager-ui-plugin/page/dashboard"
                     >
                       Explore Metrics
@@ -241,7 +241,7 @@ class Overview extends React.Component<any, any> {
                       Logs are activity logs, diagnostic logs and telemetry from monitoring solutions; Analytics queries
                       help with troubleshooting &amp; visualizations.
                     </div>
-                    <button className="alert-blue-button m-t-2">Search Logs</button>
+                    <button className="overview-blue-button m-t-2">Search Logs</button>
                   </div>
                   <div className="overview-item-container">
                     <img src="/public/img/monitor-icons/alert_actions.png" className="item-image" />
@@ -251,7 +251,7 @@ class Overview extends React.Component<any, any> {
                       on triggers from metrics or logs.
                     </div>
                     <a
-                      className="alert-blue-button m-t-2"
+                      className="overview-blue-button m-t-2"
                       href="/plugins/xformation-alertmanager-ui-plugin/page/monitoralerts"
                     >
                       Manage Alert

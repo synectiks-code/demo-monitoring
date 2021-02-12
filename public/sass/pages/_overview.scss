@@ -33,9 +33,9 @@ body,
 
       .new-discovery-btn {
         text-align: right;
-        padding-top: 15px;
+        padding-top: 8px;
 
-        .alert-blue-button {
+        .overview-blue-button {
           margin-right: 0;
         }
       }
@@ -289,7 +289,7 @@ body,
     }
   }
 
-  .alert-blue-button {
+  .overview-blue-button {
     background: #3b7cff;
     color: white;
     border: none;
@@ -301,7 +301,7 @@ body,
     text-align: center;
   }
 
-  .alert-blue-button:hover {
+  .overview-blue-button:hover {
     background: #0f5efd !important;
   }
 }

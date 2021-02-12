@@ -96,7 +96,7 @@
   }
 
   .analytics-tabs-container {
-    padding: 0 20px;
+    padding: 15px 20px 0;
 
     .nav-tabs {
       border-bottom: none;
@@ -108,7 +108,7 @@
         > a {
           background-color: #f8f9fb;
           border: 0.5px solid #8392a7;
-          // border-right: none;
+          border-right: none;
           position: relative;
           margin: 0;
           left: 0;
@@ -131,6 +131,14 @@
             span {
               width: 100%;
               padding: 0px 10px;
+            }
+            .tab-edit {
+              margin-left: 10px;
+              margin-top: 5px;
+              margin-bottom: 5px;
+              max-width: 120px;
+              height: 26px;
+              font-size: 12px;
             }
 
             &.active {
