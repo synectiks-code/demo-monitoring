@@ -14,10 +14,9 @@ export class CustomSideMenu extends PureComponent<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      activeMenuLink: '',
-      activeSubMenuLink: '',
       clickedMenuItem: {},
       activeMenuItem: null,
+      activeSubMenuItem: null,
       showSubMenu: false,
       subMenuState: 0,
       isSubMenuPinned: false,
@@ -38,22 +37,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
 
   handleLocationChange = () => {
     const pathName = location.pathname;
-    // let isActive = false;
-    let subMenuState = 0;
-    let showSubMenu = false;
-    let activeMenuItem = null;
-    let isSubMenuPinned = false;
-    if (pathName === '/') {
-      this.setState({
-        activeMenuLink: '/',
-      });
-      return {
-        subMenuState,
-        showSubMenu,
-        activeMenuItem,
-        isSubMenuPinned,
-      };
-    }
     let retData = this.findActiveItem(pathName, this.mainMenu);
     if (retData.isFound) {
       return retData;
@@ -81,39 +64,28 @@ export class CustomSideMenu extends PureComponent<any, any> {
     let showSubMenu = false;
     let activeMenuItem = null;
     let isSubMenuPinned = false;
+    let activeSubMenuItem = null;
     for (let i = 0; i < totalItem; i++) {
       const item = menuList[i];
-      if (
-        (pathName.indexOf(item.activeLink) !== -1 || (item.tempLink && pathName.indexOf(item.tempLink) !== -1)) &&
-        item.activeLink !== '/'
-      ) {
-        if (item.tempLink && pathName.indexOf(item.tempLink) !== -1) {
-          this.setState({
-            activeMenuLink: item.tempLink,
-          });
-        } else {
-          this.setState({
-            activeMenuLink: item.activeLink,
-          });
-        }
-        if (item.subMenu && item.subMenu.length > 0) {
-          for (let j = 0; j < item.subMenu.length; j++) {
-            const sMenu = item.subMenu[j];
-            if (pathName.indexOf(sMenu.activeSLink) !== -1) {
-              this.setState({
-                activeSubMenuLink: sMenu.activeSLink,
-              });
-              subMenuState = menuStates.SUBMENU_OPEN;
-              showSubMenu = true;
-              isSubMenuPinned = true;
-              break;
-            }
+      if (item.subMenu && item.subMenu.length > 0) {
+        for (let j = 0; j < item.subMenu.length; j++) {
+          const sMenu = item.subMenu[j];
+          if (pathName === sMenu.link) {
+            subMenuState = menuStates.SUBMENU_OPEN;
+            showSubMenu = true;
+            isSubMenuPinned = true;
+            activeSubMenuItem = sMenu;
+            activeMenuItem = item;
+            isFound = true;
+            break;
           }
         }
-        // isActive = true;
-        activeMenuItem = item;
-        isFound = true;
-        break;
+      } else {
+        if (pathName === item.link) {
+          activeMenuItem = item;
+          isFound = true;
+          break;
+        }
       }
     }
     return {
@@ -122,6 +94,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       activeMenuItem,
       isSubMenuPinned,
       isFound,
+      activeSubMenuItem,
     };
   };
 
@@ -134,6 +107,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
         showSubMenu: menuData.showSubMenu,
         activeMenuItem: menuData.activeMenuItem,
         isSubMenuPinned: menuData.isSubMenuPinned,
+        activeSubMenuItem: menuData.activeSubMenuItem,
       });
     });
 
@@ -164,6 +138,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
       showSubMenu: menuData.showSubMenu,
       activeMenuItem: menuData.activeMenuItem,
       isSubMenuPinned: menuData.isSubMenuPinned,
+      activeSubMenuItem: menuData.activeSubMenuItem,
     });
   }
 
@@ -172,7 +147,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
       link: '/',
       text: 'Overview',
       cssClass: 'overview',
-      activeLink: '/',
       isImplemented: true,
       childName: 'overview',
     },
@@ -180,43 +154,32 @@ export class CustomSideMenu extends PureComponent<any, any> {
       link: '/plugins/xformation-assetmanager-ui-plugin/page/environments',
       text: 'Assets',
       cssClass: 'assets',
-      activeLink: 'plugins/xformation-assetmanager-ui-plugin',
       childName: 'assets',
       isImplemented: true,
       subMenu: [
         {
           link: '/plugins/xformation-assetmanager-ui-plugin/page/environments',
           text: 'Environments',
-          activeSLink: '/plugins/xformation-assetmanager-ui-plugin/page/environments',
-          activeLink: 'plugins/xformation-assetmanager-ui-plugin',
           childName: 'assets',
         },
         {
           link: '/assets/discovered-assets',
           text: 'Discovered Assets',
-          activeSLink: '/assets/discovered-assets',
-          activeLink: 'assets',
           childName: 'assets',
         },
         {
           link: '/assets/monitored-assets',
           text: 'Monitored Assets',
-          activeSLink: '/assets/monitored-assets',
-          activeLink: 'assets',
           childName: 'assets',
         },
         {
           link: '/assets/org-unit',
           text: 'Org Unit',
-          activeSLink: '/assets/org-unit',
-          activeLink: 'assets',
           childName: 'assets',
         },
         {
           link: '/assets/custom-resources',
           text: 'Custom-Resources',
-          activeSLink: '/assets/custom-resources',
-          activeLink: 'assets',
           childName: 'custom-resources',
         },
       ],
@@ -225,31 +188,23 @@ export class CustomSideMenu extends PureComponent<any, any> {
       link: '/import-module-pack',
       text: 'App Catalogue',
       cssClass: 'catalogue',
-      activeLink: '/import-module-pack',
       childName: 'catalogue',
-      tempLink: 'plugins/xformation-perfmanager-ui-plugin/page/catalog',
       isImplemented: true,
       subMenu: [
         {
           link: '/plugins/xformation-perfmanager-ui-plugin/page/catalog',
           text: 'View And Search Catalogue ',
-          activeSLink: '/plugins/xformation-perfmanager-ui-plugin/page/catalog',
-          activeLink: '/plugins/xformation-perfmanager-ui-plugin',
           childName: 'app-catalogue',
           isImplemented: true,
         },
         {
           link: '/import-module-pack',
           text: 'Import Assets From Module Pack ',
-          activeSLink: '/import-module-pack',
-          activeLink: '/import-module-pack',
           childName: 'app-catalogue',
         },
         {
           link: '/create-module',
           text: 'Create Or Import Module Packs',
-          activeSLink: '/create-module',
-          activeLink: '/create-module',
           childName: 'create-module',
         },
       ],
@@ -258,48 +213,36 @@ export class CustomSideMenu extends PureComponent<any, any> {
       link: '/plugins/xformation-alertmanager-ui-plugin/page/monitoralerts',
       text: 'Events',
       cssClass: 'events',
-      activeLink: 'plugins/xformation-alertmanager-ui-plugin',
-      tempLink: 'alerting/list',
       isImplemented: true,
       childName: 'events',
       subMenu: [
         {
           link: '/plugins/xformation-alertmanager-ui-plugin/page/monitoralerts',
           text: 'Dashboard',
-          activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/monitoralerts',
-          activeLink: 'plugins/xformation-alertmanager-ui-plugin',
           isImplemented: true,
           childName: 'alert-manager-dashboard',
         },
         {
           link: '/plugins/xformation-alertmanager-ui-plugin/page/alertrulebuilder',
           text: 'New Alert Rule',
-          activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/alertrulebuilder',
-          activeLink: 'plugins/xformation-alertmanager-ui-plugin',
           isImplemented: true,
           childName: 'new-alert-rule',
         },
         {
           link: '/alerting/list',
           text: 'All Alert Rules',
-          activeSLink: 'alerting/list',
-          activeLink: 'alerting/list',
           isImplemented: true,
           childName: 'all-alert-rule',
         },
         {
           link: '/plugins/xformation-alertmanager-ui-plugin/page/managealertrule',
           text: 'Manage Alert Rule',
-          activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/managealertrule',
-          activeLink: 'plugins/xformation-alertmanager-ui-plugin',
           isImplemented: true,
           childName: 'new-alert-rule',
         },
         {
           link: '/plugins/xformation-alertmanager-ui-plugin/page/manageworkflow',
           text: 'Manage Workflows',
-          activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/manageworkflow',
-          activeLink: 'plugins/xformation-alertmanager-ui-plugin',
           childName: 'new-alert-rule',
         },
       ],
@@ -308,24 +251,18 @@ export class CustomSideMenu extends PureComponent<any, any> {
       link: '/analytics',
       text: 'Analytics',
       cssClass: 'metrics',
-      activeLink: '/analytics',
       childName: 'analytics',
-      tempLink: 'dashboards',
       isImplemented: true,
       subMenu: [
         {
           link: '/dashboards',
           text: 'Manage Dashboards',
-          activeSLink: '/dashboards',
-          activeLink: '/analytics',
           childName: 'manage-dashboards',
           isImplemented: true,
         },
         {
           link: '/analytics',
           text: 'Manage Views',
-          activeSLink: '/analytics',
-          activeLink: '/analytics',
           childName: 'analytics',
           isImplemented: true,
         },
@@ -335,236 +272,182 @@ export class CustomSideMenu extends PureComponent<any, any> {
 
   opsCentral: any = [
     {
-      link: 'plugins/xformation-perfmanager-ui-plugin/page/managedashboard',
+      link: '/plugins/xformation-perfmanager-ui-plugin/page/managedashboard',
       text: 'Performance & Availability',
       cssClass: 'availability',
-      activeLink: 'plugins/xformation-perfmanager-ui-plugin',
       isImplemented: true,
       childName: 'availability',
       subMenu: [
         {
-          link: 'plugins/xformation-perfmanager-ui-plugin/page/managedashboard',
+          link: '/plugins/xformation-perfmanager-ui-plugin/page/managedashboard',
           text: 'Dashboard',
-          activeSLink: 'plugins/xformation-perfmanager-ui-plugin/page/managedashboard',
-          activeLink: 'plugins/xformation-perfmanager-ui-plugin',
           isImplemented: true,
           childName: 'metrics-catalog',
         },
         {
-          link: 'plugins/xformation-perfmanager-ui-plugin/page/library',
+          link: '/plugins/xformation-perfmanager-ui-plugin/page/library',
           text: 'Library',
-          activeSLink: 'plugins/xformation-perfmanager-ui-plugin/page/library',
-          activeLink: 'plugins/xformation-perfmanager-ui-plugin',
           isImplemented: true,
           childName: 'metrics-library',
         },
         {
-          link: 'plugins/xformation-perfmanager-ui-plugin/page/collectionview',
+          link: '/plugins/xformation-perfmanager-ui-plugin/page/collectionview',
           text: 'Collection',
-          activeSLink: 'plugins/xformation-perfmanager-ui-plugin/page/collectionview',
-          activeLink: 'plugins/xformation-perfmanager-ui-plugin',
           isImplemented: true,
           childName: 'metrics-collection',
         },
         {
-          link: 'plugins/xformation-alertmanager-ui-plugin/page/managealertrule',
+          link: '/plugins/xformation-alertmanager-ui-plugin/page/managealertrule',
           text: 'Rule',
-          activeSLink: 'plugins/xformation-alertmanager-ui-plugin/page/managealertrule',
-          activeLink: 'plugins/xformation-perfmanager-ui-plugin',
           isImplemented: true,
           childName: 'metrics-rule',
         },
         {
-          link: 'plugins/xformation-perfmanager-ui-plugin/page/preferences',
+          link: '/plugins/xformation-perfmanager-ui-plugin/page/preferences',
           text: 'Preferences',
-          activeSLink: 'plugins/xformation-perfmanager-ui-plugin/page/preferences',
-          activeLink: 'plugins/xformation-perfmanager-ui-plugin',
           isImplemented: true,
           childName: 'metrics-preferences',
         },
         {
-          link: 'plugins/xformation-perfmanager-ui-plugin/page/discovery',
+          link: '/plugins/xformation-perfmanager-ui-plugin/page/discovery',
           text: 'Discovery',
-          activeSLink: 'plugins/xformation-perfmanager-ui-plugin/page/discovery',
-          activeLink: 'plugins/xformation-perfmanager-ui-plugin',
           isImplemented: true,
           childName: 'metrics-preferences',
         },
         {
-          link: 'plugins/xformation-perfmanager-ui-plugin/page/view',
+          link: '/plugins/xformation-perfmanager-ui-plugin/page/view',
           text: 'View',
-          activeSLink: 'plugins/xformation-perfmanager-ui-plugin/page/view',
-          activeLink: 'plugins/xformation-perfmanager-ui-plugin',
           isImplemented: true,
           childName: 'metrics-preferences',
         },
       ],
     },
     {
-      link: 'plugins/xformation-logmanager-ui-plugin/page/dashboard',
+      link: '/plugins/xformation-logmanager-ui-plugin/page/dashboard',
       text: 'Logs',
       cssClass: 'logs',
-      activeLink: 'plugins/xformation-logmanager-ui-plugin',
       isImplemented: true,
       childName: 'grafana-logs',
       subMenu: [
         {
-          link: 'plugins/xformation-logmanager-ui-plugin/page/overview',
+          link: '/plugins/xformation-logmanager-ui-plugin/page/overview',
           text: 'Overview',
-          activeSLink: 'plugins/xformation-logmanager-ui-plugin/page/overview',
-          activeLink: 'plugins/xformation-logmanager-ui-plugin',
           childName: 'grafana-logs',
         },
         {
-          link: 'plugins/xformation-logmanager-ui-plugin/page/dashboard',
+          link: '/plugins/xformation-logmanager-ui-plugin/page/dashboard',
           text: 'Dashboard',
-          activeSLink: 'plugins/xformation-logmanager-ui-plugin/page/dashboard',
-          activeLink: 'plugins/xformation-logmanager-ui-plugin',
           isImplemented: true,
           childName: 'grafana-logs',
         },
         {
-          link: 'plugins/xformation-logmanager-ui-plugin/page/alerts',
+          link: '/plugins/xformation-logmanager-ui-plugin/page/alerts',
           text: 'Alerts',
-          activeSLink: 'plugins/xformation-logmanager-ui-plugin/page/alerts',
-          activeLink: 'plugins/xformation-logmanager-ui-plugin',
           childName: 'grafana-logs',
         },
         {
-          link: 'plugins/xformation-logmanager-ui-plugin/page/preference',
+          link: '/plugins/xformation-logmanager-ui-plugin/page/preference',
           text: 'Preference',
-          activeSLink: 'plugins/xformation-logmanager-ui-plugin/page/preference',
-          activeLink: 'plugins/xformation-logmanager-ui-plugin',
           isImplemented: true,
           childName: 'grafana-logs',
         },
       ],
     },
     {
-      link: 'plugins/xformation-compliancemanager-ui-plugin/page/dashboard',
+      link: '/plugins/xformation-compliancemanager-ui-plugin/page/dashboard',
       text: 'Compliance',
       cssClass: 'compliance',
-      activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
       isImplemented: true,
       childName: 'compliance',
       subMenu: [
         {
-          link: 'plugins/xformation-compliancemanager-ui-plugin/page/dashboard',
+          link: '/plugins/xformation-compliancemanager-ui-plugin/page/dashboard',
           text: 'Overview',
-          activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/dashboard',
-          activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
           isImplemented: true,
           childName: 'compliance-dashboard',
         },
         {
-          link: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancerulesets',
+          link: '/plugins/xformation-compliancemanager-ui-plugin/page/compliancerulesets',
           text: 'Rulesets',
-          activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancerulesets',
-          activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
           isImplemented: true,
           childName: 'compliance-rulesets',
         },
         {
-          link: 'plugins/xformation-compliancemanager-ui-plugin/page/gslbuilder',
+          link: '/plugins/xformation-compliancemanager-ui-plugin/page/gslbuilder',
           text: 'Rule Builder',
-          activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/gslbuilder',
-          activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
           isImplemented: true,
           childName: 'compliance-builder',
         },
         {
-          link: 'plugins/xformation-compliancemanager-ui-plugin/page/audits',
+          link: '/plugins/xformation-compliancemanager-ui-plugin/page/audits',
           text: 'Audits',
-          activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/audits',
-          activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
           childName: 'compliance-builder',
         },
         {
-          link: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancepolicy',
+          link: '/plugins/xformation-compliancemanager-ui-plugin/page/compliancepolicy',
           text: 'Policies',
-          activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/compliancepolicy',
-          activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
           isImplemented: true,
           childName: 'compliance-policies',
         },
         {
-          link: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceremediation',
+          link: '/plugins/xformation-compliancemanager-ui-plugin/page/complianceremediation',
           text: 'Remediation',
-          activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceremediation',
-          activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
           isImplemented: true,
           childName: 'compliance-remediation',
         },
         {
-          link: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceassessmenthistory',
+          link: '/plugins/xformation-compliancemanager-ui-plugin/page/complianceassessmenthistory',
           text: 'Assessment History',
-          activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceassessmenthistory',
-          activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
           isImplemented: true,
           childName: 'compliance-assessment-history',
         },
         {
-          link: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceexclusions',
+          link: '/plugins/xformation-compliancemanager-ui-plugin/page/complianceexclusions',
           text: 'Exclusions',
-          activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/complianceexclusions',
-          activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
           isImplemented: true,
           childName: 'compliance-exclusions',
         },
         {
-          link: 'plugins/xformation-compliancemanager-ui-plugin/page/preference',
+          link: '/plugins/xformation-compliancemanager-ui-plugin/page/preference',
           text: 'Preference',
-          activeSLink: 'plugins/xformation-compliancemanager-ui-plugin/page/preference',
-          activeLink: 'plugins/xformation-compliancemanager-ui-plugin',
           childName: 'compliance-preference',
         },
       ],
     },
     {
-      link: 'plugins/xformation-servicedesk-ui-plugin/page/dashboard',
+      link: '/plugins/xformation-servicedesk-ui-plugin/page/dashboard',
       text: 'Service desk',
       cssClass: 'tickets',
-      activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
       isImplemented: true,
       childName: 'tickets',
       subMenu: [
         {
-          link: 'plugins/xformation-servicedesk-ui-plugin/page/dashboard',
+          link: '/plugins/xformation-servicedesk-ui-plugin/page/dashboard',
           text: 'Dashboard',
-          activeSLink: 'plugins/xformation-servicedesk-ui-plugin/page/dashboard',
-          activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
           isImplemented: true,
           childName: 'tickets-dashboard',
         },
         {
-          link: 'plugins/xformation-servicedesk-ui-plugin/page/allcontacts',
+          link: '/plugins/xformation-servicedesk-ui-plugin/page/allcontacts',
           text: 'Contacts',
-          activeSLink: 'plugins/xformation-servicedesk-ui-plugin/page/allcontacts',
-          activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
           isImplemented: true,
           childName: 'tickets-contacts',
         },
         {
-          link: 'plugins/xformation-servicedesk-ui-plugin/page/allcompanies',
+          link: '/plugins/xformation-servicedesk-ui-plugin/page/allcompanies',
           text: 'Companies',
-          activeSLink: 'plugins/xformation-servicedesk-ui-plugin/page/allcompanies',
-          activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
           isImplemented: true,
           childName: 'tickets-companies',
         },
         {
-          link: 'plugins/xformation-servicedesk-ui-plugin/page/tickets',
+          link: '/plugins/xformation-servicedesk-ui-plugin/page/tickets',
           text: 'Reports',
-          activeSLink: 'plugins/xformation-servicedesk-ui-plugin/page/tickets',
-          activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
           isImplemented: true,
           childName: 'tickets-reports',
         },
         {
-          link: 'plugins/xformation-servicedesk-ui-plugin/page/opentickets',
+          link: '/plugins/xformation-servicedesk-ui-plugin/page/opentickets',
           text: 'Preferences',
-          activeSLink: 'plugins/xformation-servicedesk-ui-plugin/page/opentickets',
-          activeLink: 'plugins/xformation-servicedesk-ui-plugin/',
           isImplemented: true,
           childName: 'tickets-preferences',
         },
@@ -574,7 +457,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
       link: '/automation',
       text: 'Automation',
       cssClass: 'automation',
-      activeLink: '/automation',
       childName: 'automation',
     },
   ];
@@ -584,28 +466,24 @@ export class CustomSideMenu extends PureComponent<any, any> {
       link: '/generators',
       text: 'Generators',
       cssClass: 'generator',
-      activeLink: '/generators',
       childName: 'generators',
     },
     {
       link: '/delivery',
       text: 'Delivery',
       cssClass: 'delivery',
-      activeLink: '/delivery',
       childName: 'delivery',
     },
     {
       link: '/quality',
       text: 'Quality',
       cssClass: 'quality',
-      activeLink: '/quality',
       childName: 'quality',
     },
     {
       link: '/test',
       text: 'Test',
       cssClass: 'test',
-      activeLink: '/test',
       childName: 'test',
     },
   ];
@@ -615,49 +493,42 @@ export class CustomSideMenu extends PureComponent<any, any> {
       link: '/change-manager',
       text: 'Change Manager',
       cssClass: 'generator',
-      activeLink: '/change-manager',
       childName: 'change-manager',
     },
     {
       link: '/explorer',
       text: 'Explorer',
       cssClass: 'quality',
-      activeLink: '/explorer',
       childName: 'explorer',
     },
     {
       link: '/rca',
       text: 'RCA',
       cssClass: 'delivery',
-      activeLink: '/rca',
       childName: 'rca',
     },
     {
       link: '/search-act',
       text: 'Search & Act',
       cssClass: 'generator',
-      activeLink: '/search-act',
       childName: 'search-act',
     },
     {
       link: '/script-manager',
       text: 'Script Manager',
       cssClass: 'test',
-      activeLink: '/script-manager',
       childName: 'script-manager',
     },
     {
       link: '/optimizer',
       text: 'Optimizer',
       cssClass: 'delivery',
-      activeLink: '/optimizer',
       childName: 'optimizer',
     },
     {
       link: '/migration-manager',
       text: 'Migration Manager',
       cssClass: 'generator',
-      activeLink: '/migration-manager',
       childName: 'migration-manager',
     },
   ];
@@ -667,23 +538,18 @@ export class CustomSideMenu extends PureComponent<any, any> {
       link: '/preference',
       text: 'Preference',
       cssClass: 'preference',
-      activeLink: '/preference',
       childName: 'preference',
     },
     // {
     //   link: '/plugins/xformation-rbac-ui-plugin/page/home',
     //   text: 'RBAC Settings',
     //   cssClass: 'diagnostic-settings',
-    //   activeSLink: '/plugins/xformation-rbac-ui-plugin/page/home',
-    //   activeLink: '/plugins/xformation-rbac-ui-plugin',
     //   childName: 'rbac-settings',
     // },
     {
       link: '/resource',
       text: 'Resource',
       cssClass: 'resources',
-      activeSLink: '/resource',
-      activeLink: '/plugins/xformation-rbac-ui-plugin',
       childName: 'rbac-settings',
     },
   ];
@@ -722,8 +588,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
       let isSubMenuPinned = false;
       const showSubMenu = menuItem && menuItem.subMenu && menuItem.subMenu.length > 0;
       this.setState({
-        activeMenuLink: menuItem.activeLink,
-        activeSubMenuLink: menuItem.activeLink,
         activeMenuItem: menuItem,
         showSubMenu: showSubMenu,
       });
@@ -751,8 +615,7 @@ export class CustomSideMenu extends PureComponent<any, any> {
   onClickSubLink = (e: any, sMenuItem: any) => {
     if (sMenuItem.isImplemented) {
       this.setState({
-        activeMenuLink: sMenuItem.activeLink,
-        activeSubMenuLink: sMenuItem.activeSLink,
+        activeSubMenuItem: sMenuItem,
       });
       getLocationSrv().update({ path: sMenuItem.link });
     } else {
@@ -768,10 +631,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
 
   onClickContinue = () => {
     const { clickedMenuItem } = this.state;
-    this.setState({
-      activeMenuLink: clickedMenuItem.activeLink,
-      activeSubMenuLink: clickedMenuItem.activeSLink ? clickedMenuItem.activeSLink : clickedMenuItem.activeLink,
-    });
     getLocationSrv().update({ path: clickedMenuItem.link });
     this.setState({
       clickedMenuItem: {},
@@ -782,10 +641,10 @@ export class CustomSideMenu extends PureComponent<any, any> {
 
   createOpenMenu = (menuItems: any) => {
     const retItem: any = [];
-    const { activeMenuLink } = this.state;
+    const { activeMenuItem } = this.state;
     for (let i = 0; i < menuItems.length; i++) {
       const menuItem = menuItems[i];
-      const isActive = activeMenuLink === menuItem.activeLink || activeMenuLink === menuItem.tempLink;
+      const isActive = activeMenuItem.link === menuItem.link;
       retItem.push(
         <Rbac parentName="grafana-ui" childName={menuItem.childName || ''}>
           <li className="item">
@@ -806,10 +665,13 @@ export class CustomSideMenu extends PureComponent<any, any> {
 
   createCloseMenu = (menuItems: any) => {
     const retItem: any = [];
-    const { activeMenuLink } = this.state;
+    const { activeMenuItem } = this.state;
     for (let i = 0; i < menuItems.length; i++) {
       const menuItem = menuItems[i];
-      const isActive = activeMenuLink === menuItem.activeLink || activeMenuLink === menuItem.tempLink;
+      let isActive = false;
+      if (activeMenuItem) {
+        isActive = activeMenuItem.link === menuItem.link;
+      }
       retItem.push(
         <Rbac parentName="grafana-ui" childName={menuItem.childName || ''}>
           <li className="item" title={menuItem.text}>
@@ -829,15 +691,19 @@ export class CustomSideMenu extends PureComponent<any, any> {
   };
 
   createOpenSubMenu = () => {
-    const { activeMenuItem, activeSubMenuLink } = this.state;
+    const { activeMenuItem, activeSubMenuItem } = this.state;
     const retData = [];
     if (activeMenuItem && activeMenuItem.subMenu && activeMenuItem.subMenu.length > 0) {
       for (let j = 0; j < activeMenuItem.subMenu.length; j++) {
+        let isActive = false;
+        if (activeSubMenuItem) {
+          isActive = activeSubMenuItem.link === activeMenuItem.subMenu[j].link;
+        }
         retData.push(
           <Rbac parentName="grafana-ui" childName={activeMenuItem.subMenu[j].childName || ''}>
             <li>
               <a
-                className={`menu-item ${activeSubMenuLink === activeMenuItem.subMenu[j].activeSLink ? 'active' : ''}`}
+                className={`menu-item ${isActive ? 'active' : ''}`}
                 href={activeMenuItem.subMenu[j].link}
                 onClick={(e: any) => this.onClickSubLink(e, activeMenuItem.subMenu[j])}
               >
@@ -852,11 +718,11 @@ export class CustomSideMenu extends PureComponent<any, any> {
   };
 
   createCloseSubMenu = () => {
-    const { activeMenuItem, activeSubMenuLink } = this.state;
+    const { activeMenuItem, activeSubMenuItem } = this.state;
     const retData = [];
     if (activeMenuItem && activeMenuItem.subMenu && activeMenuItem.subMenu.length > 0) {
       for (let j = 0; j < activeMenuItem.subMenu.length; j++) {
-        if (activeSubMenuLink === activeMenuItem.subMenu[j].activeSLink) {
+        if (activeSubMenuItem && activeSubMenuItem.link === activeMenuItem.subMenu[j].link) {
           retData.push(
             <Rbac parentName="grafana-ui" childName={activeMenuItem.subMenu[j].childName || ''}>
               <li>
