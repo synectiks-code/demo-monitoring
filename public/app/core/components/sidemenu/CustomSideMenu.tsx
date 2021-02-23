@@ -198,6 +198,12 @@ export class CustomSideMenu extends PureComponent<any, any> {
           isImplemented: true,
         },
         {
+          link: '/plugins/xformation-perfmanager-ui-plugin/page/library',
+          text: 'Library',
+          isImplemented: true,
+          childName: 'metrics-library',
+        },
+        {
           link: '/import-module-pack',
           text: 'Import Assets From Module Pack ',
           childName: 'app-catalogue',
@@ -283,12 +289,6 @@ export class CustomSideMenu extends PureComponent<any, any> {
           text: 'Dashboard',
           isImplemented: true,
           childName: 'metrics-catalog',
-        },
-        {
-          link: '/plugins/xformation-perfmanager-ui-plugin/page/library',
-          text: 'Library',
-          isImplemented: true,
-          childName: 'metrics-library',
         },
         {
           link: '/plugins/xformation-perfmanager-ui-plugin/page/collectionview',
