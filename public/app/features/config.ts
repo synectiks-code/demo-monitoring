@@ -8,4 +8,6 @@ export const config = {
   ADD_ANALYTICS_VIEW: catalogSrvUrl + 'addView',
   GET_ANALYTICS_VIEW: catalogSrvUrl + 'getView',
   DELETE_ANALYTICS_VIEW: catalogSrvUrl + 'deleteView',
+  basePath: '',
+  PARENT_NAME: '',
 };

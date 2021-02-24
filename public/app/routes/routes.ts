@@ -597,6 +597,18 @@ export function setupAngularRoutes($routeProvider: route.IRouteProvider, $locati
           ),
       },
     })
+    .when('/managedashboards', {
+      template: '<react-container />',
+      //@ts-ignore
+      pageClass: 'page-dashboard',
+      reloadOnSearch: false,
+      resolve: {
+        component: () =>
+          SafeDynamicImport(
+            import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/custom-manage-dashboards')
+          ),
+      },
+    })
     .otherwise({
       template: '<react-container />',
       resolve: {

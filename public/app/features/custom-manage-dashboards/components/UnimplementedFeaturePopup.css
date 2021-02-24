@@ -1,0 +1,162 @@
+.unimplemented-modal-container {
+  max-width: 992px !important;
+  -webkit-box-shadow: 0px 0px 16px #3b48593d;
+  box-shadow: 0px 0px 16px #3b48593d;
+  border-radius: 10px;
+  background: white;
+}
+
+.unimplemented-modal-container .modal-content {
+  padding: 30px;
+}
+
+.unimplemented-modal-container .modal-content .modal-header {
+  background: white;
+  box-shadow: none;
+  border-bottom: 1px dashed #a2c0d4;
+  margin-bottom: 20px;
+  padding: 0 10px 10px;
+}
+
+.unimplemented-modal-container .modal-content .modal-header .modal-title {
+  color: #3b4859;
+  float: left;
+  margin: 0px;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 0;
+  line-height: 28px;
+}
+
+.unimplemented-modal-container .modal-content .modal-header button {
+  float: right;
+  font-size: 28px;
+  top: 0;
+  position: relative;
+  color: #ffffff;
+  opacity: 1;
+  width: 28px;
+  height: 28px;
+  background-color: red;
+  border-radius: 50%;
+  border: none;
+  line-height: 28px;
+  text-align: center;
+}
+
+.unimplemented-modal-container .modal-content .modal-body {
+  padding: 0px 10px;
+  color: #3b4859;
+}
+
+.unimplemented-modal-container .modal-content .modal-body p {
+  font-style: italic;
+}
+
+.unimplemented-modal-container .modal-content .modal-body .form-group {
+  padding-bottom: 20px;
+}
+
+.unimplemented-modal-container .modal-content .modal-body .form-group label {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 36px;
+  color: #3b4859;
+  padding-right: 20px;
+}
+
+.unimplemented-modal-container .modal-content .modal-body .form-group .form-control {
+  background-color: #f0f3f7 !important;
+  border: none !important;
+  font-size: 13px;
+  height: 36px;
+}
+
+.unimplemented-modal-container .modal-content .modal-body .form-group .input-group-text {
+  background-color: #ffffff;
+  border: 1px solid #8392a7;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 34px;
+  color: #3b4859;
+  padding: 0 10px;
+  width: 100%;
+  text-align: left;
+}
+
+.unimplemented-modal-container .modal-content .modal-body .form-group .checkbox {
+  display: inline-block;
+  margin-right: 5px;
+  vertical-align: middle;
+  cursor: pointer;
+  margin-top: -4px;
+}
+
+.unimplemented-modal-container .modal-content .modal-body .form-group textarea.form-control {
+  height: 120px;
+}
+
+.unimplemented-modal-container .modal-content .modal-body .form-group .select-rule {
+  margin-top: 10px;
+  margin-left: 30px;
+}
+
+.unimplemented-modal-container .modal-content .modal-body .form-group .d-inline-block {
+  display: inline-block;
+}
+
+.unimplemented-modal-container .modal-content .modal-body .form-group .width-auto {
+  width: auto;
+}
+
+.unimplemented-modal-container .modal-content .modal-body .form-group .text {
+  padding: 0 3px;
+  line-height: 12px;
+  vertical-align: top;
+}
+
+.unimplemented-modal-container .modal-content .modal-footer {
+  padding: 20px 15px 0px;
+  background: none;
+  border: none;
+  border-top: 1px dashed #a2c0d4;
+}
+
+.unimplemented-modal-container .modal-content .modal-footer .blue-button {
+  border-radius: 7px !important;
+}
+
+.unimplemented-modal-container .modal-content .modal-footer .gray-button {
+  border-radius: 7px !important;
+}
+
+.unimplemented-modal-container .modal-content .modal-footer .white-button {
+  border-radius: 7px !important;
+}
+
+.alert-gray-button {
+  background: #dde4e9;
+  color: #8392a7;
+  border: none;
+  padding: 7px 20px;
+  border-radius: 4px;
+  margin-right: 10px;
+  display: inline-block;
+  min-width: 182px;
+  text-align: center;
+}
+
+.alert-gray-button:hover,
+.alert-gray-button:focus {
+  background: #dbe0e4 !important;
+  color: #8392a7 !important;
+}
+
+.d-block {
+  display: block;
+}
+
+.text-center {
+  text-align: center;
+}
