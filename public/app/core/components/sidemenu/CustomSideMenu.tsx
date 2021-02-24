@@ -254,14 +254,14 @@ export class CustomSideMenu extends PureComponent<any, any> {
       ],
     },
     {
-      link: '/analytics',
+      link: '/managedashboards',
       text: 'Analytics',
       cssClass: 'metrics',
       childName: 'analytics',
       isImplemented: true,
       subMenu: [
         {
-          link: '/dashboards',
+          link: '/managedashboards',
           text: 'Manage Dashboards',
           childName: 'manage-dashboards',
           isImplemented: true,

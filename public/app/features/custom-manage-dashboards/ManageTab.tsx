@@ -6,7 +6,10 @@ import { UnimplementedFeaturePopup } from './components/UnimplementedFeaturePopu
 import { NewDashboard } from './NewDashboard';
 import { getTagColorsFromName } from '@grafana/ui';
 import { backendSrv } from 'app/core/services/backend_srv';
-import { getLocationSrv } from '@grafana/runtime';
+import { SortPicker } from 'app/core/components/Select/SortPicker';
+import { TagFilter } from 'app/core/components/TagFilter/TagFilter';
+import { Checkbox } from '@grafana/ui';
+import { FilterInput } from 'app/core/components/FilterInput/FilterInput';
 
 export class ManageTab extends React.Component<any, any> {
   unimplementedFeatureModalRef: any;
@@ -14,43 +17,35 @@ export class ManageTab extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      newDashboard: false,
-      tags: [
-        { term: 'tag', id: 1 },
-        { term: 'tag', id: 2 },
-      ],
       folderArray: [],
+      showNewDashboardPopup: false,
+      isStarred: false,
+      selectedTags: [],
+      sortValue: 'alpha-asc',
+      searchKey: '',
     };
     this.unimplementedFeatureModalRef = React.createRef();
   }
+
   componentDidMount() {
-    let viewData: any = localStorage.getItem('viewData');
-    if (viewData) {
-      viewData = JSON.parse(viewData);
-      this.setState({
-        viewName: viewData.viewName,
-        description: viewData.description,
-      });
-    } else {
-      getLocationSrv().update({ path: '/analytics' });
-      return;
-    }
     const sendData = {
       tags: [],
     };
-    this.getSearchData(sendData, true);
+    this.getSearchData(sendData);
   }
+
   onClickUnImplementedFeature = (link: any) => {
     this.unimplementedFeatureModalRef.current.setLink(link);
     this.unimplementedFeatureModalRef.current.toggle();
   };
-  openNewDashboard = () => {
-    let page = !this.state.newDashboard;
+
+  toggleNewDashPopup = () => {
     this.setState({
-      newDashboard: page,
+      showNewDashboardPopup: !this.state.showNewDashboardPopup,
     });
   };
-  manipulateData(result: any, isFirstTime: any) {
+
+  manipulateData(result: any) {
     const retData: any = {};
     let tagList = [];
     for (let i = 0; i < result.length; i++) {
@@ -64,7 +59,7 @@ export class ManageTab extends React.Component<any, any> {
         retData[dash.folderId].openSubFolder = false;
         retData[dash.folderId].subData.push(dash);
       }
-      if (dash.tags.length > 0 && isFirstTime) {
+      if (dash.tags.length > 0) {
         for (let i = 0; i < dash.tags.length; i++) {
           let row = dash.tags[i];
           tagList.push({
@@ -79,32 +74,24 @@ export class ManageTab extends React.Component<any, any> {
     for (let i = 0; i < keys.length; i++) {
       folders.push(retData[keys[i]]);
     }
-    isFirstTime && this.tagsPromiseResolve && this.tagsPromiseResolve(tagList);
+    this.tagsPromiseResolve && this.tagsPromiseResolve(tagList);
     return folders;
   }
-  getSearchData = (data: any, isFirstTime: any) => {
+
+  getSearchData = (data: any) => {
     backendSrv.search(data).then((result: any) => {
-      const retData = this.manipulateData(result, isFirstTime);
-      const { folderArray } = this.state;
-      if (folderArray) {
-        folderArray.dashboardList = JSON.parse(JSON.stringify(retData));
-      }
-      if (isFirstTime) {
-        this.setState({
-          folderArray: JSON.parse(JSON.stringify(retData)),
-        });
-      }
+      const retData = this.manipulateData(result);
       this.setState({
-        folderArray,
+        folderArray: JSON.parse(JSON.stringify(retData)),
       });
     });
   };
+
   onClickChildCheckbox = (parentIndex: any, childIndex: any) => {
     let countCheckedCheckbox = 0;
     const { folderArray } = this.state;
     if (folderArray) {
-      const dashboardList = folderArray.dashboardList;
-      const parentCheckbox = dashboardList[parentIndex];
+      const parentCheckbox = folderArray[parentIndex];
       parentCheckbox.subData[childIndex].checkValue = !parentCheckbox.subData[childIndex].checkValue;
       for (let j = 0; j < parentCheckbox.subData.length; j++) {
         if (parentCheckbox.subData[j].checkValue === true) {
@@ -114,46 +101,44 @@ export class ManageTab extends React.Component<any, any> {
         }
       }
       parentCheckbox.checkValueStatus = countCheckedCheckbox === parentCheckbox.subData.length;
-      //this.checkForEnabled(tabs);
       this.setState({
         folderArray,
       });
     }
   };
+
   onChangeParentCheckbox = (e: any, index: any) => {
     const { folderArray } = this.state;
     if (folderArray) {
-      const dashboardList = folderArray.dashboardList;
-      const parentCheckbox = dashboardList[index];
+      const parentCheckbox = folderArray[index];
       const checked = e.target.checked;
       for (let j = 0; j < parentCheckbox.subData.length; j++) {
         parentCheckbox.subData[j].checkValue = checked;
         parentCheckbox.checkValueStatus = checked;
       }
-      //this.checkForEnabled(tabs);
       this.setState({
         folderArray,
       });
     }
   };
+
   onClickOpenSubFolder = (index: any) => {
     const { folderArray } = this.state;
     if (folderArray) {
-      const dashboardList = folderArray.dashboardList;
-      dashboardList[index].openSubFolder = !dashboardList[index].openSubFolder;
+      folderArray[index].openSubFolder = !folderArray[index].openSubFolder;
       this.setState({
         folderArray,
       });
     }
   };
+
   renderDashboardTree = () => {
     const retData = [];
     const { folderArray } = this.state;
     if (folderArray) {
-      const dashboardList = folderArray;
-      const length = dashboardList.length;
+      const length = folderArray.length;
       for (let i = 0; i < length; i++) {
-        const folder = dashboardList[i];
+        const folder = folderArray[i];
         const subFolders = folder.subData;
         const subFolderJSX = [];
         for (let j = 0; j < subFolders.length; j++) {
@@ -215,15 +200,78 @@ export class ManageTab extends React.Component<any, any> {
     }
     return retData;
   };
+
+  onQueryChange = (search: any) => {
+    const { isStarred, selectedTags, sortValue } = this.state;
+    this.setState({
+      searchKey: search,
+    });
+    const sendData = {
+      tag: selectedTags,
+      sort: sortValue,
+      starred: isStarred,
+      query: search,
+    };
+    this.getSearchData(sendData);
+  };
+
+  onTagFilterChange = (tags: any) => {
+    const { searchKey, isStarred, sortValue } = this.state;
+    this.setState({
+      selectedTags: tags,
+    });
+    const sendData = {
+      tag: tags,
+      sort: sortValue,
+      starred: isStarred,
+      query: searchKey,
+    };
+    this.getSearchData(sendData);
+  };
+
+  onSortChange = (sortvalue: any) => {
+    const { searchKey, isStarred, selectedTags } = this.state;
+    this.setState({
+      sortValue: sortvalue.value,
+    });
+    const sendData = {
+      tag: selectedTags,
+      sort: sortvalue.value,
+      starred: isStarred,
+      query: searchKey,
+    };
+    this.getSearchData(sendData);
+  };
+
+  onStarredFilterChange = (e: any) => {
+    const { searchKey, selectedTags, sortValue } = this.state;
+    this.setState({
+      isStarred: e.target.checked,
+    });
+    const sendData = {
+      tag: selectedTags,
+      sort: sortValue,
+      starred: e.target.checked,
+      query: searchKey,
+    };
+    this.getSearchData(sendData);
+  };
+
+  getTagOptions = () => {
+    return new Promise<any>((resolve, reject) => {
+      this.tagsPromiseResolve = resolve;
+    });
+  };
+
   render() {
-    const { newDashboard } = this.state;
+    const { showNewDashboardPopup, isStarred, searchKey, selectedTags, sortValue } = this.state;
     return (
       <div>
         <div className="manage-dashboard-search">
           <div className="row">
             <div className="col-lg-12 col-md-12 col-sm-12">
               <div className="search-buttons float-right">
-                <a className="dashboard-blue-button" onClick={this.openNewDashboard}>
+                <a className="dashboard-blue-button" onClick={this.toggleNewDashPopup}>
                   New Dashboard
                 </a>
                 <a className="dashboard-blue-button m-r-0" onClick={() => this.onClickUnImplementedFeature('')}>
@@ -233,15 +281,43 @@ export class ManageTab extends React.Component<any, any> {
             </div>
           </div>
         </div>
-        {newDashboard === false && (
-          <div className="manage-dashboard-fliter-sort">
-            {/* <div className="manage-dashboard-general">{this.renderDashboardTree()}</div> */}
-          </div>
+        {!showNewDashboardPopup && (
+          <>
+            <div className="manage-dashboard-fliter-sort">
+              <div className="row" style={{ alignItems: 'center' }}>
+                <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                  <div className="form-group search-control-group">
+                    <FilterInput
+                      labelClassName="gf-form--has-input-icon"
+                      inputClassName="gf-form-input"
+                      value={searchKey}
+                      onChange={this.onQueryChange}
+                      placeholder={'Search dashboards by name'}
+                    />
+                  </div>
+                </div>
+                <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12 tag-filter-container">
+                  <TagFilter
+                    isClearable
+                    tags={selectedTags}
+                    tagOptions={this.getTagOptions}
+                    onChange={this.onTagFilterChange}
+                  />
+                </div>
+                <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                  <Checkbox label="Filter by starred" onChange={this.onStarredFilterChange} value={isStarred} />
+                </div>
+                <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12 sort-container">
+                  <SortPicker onChange={this.onSortChange} value={sortValue} />
+                </div>
+              </div>
+            </div>
+            <div className="manage-dashboard-general">{this.renderDashboardTree()}</div>
+          </>
         )}
-        {newDashboard === false && <div className="manage-dashboard-general">{this.renderDashboardTree()}</div>}
-        {newDashboard === true && (
+        {showNewDashboardPopup && (
           <div className="manage-newdashboard-general">
-            <NewDashboard closenewDashboard={this.openNewDashboard} />
+            <NewDashboard closenewDashboard={this.toggleNewDashPopup} />
           </div>
         )}
         <UnimplementedFeaturePopup ref={this.unimplementedFeatureModalRef} />
