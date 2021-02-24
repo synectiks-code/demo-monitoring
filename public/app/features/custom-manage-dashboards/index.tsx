@@ -68,7 +68,7 @@ class ManageDashboards extends React.Component<any, any> {
               })}
             </div>
           </div>
-          <div className="perfmanager-page-container">
+          <div className="custom-manage-dashboards-page-container">
             <div className="common-container border-bottom-0">
               <div className="manage-dashboard-heading">
                 <div className="heading-icon">
