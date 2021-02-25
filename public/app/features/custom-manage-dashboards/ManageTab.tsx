@@ -3,7 +3,7 @@ import { Collapse } from 'reactstrap';
 //import { config } from './../config';
 //import { RestService } from './_service/RestService';
 import { UnimplementedFeaturePopup } from './components/UnimplementedFeaturePopup';
-import { NewDashboard } from './NewDashboard';
+import NewDashboard from './NewDashboard';
 import { getTagColorsFromName } from '@grafana/ui';
 import { backendSrv } from 'app/core/services/backend_srv';
 import { SortPicker } from 'app/core/components/Select/SortPicker';
@@ -317,7 +317,7 @@ export class ManageTab extends React.Component<any, any> {
         )}
         {showNewDashboardPopup && (
           <div className="manage-newdashboard-general">
-            <NewDashboard closenewDashboard={this.toggleNewDashPopup} />
+            <NewDashboard closeNewDashboard={this.toggleNewDashPopup} />
           </div>
         )}
         <UnimplementedFeaturePopup ref={this.unimplementedFeatureModalRef} />
