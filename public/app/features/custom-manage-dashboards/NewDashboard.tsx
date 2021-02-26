@@ -38,7 +38,7 @@ class NewDashboard extends React.Component<any, any> {
                 </div>
               </div>
               <div className="col-lg-6 col-md-6 col-sm-12 own-dashboard">
-                <a href={`${config.basePath}/plugins/xformation-perfmanager-ui-plugin/page/newcatalog`}>
+                <a href={`${config.basePath}/managedashboards/importdashboard`}>
                   <span>
                     <img src="/public/img/import-dashboard-image.png" alt="Import Dashboard from Catalog" />
                   </span>

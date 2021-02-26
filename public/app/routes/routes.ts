@@ -561,8 +561,7 @@ export function setupAngularRoutes($routeProvider: route.IRouteProvider, $locati
       pageClass: 'page-dashboard',
       reloadOnSearch: false,
       resolve: {
-        component: () =>
-          SafeDynamicImport(import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/analytics')),
+        component: () => SafeDynamicImport(import(/* webpackChunkName: "AnalyticsPage"*/ 'app/features/analytics')),
       },
     })
     .when('/analytics/:id', {
@@ -572,7 +571,7 @@ export function setupAngularRoutes($routeProvider: route.IRouteProvider, $locati
       reloadOnSearch: false,
       resolve: {
         component: () =>
-          SafeDynamicImport(import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/analytics/ManageView')),
+          SafeDynamicImport(import(/* webpackChunkName: "ManageViewPage"*/ 'app/features/analytics/ManageView')),
       },
     })
     .when('/analytics/new/dashboard', {
@@ -582,7 +581,7 @@ export function setupAngularRoutes($routeProvider: route.IRouteProvider, $locati
       reloadOnSearch: false,
       resolve: {
         component: () =>
-          SafeDynamicImport(import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/analytics/AddNewView')),
+          SafeDynamicImport(import(/* webpackChunkName: "AddNewViewPage"*/ 'app/features/analytics/AddNewView')),
       },
     })
     .when('/analytics/edit/:id', {
@@ -593,7 +592,7 @@ export function setupAngularRoutes($routeProvider: route.IRouteProvider, $locati
       resolve: {
         component: () =>
           SafeDynamicImport(
-            import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/analytics/EditManageDashboard')
+            import(/* webpackChunkName: "EditManageDashboardPage"*/ 'app/features/analytics/EditManageDashboard')
           ),
       },
     })
@@ -605,8 +604,17 @@ export function setupAngularRoutes($routeProvider: route.IRouteProvider, $locati
       resolve: {
         component: () =>
           SafeDynamicImport(
-            import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/custom-manage-dashboards')
+            import(/* webpackChunkName: "CustomManageDashboardsPage"*/ 'app/features/custom-manage-dashboards')
           ),
+      },
+    })
+    .when('/managedashboards/importdashboard', {
+      template: '<react-container />',
+      //@ts-ignore
+      pageClass: 'page-dashboard',
+      reloadOnSearch: false,
+      resolve: {
+        component: () => SafeDynamicImport(import('app/features/custom-manage-dashboards/import-dashboard')),
       },
     })
     .otherwise({
