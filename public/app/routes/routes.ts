@@ -617,6 +617,16 @@ export function setupAngularRoutes($routeProvider: route.IRouteProvider, $locati
         component: () => SafeDynamicImport(import('app/features/custom-manage-dashboards/import-dashboard')),
       },
     })
+    .when('/taskmanager', {
+      template: '<react-container />',
+      //@ts-ignore
+      pageClass: 'page-dashboard',
+      reloadOnSearch: false,
+      resolve: {
+        component: () =>
+          SafeDynamicImport(import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/task-manager')),
+      },
+    })
     .otherwise({
       template: '<react-container />',
       resolve: {
