@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Button } from 'reactstrap';
 import { config } from '../config';
 import { backendSrv } from 'app/core/services/backend_srv';
+import { getBackendSrv } from '@grafana/runtime';
 
 export class NewPlaylists extends React.Component<any, any> {
   constructor(props: any) {
@@ -12,6 +13,7 @@ export class NewPlaylists extends React.Component<any, any> {
       dashboardList: [],
       duplicatePlayListData: [],
       createdPlayList: [],
+      Interval: '5 m',
     };
   }
 
@@ -195,9 +197,18 @@ export class NewPlaylists extends React.Component<any, any> {
     return buttonStatus;
   }
 
+  createPlaylist = () => {
+    const { createdPlayList, Interval, playListName } = this.state;
+    getBackendSrv()
+      .post('/api/playlists', { interval: Interval, items: createdPlayList, name: playListName })
+      .then((result: any) => {
+        this.onClickCancel();
+      });
+  };
+
   render() {
-    const { createListOpen, createdPlayList, playListName } = this.state;
-    const enabled = createdPlayList.length > 0;
+    const { createListOpen, createdPlayList, playListName, Interval } = this.state;
+    const enabled = createdPlayList.length > 0 && playListName !== '';
     return (
       <div className="new-playlist-container">
         {createListOpen === true && (
@@ -211,11 +222,7 @@ export class NewPlaylists extends React.Component<any, any> {
                   <Button onClick={this.onClickCancel} className="dashboard-gray-button">
                     Cancel
                   </Button>
-                  <Button
-                    disabled={!enabled}
-                    onClick={() => this.setState({ createListOpen: !createListOpen })}
-                    className="dashboard-blue-button m-r-0"
-                  >
+                  <Button disabled={!enabled} onClick={this.createPlaylist} className="dashboard-blue-button m-r-0">
                     Save
                   </Button>
                 </div>
@@ -240,12 +247,14 @@ export class NewPlaylists extends React.Component<any, any> {
             </div>
             <div className="playlist-interval-select">
               <label>Interval</label>
-              <select>
-                <option>5 m</option>
-                <option>10 m</option>
-                <option>15 m</option>
-                <option>20 m</option>
-              </select>
+              <input
+                type="text"
+                placeholder=""
+                name="Interval"
+                value={Interval}
+                className="input-group-text"
+                onChange={this.handleStateChange}
+              />
             </div>
             <div className="add-dashboards-playlist">
               <label>Dashboards</label>

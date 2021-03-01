@@ -95,7 +95,13 @@
     padding-bottom: 15px;
     border-bottom: 1px solid #f5f6f5;
   }
+  .width-auto {
+    width: auto;
+  }
 
+  .min-width-inherit {
+    min-width: inherit !important;
+  }
   .manage-dashboard-heading {
     display: block;
 
