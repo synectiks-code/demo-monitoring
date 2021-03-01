@@ -1,37 +1,49 @@
 import * as React from 'react';
 import { Button } from 'reactstrap';
 import { config } from '../config';
+import { backendSrv } from 'app/core/services/backend_srv';
 
 export class NewPlaylists extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      saveFileName: '',
+      playListName: '',
       createListOpen: true,
-      playListArrayData: [
-        { label: 'Amazon CloudWatch Logs', id: 0, isChecked: false },
-        { label: 'Amazon RDS', id: 1, isChecked: false },
-        { label: 'AWS VPN', id: 2, isChecked: false },
-        { label: 'AWS VPN Dashboard', id: 3, isChecked: false },
-        { label: 'Cloud Trial', id: 4, isChecked: false },
-        { label: ' Cloud Watch', id: 5, isChecked: false },
-      ],
-      duplicatePlayListData: [
-        { label: 'Amazon CloudWatch Logs', id: 0, isChecked: false },
-        { label: 'Amazon RDS', id: 1, isChecked: false },
-        { label: 'AWS VPN', id: 2, isChecked: false },
-        { label: 'AWS VPN Dashboard', id: 3, isChecked: false },
-        { label: 'Cloud Trial', id: 4, isChecked: false },
-        { label: ' Cloud Watch', id: 5, isChecked: false },
-      ],
-      multipleSelectData: [],
-      newPlaylistArrayData: [],
+      dashboardList: [],
+      duplicatePlayListData: [],
+      createdPlayList: [],
     };
   }
+
+  handleStateChange = (e: any) => {
+    const { name, value } = e.target;
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  componentDidMount() {
+    const sendData = {
+      type: 'dash-db',
+      limit: 20,
+      starred: false,
+    };
+    this.getSearchData(sendData);
+  }
+
+  getSearchData = (data: any) => {
+    backendSrv.search(data).then((result: any) => {
+      this.setState({
+        dashboardList: JSON.parse(JSON.stringify(result)),
+        duplicatePlayListData: JSON.parse(JSON.stringify(result)),
+      });
+    });
+  };
+
   displayTablePlaylist() {
-    const { playListArrayData } = this.state;
+    const { dashboardList } = this.state;
     let retData = [];
-    for (let i = 0; i < playListArrayData.length; i++) {
+    for (let i = 0; i < dashboardList.length; i++) {
       retData.push(
         <tr>
           <td>
@@ -41,9 +53,9 @@ export class NewPlaylists extends React.Component<any, any> {
                 this.onPlayListChecked(e, i);
               }}
               className="checkbox"
-              checked={playListArrayData[i].isChecked}
+              checked={dashboardList[i].isChecked}
             />
-            {playListArrayData[i].label}
+            {dashboardList[i].title}
           </td>
           <td>
             <Button className="dashboard-blue-button" onClick={() => this.addNewPlayList(i)}>
@@ -57,35 +69,34 @@ export class NewPlaylists extends React.Component<any, any> {
   }
 
   onPlayListChecked = (e: any, index: any) => {
-    const { playListArrayData } = this.state;
-    playListArrayData[index].isChecked = e.target.checked;
+    const { dashboardList } = this.state;
+    dashboardList[index].isChecked = e.target.checked;
     this.setState({
-      playListArrayData,
+      dashboardList,
     });
   };
 
   displayNewPlayListData() {
-    const { newPlaylistArrayData } = this.state;
+    const { createdPlayList } = this.state;
     let newretData = [];
-    if (newPlaylistArrayData && newPlaylistArrayData.length > 0) {
-      for (let i = 0; i < newPlaylistArrayData.length; i++) {
+    if (createdPlayList && createdPlayList.length > 0) {
+      for (let i = 0; i < createdPlayList.length; i++) {
         newretData.push(
           <tr>
             <td>
-              <input type="checkbox" className="checkbox" />
-              {newPlaylistArrayData[i].label}
+              {createdPlayList[i].title}
             </td>
             <td>
               <div className="float-right">
                 <span
-                  onClick={() => this.array_move(newPlaylistArrayData, i, i - 1)}
+                  onClick={() => this.array_move(createdPlayList, i, i - 1)}
                   className={i === 0 ? 'down-arrow' : 'arrow-up-arrow'}
                 ></span>
                 <span
-                  onClick={() => this.array_move(newPlaylistArrayData, i, i + 1)}
-                  className={i !== 0 && i < newPlaylistArrayData.length - 1 ? 'down-arrow' : ''}
+                  onClick={() => this.array_move(createdPlayList, i, i + 1)}
+                  className={i !== 0 && i < createdPlayList.length - 1 ? 'down-arrow' : ''}
                 ></span>
-                <Button onClick={() => this.removePlylistData(i)} className="close-arrow"></Button>
+                <Button onClick={() => this.removePlayList(i)} className="close-arrow"></Button>
               </div>
             </td>
           </tr>
@@ -104,66 +115,46 @@ export class NewPlaylists extends React.Component<any, any> {
   }
 
   addNewPlayList = (index: any) => {
-    const { newPlaylistArrayData, playListArrayData } = this.state;
-    let playlistData = newPlaylistArrayData;
-    let saveFile = '';
-    for (let i = 0; i < playListArrayData.length; i++) {
-      if (i === index) {
-        playlistData.push(this.state.playListArrayData[i]);
-        playListArrayData.splice(index, 1);
-      }
-    }
-    if (playlistData.length > 0) {
-      saveFile = 'AWS Dashboards-Admin';
-    } else {
-      saveFile = '';
+    const { createdPlayList, dashboardList } = this.state;
+    if (dashboardList[index]) {
+      createdPlayList.push(dashboardList[index]);
+      dashboardList.splice(index, 1);
     }
     this.setState({
-      playListArrayData: playListArrayData,
-      newPlaylistArrayData: playlistData,
-      saveFileName: saveFile,
+      dashboardList,
+      createdPlayList,
     });
   };
 
   addMultipleDataToNewPlayList = () => {
-    const { newPlaylistArrayData, playListArrayData } = this.state;
-    let result = newPlaylistArrayData;
+    const { createdPlayList, dashboardList } = this.state;
+    let result = createdPlayList;
     let playListData = [];
-    for (let j = 0; j < playListArrayData.length; j++) {
-      if (playListArrayData[j].isChecked) {
-        result.push({
-          ...playListArrayData[j],
+    for (let j = 0; j < dashboardList.length; j++) {
+      if (dashboardList[j].isChecked) {
+        createdPlayList.push({
+          ...dashboardList[j],
           isChecked: false,
         });
       } else {
-        playListData.push(playListArrayData[j]);
+        playListData.push(dashboardList[j]);
       }
     }
     this.setState({
-      playListArrayData: playListData,
-      newPlaylistArrayData: result,
+      dashboardList: playListData,
+      createdPlayList: result,
     });
   };
 
-  removePlylistData = (index: any) => {
-    const { newPlaylistArrayData, playListArrayData } = this.state;
-    let listData = playListArrayData;
-    let saveFile = '';
-    for (let i = 0; i < newPlaylistArrayData.length; i++) {
-      if (i === index) {
-        listData.push(this.state.newPlaylistArrayData[i]);
-        newPlaylistArrayData.splice(index, 1);
-      }
-    }
-    if (newPlaylistArrayData.length > 0) {
-      saveFile = 'AWS Dashboards-Admin';
-    } else {
-      saveFile = '';
-    }
+  removePlayList = (index: any) => {
+    const { createdPlayList, dashboardList } = this.state;
+    dashboardList.push({
+      ...createdPlayList[index],
+    });
+    createdPlayList.splice(index, 1);
     this.setState({
-      playListArrayData: listData,
-      newPlaylistArrayData: newPlaylistArrayData,
-      saveFileName: saveFile,
+      dashboardList,
+      createdPlayList,
     });
   };
 
@@ -171,8 +162,8 @@ export class NewPlaylists extends React.Component<any, any> {
     const { createListOpen, duplicatePlayListData } = this.state;
     this.setState({
       createListOpen: !createListOpen,
-      newPlaylistArrayData: [],
-      playListArrayData: duplicatePlayListData,
+      createdPlayList: [],
+      dashboardList: duplicatePlayListData,
       saveFileName: '',
     });
   };
@@ -192,13 +183,14 @@ export class NewPlaylists extends React.Component<any, any> {
     }
     arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
     this.setState({
-      newPlaylistArrayData: arr,
+      createdPlayList: arr,
     });
   }
+
   checkActiveButtonStatus() {
     let buttonStatus = false;
-    for (let i = 0; i < this.state.playListArrayData.length; i++) {
-      if (this.state.playListArrayData[i].isChecked) {
+    for (let i = 0; i < this.state.dashboardList.length; i++) {
+      if (this.state.dashboardList[i].isChecked) {
         buttonStatus = true;
       }
     }
@@ -206,9 +198,8 @@ export class NewPlaylists extends React.Component<any, any> {
   }
 
   render() {
-    const { createListOpen, newPlaylistArrayData } = this.state;
-    const enabled = newPlaylistArrayData.length > 0;
-    const allenabledButton = this.checkActiveButtonStatus();
+    const { createListOpen, createdPlayList, playListName } = this.state;
+    const enabled = createdPlayList.length > 0;
     return (
       <div className="new-playlist-container">
         {createListOpen === true && (
@@ -240,7 +231,7 @@ export class NewPlaylists extends React.Component<any, any> {
             </div>
             <div className="playlist-name-input">
               <label>Name</label>
-              <input type="text" placeholder="" value={this.state.saveFileName} className="input-group-text" />
+              <input type="text" placeholder="" name="playListName" value={playListName} className="input-group-text" onChange={this.handleStateChange} />
             </div>
             <div className="playlist-interval-select">
               <label>Interval</label>
@@ -267,7 +258,7 @@ export class NewPlaylists extends React.Component<any, any> {
                 <div className="filter-starred float-right">
                   <div className="addalltolist">
                     <Button
-                      disabled={!allenabledButton}
+                      disabled={!this.checkActiveButtonStatus()}
                       onClick={() => this.addMultipleDataToNewPlayList()}
                       type="button"
                       className="dashboard-blue-button"

@@ -9,6 +9,7 @@ export class Playlists extends React.Component<any, any> {
       openPlaylistComponent: false,
     };
   }
+
   openNewPlaylist = () => {
     let playlistDisplayData = this.state.openPlaylistComponent;
     playlistDisplayData = !playlistDisplayData;
