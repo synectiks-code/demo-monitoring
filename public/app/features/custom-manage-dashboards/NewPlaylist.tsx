@@ -83,9 +83,7 @@ export class NewPlaylists extends React.Component<any, any> {
       for (let i = 0; i < createdPlayList.length; i++) {
         newretData.push(
           <tr>
-            <td>
-              {createdPlayList[i].title}
-            </td>
+            <td>{createdPlayList[i].title}</td>
             <td>
               <div className="float-right">
                 <span
@@ -231,7 +229,14 @@ export class NewPlaylists extends React.Component<any, any> {
             </div>
             <div className="playlist-name-input">
               <label>Name</label>
-              <input type="text" placeholder="" name="playListName" value={playListName} className="input-group-text" onChange={this.handleStateChange} />
+              <input
+                type="text"
+                placeholder=""
+                name="playListName"
+                value={playListName}
+                className="input-group-text"
+                onChange={this.handleStateChange}
+              />
             </div>
             <div className="playlist-interval-select">
               <label>Interval</label>
