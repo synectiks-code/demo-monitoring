@@ -199,6 +199,9 @@ export class NewPlaylists extends React.Component<any, any> {
 
   createPlaylist = () => {
     const { createdPlayList, Interval, playListName } = this.state;
+    for (let i = 0; i < createdPlayList.length; i++) {
+      createdPlayList[i].value = createdPlayList[i].id.toString();
+    }
     getBackendSrv()
       .post('/api/playlists', { interval: Interval, items: createdPlayList, name: playListName })
       .then((result: any) => {

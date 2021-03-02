@@ -8,15 +8,13 @@ export class EditPlaylists extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      playListName: '',
+      playListName: this.props.play_list_data.name,
       createListOpen: true,
       dashboardList: [],
       duplicatePlayListData: [],
       createdPlayList: [],
-      Interval: '5 m',
-      selectedData: this.props.play_list_data,
+      Interval: this.props.play_list_data.interval,
     };
-    console.log(this.state.selectedData);
   }
 
   handleStateChange = (e: any) => {
@@ -32,16 +30,38 @@ export class EditPlaylists extends React.Component<any, any> {
       limit: 20,
       starred: false,
     };
-    this.getSearchData(sendData);
+    const edit_id = this.props.play_list_data.id;
+    Promise.all([backendSrv.search(sendData), getBackendSrv().get(`api/playlists/${edit_id}`)]).then(
+      ([dashboardListData, playlist]) => {
+        let dashboardList = JSON.parse(JSON.stringify(dashboardListData));
+        let createdPlayList = playlist.items;
+        let retObj = this.mergeData(dashboardList, createdPlayList);
+        createdPlayList = retObj.itemList;
+        dashboardList = retObj.dashboardList;
+        this.setState({
+          dashboardList: dashboardList,
+          duplicatePlayListData: JSON.parse(JSON.stringify(dashboardListData)),
+          createdPlayList,
+        });
+      }
+    );
   }
 
-  getSearchData = (data: any) => {
-    backendSrv.search(data).then((result: any) => {
-      this.setState({
-        dashboardList: JSON.parse(JSON.stringify(result)),
-        duplicatePlayListData: JSON.parse(JSON.stringify(result)),
-      });
-    });
+  mergeData = (dashboardList: any, itemList: any) => {
+    for (let i = 0; i < itemList.length; i++) {
+      for (let j = 0; j < dashboardList.length; j++) {
+        if (dashboardList[j].id === itemList[i].value) {
+          dashboardList.splice(j, 1);
+          itemList[i].id = parseInt(itemList[i].value, 10);
+          itemList[i].$$hashKey = 'object:57';
+          break;
+        }
+      }
+    }
+    return {
+      dashboardList,
+      itemList,
+    };
   };
 
   displayTablePlaylist() {
@@ -201,8 +221,14 @@ export class EditPlaylists extends React.Component<any, any> {
 
   createPlaylist = () => {
     const { createdPlayList, Interval, playListName } = this.state;
+    let edit_id = this.props.play_list_data.id;
     getBackendSrv()
-      .post('/api/playlists', { interval: Interval, items: createdPlayList, name: playListName })
+      .put(`/api/playlists/${edit_id}`, {
+        interval: Interval,
+        items: createdPlayList,
+        name: playListName,
+        id: edit_id,
+      })
       .then((result: any) => {
         this.onClickCancel();
       });
@@ -210,7 +236,7 @@ export class EditPlaylists extends React.Component<any, any> {
 
   render() {
     const { createListOpen, createdPlayList, playListName, Interval } = this.state;
-    const enabled = createdPlayList.length > 0 && playListName !== '';
+    const enabled = createdPlayList && createdPlayList.length > 0 && playListName !== '';
     return (
       <div className="new-playlist-container">
         {createListOpen === true && (
