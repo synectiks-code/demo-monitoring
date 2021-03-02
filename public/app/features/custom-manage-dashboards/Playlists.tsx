@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { NewPlaylists } from './NewPlaylist';
+import { EditPlaylists } from './EditPlaylist';
 import { Button } from 'reactstrap';
 import { getBackendSrv } from '@grafana/runtime';
 import { ConfirmModal } from '@grafana/ui';
@@ -12,6 +13,8 @@ export class Playlists extends React.Component<any, any> {
       playlistItems: [],
       visibleModal: false,
       deleteIndex: '',
+      editData: {},
+      openEditPlayListComponent: false,
     };
   }
 
@@ -32,6 +35,13 @@ export class Playlists extends React.Component<any, any> {
     this.getPlayListData();
     this.setState({
       openPlaylistComponent: playlistDisplayData,
+    });
+  };
+
+  onclickEditCancel = () => {
+    let editPlayList = !this.state.openEditPlayListComponent;
+    this.setState({
+      openEditPlayListComponent: editPlayList,
     });
   };
 
@@ -66,6 +76,12 @@ export class Playlists extends React.Component<any, any> {
                 >
                   <i className="fa fa-close"></i>
                 </Button>
+                <Button
+                  className="dashboard-blue-button m-b-0 m-r-0 min-width-inherit"
+                  onClick={() => this.openEditPlayList(playlistItems[i])}
+                >
+                  <i className="fa fa-edit"></i>
+                </Button>
               </div>
             </td>
           </tr>
@@ -98,8 +114,17 @@ export class Playlists extends React.Component<any, any> {
     });
   };
 
+  openEditPlayList = (items: any) => {
+    const { openEditPlayListComponent } = this.state;
+    let playlist = !openEditPlayListComponent;
+    this.setState({
+      editData: items,
+      openEditPlayListComponent: playlist,
+    });
+  };
+
   render() {
-    const { openPlaylistComponent, playlistItems, visibleModal } = this.state;
+    const { openPlaylistComponent, playlistItems, visibleModal, openEditPlayListComponent, editData } = this.state;
     return (
       <div className="playlists-container">
         {playlistItems.length === 0 && (
@@ -124,11 +149,16 @@ export class Playlists extends React.Component<any, any> {
             )}
           </div>
         )}
-        {playlistItems.length > 0 && (
+        {playlistItems.length > 0 && !openEditPlayListComponent && (
           <div className="save-playlist-container">
             <div className="save-playlist-inner">
               <table className="data-table">{this.displayPlayList()}</table>
             </div>
+          </div>
+        )}
+        {openEditPlayListComponent === true && (
+          <div>
+            <EditPlaylists onClickCancel={this.onclickEditCancel} play_list_data={editData} />
           </div>
         )}
         <ConfirmModal
