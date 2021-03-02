@@ -2,6 +2,7 @@ import * as React from 'react';
 import { NewPlaylists } from './NewPlaylist';
 import { Button } from 'reactstrap';
 import { getBackendSrv } from '@grafana/runtime';
+import { ConfirmModal } from '@grafana/ui';
 
 export class Playlists extends React.Component<any, any> {
   constructor(props: any) {
@@ -9,6 +10,8 @@ export class Playlists extends React.Component<any, any> {
     this.state = {
       openPlaylistComponent: false,
       playlistItems: [],
+      visibleModal: false,
+      deleteIndex: '',
     };
   }
 
@@ -34,7 +37,7 @@ export class Playlists extends React.Component<any, any> {
 
   getPlayListData = () => {
     getBackendSrv()
-      .get('/api/playlists/')
+      .get('/api/playlists')
       .then((result: any) => {
         this.setState({
           playlistItems: result,
@@ -57,7 +60,10 @@ export class Playlists extends React.Component<any, any> {
                   <option>Start Playlist</option>
                   <option>Start Playlist</option>
                 </select>
-                <Button className="dashboard-blue-button m-b-0 m-r-0 min-width-inherit">
+                <Button
+                  className="dashboard-blue-button m-b-0 m-r-0 min-width-inherit"
+                  onClick={() => this.toggleModal(playlistItems[i].id)}
+                >
                   <i className="fa fa-close"></i>
                 </Button>
               </div>
@@ -69,8 +75,31 @@ export class Playlists extends React.Component<any, any> {
     return retData;
   };
 
+  deletePlaylist = () => {
+    const { deleteIndex, visibleModal } = this.state;
+    getBackendSrv()
+      .delete(`/api/playlists/${deleteIndex}`)
+      .then((res: any) => {
+        this.setState({
+          deleteIndex: '',
+          visibleModal: !visibleModal,
+        });
+        this.getPlayListData();
+      });
+  };
+
+  toggleModal = (index: any) => {
+    const { visibleModal } = this.state;
+    if (index) {
+      this.setState({ deleteIndex: index });
+    }
+    this.setState({
+      visibleModal: !visibleModal,
+    });
+  };
+
   render() {
-    const { openPlaylistComponent, playlistItems } = this.state;
+    const { openPlaylistComponent, playlistItems, visibleModal } = this.state;
     return (
       <div className="playlists-container">
         {playlistItems.length === 0 && (
@@ -102,6 +131,14 @@ export class Playlists extends React.Component<any, any> {
             </div>
           </div>
         )}
+        <ConfirmModal
+          isOpen={visibleModal}
+          title="Delete"
+          body="Are you sure you want to delete playlist ssss?"
+          confirmText="Delete"
+          onConfirm={this.deletePlaylist}
+          onDismiss={() => this.toggleModal('')}
+        />
       </div>
     );
   }
