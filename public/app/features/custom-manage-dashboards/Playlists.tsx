@@ -40,6 +40,7 @@ export class Playlists extends React.Component<any, any> {
 
   onclickEditCancel = () => {
     let editPlayList = !this.state.openEditPlayListComponent;
+    this.getPlayListData();
     this.setState({
       openEditPlayListComponent: editPlayList,
     });
@@ -61,30 +62,34 @@ export class Playlists extends React.Component<any, any> {
     if (playlistItems.length > 0) {
       for (let i = 0; i < playlistItems.length; i++) {
         retData.push(
-          <tr>
-            <td>{playlistItems[i].name}</td>
-            <td>
-              <div className="float-right">
+          <div className="row" key={playlistItems[i]}>
+            <div className="col-lg-7 col-md-7">
+              <div className="playlist-name">{playlistItems[i].name}</div>
+            </div>
+            <div className="col-lg-5 col-md-5 text-right">
+              <div className="playlist-select">
                 <select>
                   <option>Start Playlist</option>
                   <option>Start Playlist</option>
                   <option>Start Playlist</option>
                 </select>
+              </div>
+              <div className="playlist-buttons">
                 <Button
-                  className="dashboard-blue-button m-b-0 m-r-0 min-width-inherit"
-                  onClick={() => this.toggleModal(playlistItems[i].id)}
-                >
-                  <i className="fa fa-close"></i>
-                </Button>
-                <Button
-                  className="dashboard-blue-button m-b-0 m-r-0 min-width-inherit"
+                  className="dashboard-blue-button m-b-0 min-width-inherit"
                   onClick={() => this.openEditPlayList(playlistItems[i])}
                 >
                   <i className="fa fa-edit"></i>
                 </Button>
+                <Button
+                  className="dashboard-danger-button m-b-0 m-r-0 min-width-inherit"
+                  onClick={() => this.toggleModal(playlistItems[i].id)}
+                >
+                  <i className="fa fa-close"></i>
+                </Button>
               </div>
-            </td>
-          </tr>
+            </div>
+          </div>
         );
       }
     }
@@ -152,7 +157,12 @@ export class Playlists extends React.Component<any, any> {
         {playlistItems.length > 0 && !openEditPlayListComponent && (
           <div className="save-playlist-container">
             <div className="save-playlist-inner">
-              <table className="data-table">{this.displayPlayList()}</table>
+              <div className="d-block text-right">
+                <Button onClick={this.openNewPlaylist} className="dashboard-blue-button m-r-0">
+                  Create new Playlist
+                </Button>
+              </div>
+              <div className="data-table">{this.displayPlayList()}</div>
             </div>
           </div>
         )}

@@ -1,0 +1,299 @@
+.task-blue-button {
+  background: #3b7cff !important;
+  color: #ffffff !important;
+  border: none !important;
+  padding: 7px 18px !important;
+  border-radius: 5px !important;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  display: inline-block !important;
+  min-width: 100px;
+  text-align: center;
+
+  &:hover,
+  &:focus {
+    background: #0f5efd !important;
+    color: #ffffff !important;
+  }
+}
+
+.task-gray-button {
+  background: #dde4e9 !important;
+  color: #8392a7 !important;
+  border: none !important;
+  padding: 7px 18px !important;
+  border-radius: 5px !important;
+  margin-right: 10px;
+  display: inline-block !important;
+  min-width: 100px;
+  text-align: center;
+
+  &:hover,
+  &:focus {
+    background: #dbe0e4 !important;
+    color: #8392a7 !important;
+  }
+}
+
+.task-white-button {
+  background: white !important;
+  min-width: 100px;
+  color: #3b4859 !important;
+  border: none !important;
+  padding: 7px 18px !important;
+  border-radius: 5px !important;
+  margin-right: 10px;
+  display: inline-block !important;
+  text-align: center;
+
+  &:hover,
+  &:focus {
+    background: #e6e6e6 !important;
+    color: #3b4859 !important;
+  }
+
+  i {
+    color: #57a4ff !important;
+  }
+}
+
+.task-disable {
+  background: #8392a7 !important;
+  color: #000000 !important;
+  border: none !important;
+  padding: 7px 18px !important;
+  border-radius: 5px !important;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  display: inline-block !important;
+  min-width: 100px;
+  text-align: center;
+
+  &:hover,
+  &:focus {
+    background: #8392a7 !important;
+    color: #000000 !important;
+  }
+}
+
+.task-dashboard-page-container {
+  background-color: #ffffff;
+
+  .common-container {
+    padding-top: 15px;
+    padding-left: 45px;
+    padding-right: 45px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f5f6f5;
+  }
+
+  a {
+    &:focus,
+    &:hover {
+      color: #000000;
+    }
+  }
+
+  .float-right {
+    float: right;
+  }
+
+  .text-right {
+    text-align: right;
+  }
+
+  .text-left {
+    text-align: left;
+  }
+
+  .d-block {
+    display: block;
+  }
+
+  .d-flex {
+    display: flex;
+  }
+
+  .p-l-0 {
+    padding-left: 0 !important;
+  }
+
+  .p-r-0 {
+    padding-right: 0 !important;
+  }
+
+  .p-t-0 {
+    padding-top: 0 !important;
+  }
+
+  .p-b-0 {
+    padding-bottom: 0 !important;
+  }
+
+  .p-t-20 {
+    padding-top: 20px !important;
+  }
+
+  .m-l-0 {
+    margin-left: 0 !important;
+  }
+
+  .m-r-0 {
+    margin-right: 0 !important;
+  }
+
+  .m-b-0 {
+    margin-bottom: 0 !important;
+  }
+
+  .m-b-10 {
+    margin-bottom: 10px !important;
+  }
+
+  .width-auto {
+    width: auto;
+  }
+
+  .width-100 {
+    width: 100%;
+  }
+
+  .min-width-inherit {
+    min-width: inherit !important;
+  }
+
+  .border-bottom-0 {
+    border-bottom: none !important;
+  }
+
+  .heading {
+    h3 {
+      line-height: 18px;
+      color: #3b4859;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+
+    span {
+      line-height: 14px;
+      color: #3b4859;
+      font-size: 12px;
+      font-weight: 400;
+    }
+  }
+
+  .task-dashboards-container {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f5f6f5;
+
+    .task-dashboard-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      text-align: center;
+      width: 100%;
+      height: 100px;
+      box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.2);
+      border-top: 10px solid;
+      border-radius: 3px;
+      padding-top: 15px;
+      padding-bottom: 15px;
+
+      span {
+        line-height: 18px;
+        color: #3b4859;
+        font-size: 14px;
+        font-weight: 400;
+        display: block;
+        width: 100%;
+      }
+
+      strong {
+        color: #3b4859;
+        font-size: 32px;
+        line-height: 36px;
+        font-weight: 600;
+        display: block;
+        width: 100%;
+      }
+    }
+  }
+
+  .task-table-container {
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    .heading {
+      line-height: 24px;
+      color: #3b4859;
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 0;
+      background-color: #dae4f3;
+      padding: 10px 15px;
+    }
+    .custom-table {
+      padding: 15px;
+      padding-top: 0;
+    }
+  }
+
+  .task-progressbar-container {
+    padding-top: 10px;
+    width: 100%;
+    display: block;
+
+    .task-progressbar-box {
+      padding: 10px;
+      display: block;
+      width: 100%;
+      background-color: #f0f3f7;
+      box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
+      border-radius: 3px;
+
+      h3 {
+        display: block;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 20px;
+        color: #3b4859;
+        padding-bottom: 5px;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #bac0c8;
+      }
+
+      .progressbar {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 10px;
+      }
+
+      .progressbar-text {
+        color: #ffffff;
+        font-size: 13px;
+        line-height: 24px;
+        font-weight: 400;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        background-color: #1f78b4;
+      }
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .task-dashboard-page-container {
+    .float-right.new-task-button {
+      float: left;
+    }
+  }
+}
