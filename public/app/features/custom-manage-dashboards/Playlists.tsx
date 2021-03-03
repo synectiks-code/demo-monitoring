@@ -24,12 +24,12 @@ export class Playlists extends React.Component<any, any> {
 
   openNewPlaylist = () => {
     let playlistDisplayData = this.state.openPlaylistComponent;
-    console.log();
     playlistDisplayData = !playlistDisplayData;
     this.setState({
       openPlaylistComponent: playlistDisplayData,
     });
   };
+
   onClickCancel = () => {
     let playlistDisplayData = this.state.openPlaylistComponent;
     playlistDisplayData = !playlistDisplayData;
@@ -133,29 +133,28 @@ export class Playlists extends React.Component<any, any> {
     const { openPlaylistComponent, playlistItems, visibleModal, openEditPlayListComponent, editData } = this.state;
     return (
       <div className="playlists-container">
-        {playlistItems.length === 0 ||
-          (openPlaylistComponent === true && (
-            <div>
-              {openPlaylistComponent === false && (
-                <div className="playlist-inner">
-                  <div className="playlist-heading">There are no playlist created yet</div>
-                  <div className="playlist-btn">
-                    <Button onClick={this.openNewPlaylist} className="dashboard-blue-button">
-                      Create new Playlist
-                    </Button>
-                  </div>
-                  <div className="playlist-text">
-                    <p>Tip: You can use playlists to cycle dashboards on TVs without user control Learn more</p>
-                  </div>
+        {playlistItems.length === 0 && (
+          <div>
+            {openPlaylistComponent === false && (
+              <div className="playlist-inner">
+                <div className="playlist-heading">There are no playlist created yet</div>
+                <div className="playlist-btn">
+                  <Button onClick={this.openNewPlaylist} className="dashboard-blue-button">
+                    Create new Playlist
+                  </Button>
                 </div>
-              )}
-              {openPlaylistComponent === true && (
-                <div>
-                  <NewPlaylists onClickCancel={this.onClickCancel} />
+                <div className="playlist-text">
+                  <p>Tip: You can use playlists to cycle dashboards on TVs without user control Learn more</p>
                 </div>
-              )}
-            </div>
-          ))}
+              </div>
+            )}
+            {openPlaylistComponent === true && (
+              <div>
+                <NewPlaylists onClickCancel={this.onClickCancel} />
+              </div>
+            )}
+          </div>
+        )}
         {playlistItems.length > 0 && !openEditPlayListComponent && !openPlaylistComponent && (
           <div className="save-playlist-container">
             <div className="save-playlist-inner">
@@ -168,7 +167,7 @@ export class Playlists extends React.Component<any, any> {
             </div>
           </div>
         )}
-        {openEditPlayListComponent === true && (
+        {openEditPlayListComponent && (
           <div>
             <EditPlaylists onClickCancel={this.onclickEditCancel} play_list_data={editData} />
           </div>

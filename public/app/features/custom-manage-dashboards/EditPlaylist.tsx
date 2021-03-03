@@ -50,10 +50,9 @@ export class EditPlaylists extends React.Component<any, any> {
   mergeData = (dashboardList: any, itemList: any) => {
     for (let i = 0; i < itemList.length; i++) {
       for (let j = 0; j < dashboardList.length; j++) {
-        if (dashboardList[j].id === itemList[i].value) {
+        if (parseInt(dashboardList[j].id, 10) === parseInt(itemList[i].value, 10)) {
           dashboardList.splice(j, 1);
           itemList[i].id = parseInt(itemList[i].value, 10);
-          itemList[i].$$hashKey = 'object:57';
           break;
         }
       }
@@ -222,6 +221,9 @@ export class EditPlaylists extends React.Component<any, any> {
   createPlaylist = () => {
     const { createdPlayList, Interval, playListName } = this.state;
     let edit_id = this.props.play_list_data.id;
+    for (let i = 0; i < createdPlayList.length; i++) {
+      createdPlayList[i].value = createdPlayList[i].id.toString();
+    }
     getBackendSrv()
       .put(`/api/playlists/${edit_id}`, {
         interval: Interval,
