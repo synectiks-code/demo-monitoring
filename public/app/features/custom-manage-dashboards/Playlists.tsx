@@ -23,27 +23,22 @@ export class Playlists extends React.Component<any, any> {
   };
 
   openNewPlaylist = () => {
-    let playlistDisplayData = this.state.openPlaylistComponent;
-    playlistDisplayData = !playlistDisplayData;
     this.setState({
-      openPlaylistComponent: playlistDisplayData,
+      openPlaylistComponent: !this.state.openPlaylistComponent,
     });
   };
 
   onClickCancel = () => {
-    let playlistDisplayData = this.state.openPlaylistComponent;
-    playlistDisplayData = !playlistDisplayData;
     this.getPlayListData();
     this.setState({
-      openPlaylistComponent: playlistDisplayData,
+      openPlaylistComponent: !this.state.openPlaylistComponent,
     });
   };
 
   onclickEditCancel = () => {
-    let editPlayList = !this.state.openEditPlayListComponent;
     this.getPlayListData();
     this.setState({
-      openEditPlayListComponent: editPlayList,
+      openEditPlayListComponent: !this.state.openEditPlayListComponent,
     });
   };
 
@@ -133,7 +128,7 @@ export class Playlists extends React.Component<any, any> {
     const { openPlaylistComponent, playlistItems, visibleModal, openEditPlayListComponent, editData } = this.state;
     return (
       <div className="playlists-container">
-        {playlistItems.length === 0 && (
+        {playlistItems.length === 0 && !openEditPlayListComponent && !openPlaylistComponent && (
           <div>
             {openPlaylistComponent === false && (
               <div className="playlist-inner">
@@ -170,6 +165,11 @@ export class Playlists extends React.Component<any, any> {
         {openEditPlayListComponent && (
           <div>
             <EditPlaylists onClickCancel={this.onclickEditCancel} play_list_data={editData} />
+          </div>
+        )}
+        {openPlaylistComponent && (
+          <div>
+            <NewPlaylists onClickCancel={this.onClickCancel} />
           </div>
         )}
         <ConfirmModal
