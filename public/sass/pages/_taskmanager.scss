@@ -230,6 +230,7 @@
     display: block;
     width: 100%;
     margin-bottom: 20px;
+
     .heading {
       line-height: 24px;
       color: #3b4859;
@@ -239,6 +240,7 @@
       background-color: #dae4f3;
       padding: 10px 15px;
     }
+
     .custom-table {
       padding: 15px;
       padding-top: 0;
@@ -276,6 +278,7 @@
       }
 
       .progressbar-text {
+        display: block;
         color: #ffffff;
         font-size: 13px;
         line-height: 24px;
@@ -291,6 +294,21 @@
 }
 
 @media (max-width: 992px) {
+  .task-dashboard-page-container {
+    .task-dashboards-container {
+      margin-bottom: 0;
+      .task-dashboard-box {
+        margin-bottom: 30px;
+      }
+    }
+
+    .task-progressbar-box {
+      margin-bottom: 30px;
+    }
+  }
+}
+
+@media (max-width: 767px) {
   .task-dashboard-page-container {
     .float-right.new-task-button {
       float: left;

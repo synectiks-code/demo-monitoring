@@ -246,13 +246,13 @@ class TaskManager extends React.Component<any, any> {
           <div className="task-dashboard-page-container">
             <div className="common-container">
               <div className="row">
-                <div className="col-sm-12 col-md-9 col-lg-9">
+                <div className="col-xs-12 col-sm-12 col-md-9 col-lg-9">
                   <div className="heading">
                     <h3>Task Manager</h3>
                     <span>Provider</span>
                   </div>
                 </div>
-                <div className="col-sm-12 col-md-3 col-lg-3">
+                <div className="col-xs-12 col-sm-12 col-md-3 col-lg-3">
                   <button className="float-right m-b-0 m-r-0 task-gray-button new-task-button">New Task</button>
                 </div>
               </div>
@@ -260,7 +260,7 @@ class TaskManager extends React.Component<any, any> {
             <div className="common-container border-bottom-0">
               <div className="task-dashboards-container">
                 <div className="row">
-                  <div className="col-lg-3">
+                  <div className="col-lg-3 col-md-6 col-sm-12 col-xs-12">
                     <a href="/taskmanager/alltasks">
                       <div className="task-dashboard-box" style={{ borderColor: '#00004d' }}>
                         <span>Total Daskboards</span>
@@ -268,7 +268,7 @@ class TaskManager extends React.Component<any, any> {
                       </div>
                     </a>
                   </div>
-                  <div className="col-lg-3">
+                  <div className="col-lg-3 col-md-6 col-sm-12 col-xs-12">
                     <a href="#">
                       <div className="task-dashboard-box" style={{ borderColor: '#00861b' }}>
                         <span>Completed</span>
@@ -276,7 +276,7 @@ class TaskManager extends React.Component<any, any> {
                       </div>
                     </a>
                   </div>
-                  <div className="col-lg-3">
+                  <div className="col-lg-3 col-md-6 col-sm-12 col-xs-12">
                     <a href="#">
                       <div className="task-dashboard-box" style={{ borderColor: '#ffa000' }}>
                         <span>In progress</span>
@@ -284,7 +284,7 @@ class TaskManager extends React.Component<any, any> {
                       </div>
                     </a>
                   </div>
-                  <div className="col-lg-3">
+                  <div className="col-lg-3 col-md-6 col-sm-12 col-xs-12">
                     <a href="#">
                       <div className="task-dashboard-box" style={{ borderColor: '#98adff' }}>
                         <span>Un assigned</span>
@@ -328,7 +328,7 @@ class TaskManager extends React.Component<any, any> {
               </div>
               <div className="task-progressbar-container">
                 <div className="row">
-                  <div className="col-lg-4">
+                  <div className="col-lg-4 col-md-6 col-sm-12">
                     <div className="task-progressbar-box">
                       <h3>Ganesh</h3>
                       <div className="d-block text-center">
@@ -347,7 +347,7 @@ class TaskManager extends React.Component<any, any> {
                       </div>
                     </div>
                   </div>
-                  <div className="col-lg-4">
+                  <div className="col-lg-4 col-md-6 col-sm-12">
                     <div className="task-progressbar-box">
                       <h3>Akhila</h3>
                       <div className="d-block text-center">
@@ -366,7 +366,7 @@ class TaskManager extends React.Component<any, any> {
                       </div>
                     </div>
                   </div>
-                  <div className="col-lg-4">
+                  <div className="col-lg-4 col-md-6 col-sm-12">
                     <div className="task-progressbar-box">
                       <h3>Zakir</h3>
                       <div className="d-block text-center">
