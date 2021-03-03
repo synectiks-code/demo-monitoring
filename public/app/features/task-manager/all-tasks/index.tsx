@@ -298,13 +298,13 @@ class AllTasks extends React.Component<any, any> {
           <div className="task-dashboard-page-container">
             <div className="common-container">
               <div className="row">
-                <div className="col-sm-12 col-md-9 col-lg-9">
+                <div className="col-xs-12 col-sm-12 col-md-9 col-lg-9">
                   <div className="heading">
                     <h3>Task Manager</h3>
                     <span>Provider</span>
                   </div>
                 </div>
-                <div className="col-sm-12 col-md-3 col-lg-3">
+                <div className="col-xs-12 col-sm-12 col-md-3 col-lg-3">
                   <button className="float-right m-b-0 m-r-0 task-gray-button new-task-button">New Task</button>
                 </div>
               </div>
