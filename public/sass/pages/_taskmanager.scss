@@ -293,10 +293,120 @@
   }
 }
 
+.create-edit-dashboard {
+  .general-center-contain {
+    .own-dashboard {
+      display: block;
+      width: 100%;
+      text-align: center;
+
+      span {
+        display: block;
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        font-size: 16px;
+        line-height: 24px;
+        color: #3b4859;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.approve-tab-container {
+  display: block;
+  width: 100%;
+  padding-top: 10px;
+  .approve-dashboard-content {
+    border-bottom: 1px solid #f7f7f7;
+    padding-bottom: 0px;
+    margin-bottom: 10px;
+    .form-group {
+      display: block;
+      margin-bottom: 5px;
+      label {
+        width: 20%;
+        display: inline-block;
+        vertical-align: top;
+        margin-bottom: 0;
+        font-size: 12px;
+      }
+      span {
+        width: 75%;
+        display: inline-block;
+        vertical-align: top;
+        margin-bottom: 0;
+        padding-left: 5px;
+        span {
+          color: brown;
+        }
+        a {
+          color: #3b7cff;
+        }
+      }
+    }
+  }
+  .approve-dashboard-table {
+    display: block;
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 40px;
+    .table {
+      width: 100%;
+      tr:nth-child(odd) {
+        td {
+          background-color: #f8f9fb;
+        }
+      }
+      td {
+        display: block;
+        cursor: pointer;
+        padding: 10px 15px;
+        border: 1px solid transparent;
+        &:hover {
+          border-color: #3b7cff;
+        }
+        .content {
+          display: block;
+          label {
+            display: inline-block;
+            vertical-align: top;
+            margin-bottom: 0;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 16px;
+          }
+          span {
+            display: inline-block;
+            vertical-align: top;
+            margin-bottom: 0;
+            padding-left: 5px;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 16px;
+          }
+        }
+        p {
+          display: block;
+          margin-bottom: 0;
+          font-size: 12px;
+          font-weight: 500;
+          line-height: 16px;
+          color: #3b4859;
+        }
+      }
+    }
+  }
+}
+
 @media (max-width: 992px) {
   .task-dashboard-page-container {
     .task-dashboards-container {
       margin-bottom: 0;
+
       .task-dashboard-box {
         margin-bottom: 30px;
       }
@@ -304,6 +414,18 @@
 
     .task-progressbar-box {
       margin-bottom: 30px;
+    }
+  }
+  .approve-tab-container {
+    .approve-dashboard-content {
+      .form-group {
+        label {
+          width: 30%;
+        }
+        span {
+          width: 70%;
+        }
+      }
     }
   }
 }

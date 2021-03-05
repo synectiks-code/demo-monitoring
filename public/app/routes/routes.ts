@@ -620,21 +620,30 @@ export function setupAngularRoutes($routeProvider: route.IRouteProvider, $locati
     .when('/taskmanager', {
       template: '<react-container />',
       //@ts-ignore
-      pageClass: 'page-dashboard',
+      pageClass: 'page-taskmanager',
       reloadOnSearch: false,
       resolve: {
-        component: () =>
-          SafeDynamicImport(import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/task-manager')),
+        component: () => SafeDynamicImport(import(/* webpackChunkName: "TaskManager"*/ 'app/features/task-manager')),
       },
     })
     .when('/taskmanager/alltasks', {
       template: '<react-container />',
       //@ts-ignore
-      pageClass: 'page-dashboard',
+      pageClass: 'page-taskmanager',
       reloadOnSearch: false,
       resolve: {
         component: () =>
-          SafeDynamicImport(import(/* webpackChunkName: "DataSourcesListPage"*/ 'app/features/task-manager/all-tasks')),
+          SafeDynamicImport(import(/* webpackChunkName: "TaskManager"*/ 'app/features/task-manager/all-tasks')),
+      },
+    })
+    .when('/taskmanager/create-dashboard', {
+      template: '<react-container />',
+      //@ts-ignore
+      pageClass: 'page-taskmanager',
+      reloadOnSearch: false,
+      resolve: {
+        component: () =>
+          SafeDynamicImport(import(/* webpackChunkName: "TaskManager"*/ 'app/features/task-manager/create-dashboard')),
       },
     })
     .otherwise({
