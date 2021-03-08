@@ -275,7 +275,7 @@ export class EditPlaylists extends React.Component<any, any> {
                 onChange={this.handleStateChange}
               />
             </div>
-            <div className="playlist-interval-select">
+            <div className="playlist-name-input">
               <label>Interval</label>
               <input
                 type="text"

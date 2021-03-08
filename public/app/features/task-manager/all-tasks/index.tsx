@@ -21,6 +21,10 @@ class AllTasks extends React.Component<any, any> {
       route: `/`,
     },
     {
+      label: 'Analytics',
+      route: '/analytics',
+    },
+    {
       label: 'Task Manager',
       isCurrentPage: true,
     },
@@ -305,7 +309,9 @@ class AllTasks extends React.Component<any, any> {
                   </div>
                 </div>
                 <div className="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                  <button className="float-right m-b-0 m-r-0 task-gray-button new-task-button">New Task</button>
+                  <a href="/taskmanager/create-dashboard" className="float-right m-b-0 m-r-0 task-blue-button">
+                    New Task
+                  </a>
                 </div>
               </div>
             </div>

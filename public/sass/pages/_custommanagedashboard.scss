@@ -245,20 +245,20 @@
       display: block;
       width: 100%;
 
-      >div {
+      > div {
         width: 100% !important;
       }
     }
 
     .tag-filter-container {
-      >div {
+      > div {
         width: 100% !important;
         min-width: 100% !important;
       }
     }
 
     .sort-container {
-      >div {
+      > div {
         width: 100% !important;
       }
     }
@@ -468,7 +468,6 @@
         text-align: center;
       }
     }
-
   }
 
   .playlists-container {
@@ -614,6 +613,7 @@
         text-align: left;
         color: #3b4859;
         font-size: 14px;
+        padding: 0 10px;
       }
     }
 
